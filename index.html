@@ -2,861 +2,1011 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#ffffff"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>B&B AI</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="api.js"></script>
 
     <style>
-
         /* =====================================================
-           RESET
-        ===================================================== */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-
-        /* =====================================================
-           THEME
+           B&B AI - THEME
         ===================================================== */
 
         :root {
-
             --bg: #ffffff;
-
-            --surface: #f7f7f7;
-
-            --surface-hover: #eeeeee;
-
-            --input: #ffffff;
-
+            --surface: #f7f7f8;
+            --surface-2: #eeeeef;
             --text: #111111;
-
             --muted: #707070;
-
             --border: #dddddd;
-
             --button: #111111;
-
             --button-text: #ffffff;
-
-            --error: #d93025;
-
-            --success: #16833b;
-
+            --danger: #d33;
+            --success: #16803c;
+            --accent: #8b5cf6;
         }
-
 
         body.dark {
-
-            --bg: #090909;
-
-            --surface: #151515;
-
-            --surface-hover: #202020;
-
-            --input: #101010;
-
+            --bg: #09090b;
+            --surface: #151518;
+            --surface-2: #202024;
             --text: #ffffff;
-
-            --muted: #a0a0a0;
-
-            --border: #303030;
-
+            --muted: #a1a1aa;
+            --border: #2d2d32;
             --button: #ffffff;
-
-            --button-text: #000000;
-
-            --error: #ff6464;
-
+            --button-text: #111111;
+            --danger: #ff6b6b;
             --success: #4ade80;
-
+            --accent: #a78bfa;
         }
 
-
-        /* =====================================================
-           BODY
-        ===================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
-
-            min-height: 100vh;
-
-            background: var(--bg);
-
-            color: var(--text);
-
             font-family:
                 Inter,
                 -apple-system,
                 BlinkMacSystemFont,
                 "Segoe UI",
-                Arial,
                 sans-serif;
 
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            transition:
-                background 0.2s ease,
-                color 0.2s ease;
-
-        }
-
-
-        /* =====================================================
-           THEME BUTTON
-        ===================================================== */
-
-        .theme-button {
-
-            position: fixed;
-
-            top: 22px;
-
-            right: 22px;
-
-            width: 42px;
-
-            height: 42px;
-
-            border: 1px solid var(--border);
-
-            border-radius: 50%;
-
-            background: var(--surface);
-
+            background: var(--bg);
             color: var(--text);
 
-            cursor: pointer;
+            min-height: 100vh;
 
-            font-size: 17px;
+            transition:
+                background 0.25s ease,
+                color 0.25s ease;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        header {
+            width: 100%;
+            height: 72px;
 
             display: flex;
-
             align-items: center;
+            justify-content: space-between;
 
-            justify-content: center;
+            padding: 0 32px;
 
-            transition: 0.2s;
+            border-bottom: 1px solid var(--border);
 
+            background: var(--bg);
         }
-
-
-        .theme-button:hover {
-
-            background: var(--surface-hover);
-
-        }
-
-
-        /* =====================================================
-           AUTH WRAPPER
-        ===================================================== */
-
-        .auth-wrapper {
-
-            width: 100%;
-
-            max-width: 420px;
-
-            padding: 20px;
-
-        }
-
-
-        /* =====================================================
-           AUTH BOX
-        ===================================================== */
-
-        .auth-box {
-
-            width: 100%;
-
-            padding: 36px;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-
-            border-radius: 20px;
-
-            box-shadow:
-                0 15px 50px rgba(0, 0, 0, 0.07);
-
-        }
-
-
-        body.dark .auth-box {
-
-            box-shadow:
-                0 15px 50px rgba(0, 0, 0, 0.35);
-
-        }
-
-
-        /* =====================================================
-           BRAND
-        ===================================================== */
 
         .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
 
-            text-align: center;
-
-            margin-bottom: 28px;
-
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
         }
 
-
-        .brand-logo {
-
-            width: 64px;
-
-            height: 64px;
+        .brand img {
+            width: 34px;
+            height: 34px;
 
             object-fit: contain;
 
-            border-radius: 16px;
-
-            margin-bottom: 14px;
-
+            border-radius: 8px;
         }
 
-
-        .brand-name {
-
-            font-size: 28px;
-
-            font-weight: 750;
-
-            letter-spacing: -0.8px;
-
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        .theme-btn,
+        .login-top-btn {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
 
-        .brand-subtitle {
+            height: 40px;
+            padding: 0 16px;
 
-            margin-top: 7px;
+            border-radius: 9px;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .theme-btn {
+            width: 40px;
+            padding: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+        }
+
+        .theme-btn:hover,
+        .login-top-btn:hover {
+            background: var(--surface-2);
+        }
+
+        .login-top-btn {
+            background: var(--button);
+            color: var(--button-text);
+
+            border-color: var(--button);
+
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            min-height: calc(100vh - 72px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        /* =====================================================
+           AUTH CARD
+        ===================================================== */
+
+        .auth-card {
+            width: 100%;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.05);
+
+            animation: cardIn 0.45s ease;
+        }
+
+        body.dark .auth-card {
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-title {
+            text-align: center;
+            margin-bottom: 8px;
+
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: -0.7px;
+        }
+
+        .auth-subtitle {
+            text-align: center;
 
             color: var(--muted);
 
             font-size: 14px;
 
+            margin-bottom: 25px;
         }
-
 
         /* =====================================================
            TABS
         ===================================================== */
 
         .tabs {
-
             display: grid;
-
             grid-template-columns: 1fr 1fr;
 
-            gap: 4px;
+            background: var(--surface-2);
 
             padding: 4px;
 
-            margin-bottom: 24px;
-
-            background: var(--surface-hover);
-
             border-radius: 10px;
 
+            margin-bottom: 24px;
         }
 
-
         .tab {
-
-            height: 38px;
-
             border: none;
+
+            background: transparent;
+            color: var(--muted);
+
+            padding: 10px;
 
             border-radius: 7px;
 
-            background: transparent;
+            font-weight: 600;
 
-            color: var(--muted);
-
-            cursor: pointer;
-
-            font-size: 14px;
-
-            font-weight: 650;
-
-            transition: 0.2s;
-
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
         }
-
 
         .tab.active {
-
             background: var(--bg);
-
             color: var(--text);
 
-            box-shadow:
-                0 1px 5px rgba(0, 0, 0, 0.08);
-
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
         }
-
 
         /* =====================================================
            FORM
         ===================================================== */
 
         .form {
-
             display: none;
-
         }
-
 
         .form.active {
-
             display: block;
 
+            animation: formIn 0.25s ease;
         }
 
+        @keyframes formIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
 
-        /* =====================================================
-           FIELD
-        ===================================================== */
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         .field {
-
-            margin-bottom: 16px;
-
+            margin-bottom: 17px;
         }
-
 
         .field label {
-
             display: block;
 
-            margin-bottom: 7px;
-
             font-size: 13px;
-
             font-weight: 600;
 
+            margin-bottom: 7px;
         }
 
-
         .field input {
-
             width: 100%;
 
             height: 46px;
-
-            padding: 0 13px;
 
             border: 1px solid var(--border);
 
             border-radius: 9px;
 
-            outline: none;
-
-            background: var(--input);
+            background: var(--bg);
 
             color: var(--text);
 
-            font-size: 14px;
+            padding: 0 13px;
 
-            transition: 0.2s;
+            outline: none;
 
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
-
-
-        .field input::placeholder {
-
-            color: var(--muted);
-
-        }
-
 
         .field input:focus {
+            border-color: var(--accent);
 
-            border-color: var(--text);
-
+            box-shadow:
+                0 0 0 3px rgba(139, 92, 246, 0.12);
         }
 
-
-        /* =====================================================
-           SUBMIT BUTTON
-        ===================================================== */
-
-        .submit-button {
-
+        .submit-btn {
             width: 100%;
 
             height: 46px;
-
-            margin-top: 4px;
 
             border: none;
 
             border-radius: 9px;
 
             background: var(--button);
-
             color: var(--button-text);
 
-            cursor: pointer;
+            font-weight: 600;
 
-            font-size: 14px;
+            margin-top: 4px;
 
-            font-weight: 700;
-
-            transition: 0.2s;
-
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease;
         }
 
-
-        .submit-button:hover {
-
-            opacity: 0.86;
-
+        .submit-btn:hover {
+            opacity: 0.88;
         }
 
+        .submit-btn:active {
+            transform: scale(0.99);
+        }
 
-        .submit-button:disabled {
-
-            opacity: 0.55;
-
+        .submit-btn:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
-
         }
-
 
         /* =====================================================
            MESSAGE
         ===================================================== */
 
         .message {
+            display: none;
 
-            min-height: 20px;
+            margin-top: 16px;
 
-            margin-top: 15px;
+            padding: 11px 13px;
 
-            text-align: center;
+            border-radius: 9px;
 
             font-size: 13px;
 
             line-height: 1.5;
-
         }
 
+        .message.show {
+            display: block;
+        }
 
         .message.error {
-
-            color: var(--error);
-
+            background: rgba(211, 51, 51, 0.1);
+            color: var(--danger);
         }
-
 
         .message.success {
-
+            background: rgba(22, 128, 60, 0.1);
             color: var(--success);
-
         }
 
+        /* =====================================================
+           EMAIL VERIFICATION SCREEN
+        ===================================================== */
+
+        #verificationScreen {
+            display: none;
+
+            width: 100%;
+            max-width: 560px;
+
+            text-align: center;
+
+            animation: verificationIn 0.55s ease;
+        }
+
+        @keyframes verificationIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .email-animation {
+            width: 130px;
+            height: 130px;
+
+            margin: 0 auto 28px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .email-circle {
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            border-radius: 50%;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(0.96);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: scale(1.04);
+                opacity: 1;
+            }
+        }
+
+        .email-icon {
+            position: relative;
+            z-index: 2;
+
+            font-size: 56px;
+
+            animation: floatEmail 2.2s infinite ease-in-out;
+        }
+
+        @keyframes floatEmail {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+        .check-badge {
+            position: absolute;
+
+            right: 3px;
+            bottom: 5px;
+
+            z-index: 3;
+
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: var(--button);
+            color: var(--button-text);
+
+            border: 4px solid var(--bg);
+
+            font-size: 16px;
+
+            animation: badgeIn 0.8s ease 0.3s both;
+        }
+
+        @keyframes badgeIn {
+            from {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .verification-title {
+            font-size: 32px;
+            font-weight: 750;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 12px;
+        }
+
+        .verification-description {
+            max-width: 500px;
+
+            margin: 0 auto;
+
+            color: var(--muted);
+
+            font-size: 15px;
+
+            line-height: 1.7;
+        }
+
+        .verification-email {
+            margin: 18px auto;
+
+            display: inline-block;
+
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            font-weight: 600;
+
+            word-break: break-all;
+        }
+
+        .important-box {
+            max-width: 500px;
+
+            margin: 22px auto;
+
+            padding: 16px 18px;
+
+            text-align: left;
+
+            border: 1px solid var(--border);
+
+            background: var(--surface);
+
+            border-radius: 11px;
+
+            font-size: 13px;
+
+            line-height: 1.65;
+
+            color: var(--muted);
+        }
+
+        .important-box strong {
+            display: block;
+
+            color: var(--text);
+
+            margin-bottom: 5px;
+        }
+
+        .back-login-btn {
+            margin-top: 5px;
+
+            height: 45px;
+
+            padding: 0 22px;
+
+            border-radius: 9px;
+
+            border: none;
+
+            background: var(--button);
+
+            color: var(--button-text);
+
+            font-weight: 600;
+
+            transition: opacity 0.2s ease;
+        }
+
+        .back-login-btn:hover {
+            opacity: 0.88;
+        }
 
         /* =====================================================
            FOOTER
         ===================================================== */
 
-        .footer {
+        footer {
+            position: fixed;
 
-            margin-top: 22px;
-
-            text-align: center;
-
-            color: var(--muted);
-
-            font-size: 12px;
-
-        }
-
-
-        /* =====================================================
-           LOADING
-        ===================================================== */
-
-        .loading {
-
-            display: none;
-
-            margin-top: 12px;
+            bottom: 14px;
+            left: 0;
+            right: 0;
 
             text-align: center;
 
             color: var(--muted);
 
-            font-size: 12px;
+            font-size: 11px;
 
+            pointer-events: none;
         }
-
-
-        .loading.show {
-
-            display: block;
-
-        }
-
 
         /* =====================================================
            MOBILE
         ===================================================== */
 
-        @media (max-width: 480px) {
-
-            .auth-wrapper {
-
-                padding: 14px;
-
+        @media (max-width: 600px) {
+            header {
+                padding: 0 16px;
             }
 
-            .auth-box {
-
-                padding: 27px 20px;
-
+            .auth-card {
+                padding: 23px;
             }
 
-            .theme-button {
-
-                top: 14px;
-
-                right: 14px;
-
+            .verification-title {
+                font-size: 27px;
             }
 
+            .verification-description {
+                font-size: 14px;
+            }
+
+            footer {
+                display: none;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
     <!-- =====================================================
-         THEME
+         HEADER
     ===================================================== -->
 
-    <button
-        id="themeButton"
-        class="theme-button"
-        type="button"
-        aria-label="Change theme"
-    >
-        ☾
-    </button>
+    <header>
 
+        <div class="brand">
+            <img src="logo.jpg" alt="B&B AI">
+            <span>B&B AI</span>
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                class="theme-btn"
+                id="themeBtn"
+                type="button"
+                aria-label="Toggle theme"
+            >
+                ☾
+            </button>
+
+            <button
+                class="login-top-btn"
+                id="topLoginBtn"
+                type="button"
+            >
+                Login
+            </button>
+
+        </div>
+
+    </header>
 
 
     <!-- =====================================================
-         AUTH
+         MAIN
     ===================================================== -->
 
-    <main class="auth-wrapper">
+    <main>
 
-        <section class="auth-box">
+        <!-- =========================
+             AUTH
+        ========================== -->
+
+        <div
+            class="container"
+            id="authContainer"
+        >
+
+            <div class="auth-card">
+
+                <h1 class="auth-title">
+                    Welcome to B&B AI
+                </h1>
+
+                <p class="auth-subtitle">
+                    Sign in or create your account
+                </p>
 
 
-            <!-- BRAND -->
+                <!-- TABS -->
 
-            <div class="brand">
+                <div class="tabs">
 
-                <img
-                    src="logo.jpg"
-                    alt="B&B AI"
-                    class="brand-logo"
-                    onerror="this.style.display='none'"
-                >
+                    <button
+                        class="tab active"
+                        id="loginTab"
+                        type="button"
+                    >
+                        Login
+                    </button>
 
-                <div class="brand-name">
-                    B&B AI
+                    <button
+                        class="tab"
+                        id="signupTab"
+                        type="button"
+                    >
+                        Sign Up
+                    </button>
+
                 </div>
 
-                <div class="brand-subtitle">
-                    Your AI workspace
+
+                <!-- =========================
+                     LOGIN FORM
+                ========================== -->
+
+                <form
+                    class="form active"
+                    id="loginForm"
+                >
+
+                    <div class="field">
+
+                        <label for="loginEmail">
+                            Email
+                        </label>
+
+                        <input
+                            id="loginEmail"
+                            type="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="submit-btn"
+                        id="loginBtn"
+                        type="submit"
+                    >
+                        Login
+                    </button>
+
+                </form>
+
+
+                <!-- =========================
+                     SIGN UP FORM
+                ========================== -->
+
+                <form
+                    class="form"
+                    id="signupForm"
+                >
+
+                    <div class="field">
+
+                        <label for="signupEmail">
+                            Email
+                        </label>
+
+                        <input
+                            id="signupEmail"
+                            type="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="signupPassword">
+                            Password
+                        </label>
+
+                        <input
+                            id="signupPassword"
+                            type="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="signupConfirm">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            id="signupConfirm"
+                            type="password"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="submit-btn"
+                        id="signupBtn"
+                        type="submit"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <div
+                    class="message"
+                    id="message"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             EMAIL VERIFICATION
+        ========================== -->
+
+        <section
+            id="verificationScreen"
+            aria-live="polite"
+        >
+
+            <div class="email-animation">
+
+                <div class="email-circle"></div>
+
+                <div class="email-icon">
+                    ✉
+                </div>
+
+                <div class="check-badge">
+                    ✓
                 </div>
 
             </div>
 
 
-
-            <!-- TABS -->
-
-            <div class="tabs">
-
-                <button
-                    id="loginTab"
-                    class="tab active"
-                    type="button"
-                >
-                    Login
-                </button>
-
-                <button
-                    id="signupTab"
-                    class="tab"
-                    type="button"
-                >
-                    Sign Up
-                </button>
-
-            </div>
+            <h1 class="verification-title">
+                Check Your Email
+            </h1>
 
 
+            <p class="verification-description">
+                We've sent a confirmation link to your email address.
+                Please open your email and click the confirmation link
+                to verify your account.
+            </p>
 
-            <!-- =================================================
-                 LOGIN FORM
-            ================================================= -->
-
-            <form
-                id="loginForm"
-                class="form active"
-            >
-
-                <div class="field">
-
-                    <label for="loginEmail">
-                        Email
-                    </label>
-
-                    <input
-                        id="loginEmail"
-                        type="email"
-                        autocomplete="email"
-                        placeholder="Enter your email"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="loginPassword">
-                        Password
-                    </label>
-
-                    <input
-                        id="loginPassword"
-                        type="password"
-                        autocomplete="current-password"
-                        placeholder="Enter your password"
-                        required
-                    >
-
-                </div>
-
-
-                <button
-                    id="loginButton"
-                    class="submit-button"
-                    type="submit"
-                >
-                    Login
-                </button>
-
-            </form>
-
-
-
-            <!-- =================================================
-                 SIGN UP FORM
-            ================================================= -->
-
-            <form
-                id="signupForm"
-                class="form"
-            >
-
-                <div class="field">
-
-                    <label for="signupEmail">
-                        Email
-                    </label>
-
-                    <input
-                        id="signupEmail"
-                        type="email"
-                        autocomplete="email"
-                        placeholder="Enter your email"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="signupPassword">
-                        Password
-                    </label>
-
-                    <input
-                        id="signupPassword"
-                        type="password"
-                        autocomplete="new-password"
-                        placeholder="Create a password"
-                        minlength="6"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="signupConfirmPassword">
-                        Confirm Password
-                    </label>
-
-                    <input
-                        id="signupConfirmPassword"
-                        type="password"
-                        autocomplete="new-password"
-                        placeholder="Repeat your password"
-                        minlength="6"
-                        required
-                    >
-
-                </div>
-
-
-                <button
-                    id="signupButton"
-                    class="submit-button"
-                    type="submit"
-                >
-                    Create Account
-                </button>
-
-            </form>
-
-
-
-            <!-- MESSAGE -->
 
             <div
-                id="message"
-                class="message"
-                aria-live="polite"
-            ></div>
-
-
-            <!-- LOADING -->
-
-            <div
-                id="loading"
-                class="loading"
+                class="verification-email"
+                id="verificationEmail"
             >
-                Please wait...
             </div>
 
 
-            <!-- FOOTER -->
+            <div class="important-box">
 
-            <div class="footer">
-                B&B AI · B&B Studio
+                <strong>
+                    Important
+                </strong>
+
+                After clicking the confirmation link, you may see
+                an error page. Don't worry — this is expected.
+
+                Simply return to B&B AI and log in with your email
+                and password.
+
             </div>
 
+
+            <button
+                class="back-login-btn"
+                id="backLoginBtn"
+                type="button"
+            >
+                Back to Login
+            </button>
 
         </section>
 
     </main>
 
 
-
-    <!-- =====================================================
-         SUPABASE LIBRARY
-    ===================================================== -->
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <footer>
+        B&B AI
+    </footer>
 
 
     <!-- =====================================================
-         B&B AI CONFIG
-    ===================================================== -->
-
-    <script src="api.js"></script>
-
-
-
-    <!-- =====================================================
-         AUTH SCRIPT
+         JAVASCRIPT
     ===================================================== -->
 
     <script>
 
         /* =====================================================
-           CHECK CONFIGURATION
-        ===================================================== */
-
-        if (
-            typeof BBAI_CONFIG === "undefined" ||
-            !BBAI_CONFIG.supabase
-        ) {
-
-            document.body.innerHTML = `
-                <div style="
-                    font-family: Arial, sans-serif;
-                    padding: 40px;
-                    text-align: center;
-                ">
-                    B&B AI configuration could not be loaded.
-                </div>
-            `;
-
-            throw new Error(
-                "BBAI_CONFIG is not available."
-            );
-
-        }
-
-
-
-        /* =====================================================
-           CREATE SUPABASE CLIENT
+           SUPABASE
         ===================================================== */
 
         const supabaseClient =
             window.supabase.createClient(
-
                 BBAI_CONFIG.supabase.url,
-
                 BBAI_CONFIG.supabase.publishableKey
-
             );
-
 
 
         /* =====================================================
            ELEMENTS
         ===================================================== */
+
+        const authContainer =
+            document.getElementById("authContainer");
+
+        const verificationScreen =
+            document.getElementById("verificationScreen");
+
+        const verificationEmail =
+            document.getElementById("verificationEmail");
 
         const loginTab =
             document.getElementById("loginTab");
@@ -870,37 +1020,81 @@
         const signupForm =
             document.getElementById("signupForm");
 
-        const loginButton =
-            document.getElementById("loginButton");
+        const loginBtn =
+            document.getElementById("loginBtn");
 
-        const signupButton =
-            document.getElementById("signupButton");
+        const signupBtn =
+            document.getElementById("signupBtn");
 
         const message =
             document.getElementById("message");
 
-        const loading =
-            document.getElementById("loading");
+        const themeBtn =
+            document.getElementById("themeBtn");
 
-        const themeButton =
-            document.getElementById("themeButton");
+        const topLoginBtn =
+            document.getElementById("topLoginBtn");
 
+        const backLoginBtn =
+            document.getElementById("backLoginBtn");
 
 
         /* =====================================================
-           MESSAGE HELPERS
+           THEME
         ===================================================== */
 
-        function showMessage(
-            text,
-            type = "error"
-        ) {
+        function applyTheme(theme) {
+
+            if (theme === "dark") {
+
+                document.body.classList.add("dark");
+
+                themeBtn.textContent = "☀";
+
+            } else {
+
+                document.body.classList.remove("dark");
+
+                themeBtn.textContent = "☾";
+            }
+        }
+
+
+        const savedTheme =
+            localStorage.getItem("bbai-theme") || "light";
+
+        applyTheme(savedTheme);
+
+
+        themeBtn.addEventListener("click", () => {
+
+            const dark =
+                document.body.classList.toggle("dark");
+
+            const theme =
+                dark ? "dark" : "light";
+
+            localStorage.setItem(
+                "bbai-theme",
+                theme
+            );
+
+            themeBtn.textContent =
+                dark ? "☀" : "☾";
+
+        });
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        function showMessage(text, type = "error") {
 
             message.textContent = text;
 
             message.className =
-                `message ${type}`;
-
+                `message show ${type}`;
         }
 
 
@@ -908,91 +1102,93 @@
 
             message.textContent = "";
 
-            message.className =
-                "message";
-
+            message.className = "message";
         }
-
-
-
-        /* =====================================================
-           LOADING
-        ===================================================== */
-
-        function setLoading(
-            state
-        ) {
-
-            loading.classList.toggle(
-                "show",
-                state
-            );
-
-            loginButton.disabled =
-                state;
-
-            signupButton.disabled =
-                state;
-
-        }
-
 
 
         /* =====================================================
            TABS
         ===================================================== */
 
+        function showLogin() {
+
+            loginTab.classList.add("active");
+            signupTab.classList.remove("active");
+
+            loginForm.classList.add("active");
+            signupForm.classList.remove("active");
+
+            clearMessage();
+
+            authContainer.style.display = "block";
+            verificationScreen.style.display = "none";
+        }
+
+
+        function showSignup() {
+
+            signupTab.classList.add("active");
+            loginTab.classList.remove("active");
+
+            signupForm.classList.add("active");
+            loginForm.classList.remove("active");
+
+            clearMessage();
+        }
+
+
         loginTab.addEventListener(
             "click",
-            () => {
-
-                loginTab.classList.add(
-                    "active"
-                );
-
-                signupTab.classList.remove(
-                    "active"
-                );
-
-                loginForm.classList.add(
-                    "active"
-                );
-
-                signupForm.classList.remove(
-                    "active"
-                );
-
-                clearMessage();
-
-            }
+            showLogin
         );
-
 
         signupTab.addEventListener(
             "click",
+            showSignup
+        );
+
+
+        topLoginBtn.addEventListener(
+            "click",
+            showLogin
+        );
+
+
+        backLoginBtn.addEventListener(
+            "click",
             () => {
 
-                signupTab.classList.add(
-                    "active"
-                );
+                verificationScreen.style.display = "none";
 
-                loginTab.classList.remove(
-                    "active"
-                );
+                authContainer.style.display = "block";
 
-                signupForm.classList.add(
-                    "active"
-                );
+                showLogin();
 
-                loginForm.classList.remove(
-                    "active"
-                );
-
-                clearMessage();
+                document
+                    .getElementById("loginEmail")
+                    .focus();
 
             }
         );
 
+
+        /* =====================================================
+           SHOW EMAIL VERIFICATION
+        ===================================================== */
+
+        function showVerification(email) {
+
+            verificationEmail.textContent = email;
+
+            authContainer.style.display = "none";
+
+            verificationScreen.style.display = "block";
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
 
 
         /* =====================================================
@@ -1009,32 +1205,19 @@
 
                 const email =
                     document
-                        .getElementById(
-                            "loginEmail"
-                        )
+                        .getElementById("loginEmail")
                         .value
                         .trim();
 
                 const password =
                     document
-                        .getElementById(
-                            "loginPassword"
-                        )
+                        .getElementById("loginPassword")
                         .value;
 
 
-                if (!email || !password) {
+                loginBtn.disabled = true;
 
-                    showMessage(
-                        "Please enter your email and password."
-                    );
-
-                    return;
-
-                }
-
-
-                setLoading(true);
+                loginBtn.textContent = "Logging in...";
 
 
                 try {
@@ -1043,70 +1226,77 @@
                         data,
                         error
                     } =
-                        await supabaseClient.auth
-                            .signInWithPassword({
-
-                                email: email,
-
-                                password: password
-
-                            });
+                        await supabaseClient.auth.signInWithPassword({
+                            email,
+                            password
+                        });
 
 
                     if (error) {
-
                         throw error;
-
                     }
 
 
-                    if (!data.session) {
+                    /*
+                       Supabase normally blocks login when
+                       email confirmation is required.
+                    */
 
-                        throw new Error(
-                            "Login succeeded but no session was created."
+                    if (
+                        data.user &&
+                        !data.user.email_confirmed_at
+                    ) {
+
+                        await supabaseClient.auth.signOut();
+
+                        showMessage(
+                            "Please confirm your email address before logging in.",
+                            "error"
                         );
 
+                        return;
+                    }
+
+
+                    window.location.href =
+                        "text.html";
+
+                }
+
+                catch (error) {
+
+                    let errorText =
+                        error.message ||
+                        "Login failed. Please try again.";
+
+
+                    if (
+                        errorText
+                            .toLowerCase()
+                            .includes("email not confirmed")
+                    ) {
+
+                        errorText =
+                            "Please check your email and confirm your account before logging in.";
                     }
 
 
                     showMessage(
-                        "Login successful. Opening B&B AI...",
-                        "success"
+                        errorText,
+                        "error"
                     );
 
+                }
 
-                    setTimeout(
-                        () => {
+                finally {
 
-                            window.location.replace(
-                                "text.html"
-                            );
+                    loginBtn.disabled = false;
 
-                        },
-                        500
-                    );
-
-
-                } catch (error) {
-
-                    console.error(
-                        "B&B AI Login Error:",
-                        error
-                    );
-
-
-                    showMessage(
-                        error.message ||
-                        "Login failed."
-                    );
-
-                    setLoading(false);
-
+                    loginBtn.textContent = "Login";
                 }
 
             }
         );
-
 
 
         /* =====================================================
@@ -1121,56 +1311,49 @@
 
                 clearMessage();
 
-
                 const email =
                     document
-                        .getElementById(
-                            "signupEmail"
-                        )
+                        .getElementById("signupEmail")
                         .value
                         .trim();
 
                 const password =
                     document
-                        .getElementById(
-                            "signupPassword"
-                        )
+                        .getElementById("signupPassword")
                         .value;
 
                 const confirmPassword =
                     document
-                        .getElementById(
-                            "signupConfirmPassword"
-                        )
+                        .getElementById("signupConfirm")
                         .value;
-
-
-                if (
-                    password !==
-                    confirmPassword
-                ) {
-
-                    showMessage(
-                        "Passwords do not match."
-                    );
-
-                    return;
-
-                }
 
 
                 if (password.length < 6) {
 
                     showMessage(
-                        "Password must be at least 6 characters."
+                        "Password must be at least 6 characters long.",
+                        "error"
                     );
 
                     return;
-
                 }
 
 
-                setLoading(true);
+                if (password !== confirmPassword) {
+
+                    showMessage(
+                        "Passwords do not match.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                signupBtn.disabled = true;
+
+                signupBtn.textContent =
+                    "Creating Account...";
 
 
                 try {
@@ -1179,99 +1362,72 @@
                         data,
                         error
                     } =
-                        await supabaseClient.auth
-                            .signUp({
-
-                                email: email,
-
-                                password: password
-
-                            });
+                        await supabaseClient.auth.signUp({
+                            email,
+                            password
+                        });
 
 
                     if (error) {
-
                         throw error;
-
                     }
 
 
                     /*
-                     * If email confirmation is enabled,
-                     * Supabase may create the user but
-                     * not create an active session yet.
-                     */
+                       IMPORTANT:
 
-                    if (
-                        data.user &&
-                        !data.session
-                    ) {
+                       Do NOT redirect to text.html here.
 
-                        showMessage(
-                            "Account created. Please check your email to confirm your account.",
-                            "success"
-                        );
+                       When email confirmation is enabled,
+                       Supabase returns a user without a session.
 
-                        setLoading(false);
+                       The user must first confirm the email.
+                    */
+
+                    if (data.user) {
+
+                        /*
+                           If Supabase somehow returned a session,
+                           immediately sign out because this flow
+                           requires email confirmation first.
+                        */
+
+                        if (data.session) {
+
+                            await supabaseClient.auth.signOut();
+                        }
+
+
+                        showVerification(email);
 
                         return;
-
                     }
 
 
-                    if (data.session) {
+                    showVerification(email);
 
-                        showMessage(
-                            "Account created. Opening B&B AI...",
-                            "success"
-                        );
+                }
 
-
-                        setTimeout(
-                            () => {
-
-                                window.location.replace(
-                                    "text.html"
-                                );
-
-                            },
-                            500
-                        );
-
-                        return;
-
-                    }
-
-
-                    showMessage(
-                        "Account created successfully.",
-                        "success"
-                    );
-
-
-                    setLoading(false);
-
-
-                } catch (error) {
-
-                    console.error(
-                        "B&B AI Sign Up Error:",
-                        error
-                    );
-
+                catch (error) {
 
                     showMessage(
                         error.message ||
-                        "Sign up failed."
+                        "Could not create your account. Please try again.",
+                        "error"
                     );
 
-                    setLoading(false);
+                }
 
+                finally {
+
+                    signupBtn.disabled = false;
+
+                    signupBtn.textContent =
+                        "Create Account";
                 }
 
             }
         );
-
 
 
         /* =====================================================
@@ -1283,37 +1439,45 @@
             try {
 
                 const {
-                    data,
-                    error
+                    data
                 } =
-                    await supabaseClient.auth
-                        .getSession();
+                    await supabaseClient.auth.getSession();
 
 
-                if (error) {
+                const session = data.session;
 
-                    console.error(
-                        "Session check error:",
-                        error
-                    );
 
+                if (!session) {
                     return;
-
                 }
 
+
+                const user =
+                    session.user;
+
+
+                /*
+                   Do not allow an unconfirmed account
+                   to enter the main application.
+                */
 
                 if (
-                    data &&
-                    data.session
+                    user &&
+                    !user.email_confirmed_at
                 ) {
 
-                    window.location.replace(
-                        "text.html"
-                    );
+                    await supabaseClient.auth.signOut();
 
+                    return;
                 }
 
-            } catch (error) {
+
+                window.location.href =
+                    "text.html";
+
+            }
+
+            catch (error) {
 
                 console.error(
                     "Session check failed:",
@@ -1321,12 +1485,7 @@
                 );
 
             }
-
         }
-
-
-        checkExistingSession();
-
 
 
         /* =====================================================
@@ -1334,85 +1493,44 @@
         ===================================================== */
 
         supabaseClient.auth.onAuthStateChange(
-            (
-                event,
-                session
-            ) => {
+            (event, session) => {
+
+                /*
+                   Do not automatically redirect immediately
+                   after SIGNED_UP.
+
+                   The user must confirm their email first.
+                */
 
                 if (
-                    (
-                        event ===
-                        "SIGNED_IN"
-                    ) &&
-                    session
+                    event === "SIGNED_IN" &&
+                    session &&
+                    session.user
                 ) {
 
-                    window.location.replace(
-                        "text.html"
-                    );
+                    if (
+                        !session.user.email_confirmed_at
+                    ) {
 
+                        supabaseClient.auth.signOut();
+
+                        return;
+                    }
+
+
+                    window.location.href =
+                        "text.html";
                 }
 
             }
         );
 
 
-
         /* =====================================================
-           THEME
+           START
         ===================================================== */
 
-        const savedTheme =
-            localStorage.getItem(
-                "bbai_theme"
-            );
-
-
-        if (
-            savedTheme ===
-            "dark"
-        ) {
-
-            document.body.classList.add(
-                "dark"
-            );
-
-            themeButton.textContent =
-                "☀";
-
-        }
-
-
-        themeButton.addEventListener(
-            "click",
-            () => {
-
-                document.body.classList.toggle(
-                    "dark"
-                );
-
-
-                const isDark =
-                    document.body.classList.contains(
-                        "dark"
-                    );
-
-
-                localStorage.setItem(
-                    "bbai_theme",
-                    isDark
-                        ? "dark"
-                        : "light"
-                );
-
-
-                themeButton.textContent =
-                    isDark
-                        ? "☀"
-                        : "☾";
-
-            }
-        );
+        checkExistingSession();
 
     </script>
 
