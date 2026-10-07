@@ -23,7 +23,6 @@
     <!-- B&B AI API CONFIG -->
     <script src="api.js"></script>
 
-
     <style>
 
         /* =====================================================
@@ -33,25 +32,16 @@
         :root {
 
             --bg: #ffffff;
-
             --sidebar: #f7f7f8;
-
             --surface: #ffffff;
-
             --surface-2: #f3f3f3;
-
             --text: #111111;
-
             --muted: #777777;
-
             --border: #e5e5e5;
-
             --user-bg: #f1f1f1;
-
             --assistant-bg: transparent;
 
             --accent: #7c5cff;
-
             --accent-hover: #6948ed;
 
             --danger: #e5484d;
@@ -64,25 +54,16 @@
         html.dark {
 
             --bg: #0b0b0f;
-
             --sidebar: #101014;
-
             --surface: #0b0b0f;
-
             --surface-2: #18181d;
-
             --text: #f5f5f5;
-
             --muted: #929292;
-
             --border: #29292f;
-
             --user-bg: #1b1b21;
-
             --assistant-bg: transparent;
 
             --accent: #9277ff;
-
             --accent-hover: #a58dff;
 
             --shadow:
@@ -103,11 +84,9 @@
         body {
 
             margin: 0;
-
             padding: 0;
 
             width: 100%;
-
             height: 100%;
 
             font-family:
@@ -119,7 +98,6 @@
                 sans-serif;
 
             background: var(--bg);
-
             color: var(--text);
 
             overflow: hidden;
@@ -142,7 +120,6 @@
             display: flex;
 
             width: 100%;
-
             height: 100vh;
 
             background: var(--bg);
@@ -163,7 +140,6 @@
                 1px solid var(--border);
 
             display: flex;
-
             flex-direction: column;
 
             padding: 16px;
@@ -176,7 +152,6 @@
         .brand {
 
             display: flex;
-
             align-items: center;
 
             gap: 10px;
@@ -189,21 +164,20 @@
         .brand-logo {
 
             width: 34px;
-
             height: 34px;
 
             border-radius: 10px;
 
             object-fit: cover;
 
-            background: var(--surface-2);
+            background:
+                var(--surface-2);
         }
 
 
         .brand-name {
 
             font-size: 16px;
-
             font-weight: 700;
         }
 
@@ -212,7 +186,8 @@
 
             font-size: 11px;
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             margin-top: 2px;
         }
@@ -229,9 +204,11 @@
             border:
                 1px solid var(--border);
 
-            background: var(--surface);
+            background:
+                var(--surface);
 
-            color: var(--text);
+            color:
+                var(--text);
 
             border-radius: 10px;
 
@@ -268,7 +245,8 @@
 
             font-size: 11px;
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             padding:
                 0 7px 8px;
@@ -284,7 +262,6 @@
         .nav-item {
 
             display: flex;
-
             align-items: center;
 
             gap: 10px;
@@ -296,7 +273,8 @@
 
             border-radius: 9px;
 
-            color: var(--text);
+            color:
+                var(--text);
 
             text-decoration: none;
 
@@ -323,7 +301,6 @@
             margin-top: auto;
 
             display: flex;
-
             flex-direction: column;
 
             gap: 8px;
@@ -340,7 +317,8 @@
             background:
                 transparent;
 
-            color: var(--text);
+            color:
+                var(--text);
 
             padding: 10px;
 
@@ -370,7 +348,6 @@
             min-width: 0;
 
             display: flex;
-
             flex-direction: column;
 
             height: 100vh;
@@ -388,7 +365,6 @@
             flex-shrink: 0;
 
             display: flex;
-
             align-items: center;
 
             justify-content:
@@ -408,7 +384,6 @@
         .header-left {
 
             display: flex;
-
             align-items: center;
 
             gap: 12px;
@@ -418,7 +393,6 @@
         .header-title {
 
             font-size: 15px;
-
             font-weight: 650;
         }
 
@@ -426,21 +400,20 @@
         .status {
 
             display: flex;
-
             align-items: center;
 
             gap: 6px;
 
             font-size: 11px;
 
-            color: var(--muted);
+            color:
+                var(--muted);
         }
 
 
         .status-dot {
 
             width: 7px;
-
             height: 7px;
 
             border-radius: 50%;
@@ -484,7 +457,7 @@
 
 
         /* =====================================================
-           CHAT AREA
+           CHAT
         ===================================================== */
 
         .chat {
@@ -521,11 +494,9 @@
             min-height: 55vh;
 
             display: flex;
-
             flex-direction: column;
 
             align-items: center;
-
             justify-content: center;
 
             text-align: center;
@@ -535,7 +506,6 @@
         .welcome-logo {
 
             width: 58px;
-
             height: 58px;
 
             border-radius: 17px;
@@ -562,7 +532,8 @@
             margin:
                 10px 0 0;
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             font-size: 14px;
         }
@@ -634,7 +605,8 @@
 
             font-size: 10px;
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             margin-bottom: 5px;
         }
@@ -647,7 +619,6 @@
         .thinking {
 
             display: flex;
-
             align-items: center;
 
             gap: 5px;
@@ -660,7 +631,6 @@
         .thinking span {
 
             width: 6px;
-
             height: 6px;
 
             background:
@@ -710,7 +680,7 @@
 
 
         /* =====================================================
-           INPUT AREA
+           INPUT
         ===================================================== */
 
         .composer {
@@ -720,7 +690,6 @@
             bottom: 0;
 
             left: 260px;
-
             right: 0;
 
             padding:
@@ -812,7 +781,6 @@
         .send-button {
 
             width: 38px;
-
             height: 38px;
 
             border: none;
@@ -831,7 +799,6 @@
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
             transition:
@@ -875,26 +842,19 @@
         @media (max-width: 800px) {
 
             .sidebar {
-
                 display: none;
             }
 
-
             .composer {
-
                 left: 0;
             }
 
-
             .header {
-
                 padding:
                     0 15px;
             }
 
-
             .chat-inner {
-
                 padding-left:
                     15px;
 
@@ -902,16 +862,12 @@
                     15px;
             }
 
-
             .message-content {
-
                 max-width:
                     90%;
             }
 
-
             .welcome h1 {
-
                 font-size:
                     25px;
             }
@@ -938,13 +894,11 @@
 
         <div class="brand">
 
-
             <img
                 src="logo.jpg"
                 class="brand-logo"
                 alt="B&B AI"
             >
-
 
             <div>
 
@@ -952,13 +906,11 @@
                     B&B AI
                 </div>
 
-
                 <div class="brand-subtitle">
                     B&B Studio
                 </div>
 
             </div>
-
 
         </div>
 
@@ -973,11 +925,9 @@
 
         <div class="nav">
 
-
             <div class="nav-title">
                 Modes
             </div>
-
 
             <a
                 class="nav-item active"
@@ -992,12 +942,10 @@
 
             </a>
 
-
         </div>
 
 
         <div class="sidebar-bottom">
-
 
             <button
                 class="sidebar-button"
@@ -1005,7 +953,6 @@
             >
                 🌙 Dark mode
             </button>
-
 
         </div>
 
@@ -1015,48 +962,35 @@
 
     <!-- =====================================================
          MAIN
-    ====================================================== -->
+    ===================================================== -->
 
     <main class="main">
 
 
-        <!-- =================================================
-             HEADER
-        ================================================== -->
-
         <header class="header">
-
 
             <div class="header-left">
 
-
                 <div>
-
 
                     <div class="header-title">
                         B&B AI
                     </div>
 
-
                     <div class="status">
-
 
                         <span
                             class="status-dot"
                             id="statusDot"
                         ></span>
 
-
                         <span id="statusText">
                             Checking API...
                         </span>
 
-
                     </div>
 
-
                 </div>
-
 
             </div>
 
@@ -1066,29 +1000,23 @@
                 id="modelSelect"
             >
 
-
                 <option value="B&B AI">
                     B&B AI
                 </option>
-
 
                 <option value="B&B AI Lite">
                     B&B AI Lite
                 </option>
 
-
                 <option value="B&B AI Pro">
                     B&B AI Pro
                 </option>
-
 
                 <option value="B&B AI Deep">
                     B&B AI Deep
                 </option>
 
-
             </select>
-
 
         </header>
 
@@ -1102,18 +1030,15 @@
             id="chat"
         >
 
-
             <div
                 class="chat-inner"
                 id="chatInner"
             >
 
-
                 <div
                     class="welcome"
                     id="welcome"
                 >
-
 
                     <img
                         src="logo.jpg"
@@ -1121,22 +1046,17 @@
                         alt="B&B AI"
                     >
 
-
                     <h1>
                         What can I help with?
                     </h1>
-
 
                     <p>
                         B&B AI · Created by B&B Studio
                     </p>
 
-
                 </div>
 
-
             </div>
-
 
         </section>
 
@@ -1147,19 +1067,15 @@
 
         <div class="composer">
 
-
             <div class="composer-inner">
 
-
                 <div class="input-box">
-
 
                     <textarea
                         id="messageInput"
                         rows="1"
                         placeholder="Message B&B AI..."
                     ></textarea>
-
 
                     <button
                         class="send-button"
@@ -1169,9 +1085,7 @@
                         ↑
                     </button>
 
-
                 </div>
-
 
                 <div class="composer-note">
 
@@ -1180,9 +1094,7 @@
 
                 </div>
 
-
             </div>
-
 
         </div>
 
@@ -1195,7 +1107,6 @@
 
 <script>
 
-
     /* =====================================================
        B&B AI - TEXT CLIENT
        SUPABASE CHAT MEMORY
@@ -1207,7 +1118,7 @@
     ===================================================== */
 
     const API_BASE =
-        BBAI_CONFIG.ai.baseUrl;
+        BBAI_CONFIG.ai.baseUrl.replace(/\/+$/, "");
 
 
     const CHAT_ENDPOINT =
@@ -1246,57 +1157,39 @@
     ===================================================== */
 
     const chat =
-        document.getElementById(
-            "chat"
-        );
+        document.getElementById("chat");
 
 
     const chatInner =
-        document.getElementById(
-            "chatInner"
-        );
+        document.getElementById("chatInner");
 
 
     const input =
-        document.getElementById(
-            "messageInput"
-        );
+        document.getElementById("messageInput");
 
 
     const sendButton =
-        document.getElementById(
-            "sendButton"
-        );
+        document.getElementById("sendButton");
 
 
     const modelSelect =
-        document.getElementById(
-            "modelSelect"
-        );
+        document.getElementById("modelSelect");
 
 
     const newChatButton =
-        document.getElementById(
-            "newChatButton"
-        );
+        document.getElementById("newChatButton");
 
 
     const themeButton =
-        document.getElementById(
-            "themeButton"
-        );
+        document.getElementById("themeButton");
 
 
     const statusDot =
-        document.getElementById(
-            "statusDot"
-        );
+        document.getElementById("statusDot");
 
 
     const statusText =
-        document.getElementById(
-            "statusText"
-        );
+        document.getElementById("statusText");
 
 
     /* =====================================================
@@ -1306,9 +1199,7 @@
     function loadTheme() {
 
         const saved =
-            localStorage.getItem(
-                "bbai_theme"
-            );
+            localStorage.getItem("bbai_theme");
 
 
         if (saved === "dark") {
@@ -1317,17 +1208,14 @@
                 .classList
                 .add("dark");
 
-
             themeButton.textContent =
                 "☀️ Light mode";
-
 
         } else {
 
             document.documentElement
                 .classList
                 .remove("dark");
-
 
             themeButton.textContent =
                 "🌙 Dark mode";
@@ -1351,16 +1239,13 @@
                 .classList
                 .remove("dark");
 
-
             localStorage.setItem(
                 "bbai_theme",
                 "light"
             );
 
-
             themeButton.textContent =
                 "🌙 Dark mode";
-
 
         } else {
 
@@ -1368,12 +1253,10 @@
                 .classList
                 .add("dark");
 
-
             localStorage.setItem(
                 "bbai_theme",
                 "dark"
             );
-
 
             themeButton.textContent =
                 "☀️ Light mode";
@@ -1404,28 +1287,21 @@
                 await supabaseClient.auth.getSession();
 
 
-            const data =
-                result.data;
-
-
-            const error =
-                result.error;
-
-
-            if (error) {
+            if (result.error) {
 
                 console.error(
                     "Supabase session error:",
-                    error
+                    result.error
                 );
 
+                currentSession = null;
 
                 return null;
             }
 
 
             currentSession =
-                data.session;
+                result.data.session;
 
 
             return currentSession;
@@ -1438,6 +1314,7 @@
                 error
             );
 
+            currentSession = null;
 
             return null;
         }
@@ -1471,6 +1348,7 @@
 
 
         return headers;
+
     }
 
 
@@ -1488,7 +1366,8 @@
                     `${API_BASE}/api/status`,
 
                     {
-                        method: "GET"
+                        method: "GET",
+                        cache: "no-store"
                     }
 
                 );
@@ -1497,7 +1376,7 @@
             if (!response.ok) {
 
                 throw new Error(
-                    "API offline"
+                    `API HTTP ${response.status}`
                 );
 
             }
@@ -1507,26 +1386,25 @@
                 await response.json();
 
 
-            if (
-                data.success &&
-                data.ollama
-            ) {
+            const healthy =
+                data.success === true &&
+                data.ollama === true;
+
+
+            if (healthy) {
 
                 statusDot.classList.remove(
                     "offline"
                 );
 
-
                 statusText.textContent =
                     "Online";
-
 
             } else {
 
                 statusDot.classList.add(
                     "offline"
                 );
-
 
                 statusText.textContent =
                     "AI offline";
@@ -1536,10 +1414,14 @@
 
         } catch (error) {
 
+            console.error(
+                "API status error:",
+                error
+            );
+
             statusDot.classList.add(
                 "offline"
             );
-
 
             statusText.textContent =
                 "API offline";
@@ -1550,7 +1432,7 @@
 
 
     /* =====================================================
-       ADD MESSAGE TO UI
+       ADD MESSAGE
     ===================================================== */
 
     function addMessage(
@@ -1560,9 +1442,7 @@
     ) {
 
         const welcome =
-            document.getElementById(
-                "welcome"
-            );
+            document.getElementById("welcome");
 
 
         if (welcome) {
@@ -1574,9 +1454,7 @@
 
 
         const message =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         message.className =
@@ -1584,15 +1462,11 @@
 
 
         const wrapper =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         const meta =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         meta.className =
@@ -1600,11 +1474,8 @@
 
 
         meta.textContent =
-
             role === "user"
-
                 ? "You"
-
                 : (
                     modelName ||
                     modelSelect.value
@@ -1612,9 +1483,7 @@
 
 
         const text =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         text.className =
@@ -1625,24 +1494,13 @@
             content;
 
 
-        wrapper.appendChild(
-            meta
-        );
+        wrapper.appendChild(meta);
 
+        wrapper.appendChild(text);
 
-        wrapper.appendChild(
-            text
-        );
+        message.appendChild(wrapper);
 
-
-        message.appendChild(
-            wrapper
-        );
-
-
-        chatInner.appendChild(
-            message
-        );
+        chatInner.appendChild(message);
 
 
         scrollToBottom();
@@ -1660,9 +1518,7 @@
     function addThinking() {
 
         const welcome =
-            document.getElementById(
-                "welcome"
-            );
+            document.getElementById("welcome");
 
 
         if (welcome) {
@@ -1674,9 +1530,7 @@
 
 
         const message =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         message.className =
@@ -1684,9 +1538,7 @@
 
 
         const thinking =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         thinking.className =
@@ -1694,24 +1546,15 @@
 
 
         thinking.innerHTML = `
-
             <span></span>
-
             <span></span>
-
             <span></span>
-
         `;
 
 
-        message.appendChild(
-            thinking
-        );
+        message.appendChild(thinking);
 
-
-        chatInner.appendChild(
-            message
-        );
+        chatInner.appendChild(message);
 
 
         scrollToBottom();
@@ -1728,16 +1571,12 @@
 
     function scrollToBottom() {
 
-        requestAnimationFrame(
+        requestAnimationFrame(() => {
 
-            () => {
+            chat.scrollTop =
+                chat.scrollHeight;
 
-                chat.scrollTop =
-                    chat.scrollHeight;
-
-            }
-
-        );
+        });
 
     }
 
@@ -1796,10 +1635,8 @@
         ) {
 
             throw new Error(
-
                 data.error ||
                 "Could not create conversation."
-
             );
 
         }
@@ -1819,13 +1656,9 @@
     ===================================================== */
 
     async function saveMessage(
-
         role,
-
         content,
-
         model = null
-
     ) {
 
         if (!currentSession) {
@@ -1889,10 +1722,8 @@
         ) {
 
             throw new Error(
-
                 data.error ||
                 "Could not save message."
-
             );
 
         }
@@ -1926,7 +1757,10 @@
                     method: "GET",
 
                     headers:
-                        getAuthHeaders()
+                        getAuthHeaders(),
+
+                    cache:
+                        "no-store"
 
                 }
 
@@ -1943,10 +1777,8 @@
         ) {
 
             throw new Error(
-
                 data.error ||
                 "Could not load conversations."
-
             );
 
         }
@@ -1988,7 +1820,10 @@
                     method: "GET",
 
                     headers:
-                        getAuthHeaders()
+                        getAuthHeaders(),
+
+                    cache:
+                        "no-store"
 
                 }
 
@@ -2005,10 +1840,8 @@
         ) {
 
             throw new Error(
-
                 data.error ||
                 "Could not load messages."
-
             );
 
         }
@@ -2026,12 +1859,9 @@
        DISPLAY MESSAGES
     ===================================================== */
 
-    function displayMessages(
-        messages
-    ) {
+    function displayMessages(messages) {
 
-        chatInner.innerHTML =
-            "";
+        chatInner.innerHTML = "";
 
 
         if (!messages.length) {
@@ -2041,29 +1871,23 @@
             history = [];
 
             return;
+
         }
 
 
         history =
-            messages.map(
+            messages.map(message => ({
 
-                message => ({
+                role:
+                    message.role,
 
-                    role:
-                        message.role,
+                content:
+                    message.content
 
-                    content:
-                        message.content
-
-                })
-
-            );
+            }));
 
 
-        for (
-            const message
-            of messages
-        ) {
+        for (const message of messages) {
 
             addMessage(
 
@@ -2126,6 +1950,7 @@
         if (!currentSession) {
 
             return;
+
         }
 
 
@@ -2138,6 +1963,7 @@
             if (!conversations.length) {
 
                 return;
+
             }
 
 
@@ -2149,9 +1975,20 @@
                 latest.id;
 
 
-            modelSelect.value =
-                latest.model ||
-                "B&B AI";
+            if (
+                latest.model &&
+                [
+                    "B&B AI",
+                    "B&B AI Lite",
+                    "B&B AI Pro",
+                    "B&B AI Deep"
+                ].includes(latest.model)
+            ) {
+
+                modelSelect.value =
+                    latest.model;
+
+            }
 
 
             const messages =
@@ -2160,19 +1997,14 @@
                 );
 
 
-            displayMessages(
-                messages
-            );
+            displayMessages(messages);
 
 
         } catch (error) {
 
             console.error(
-
                 "Load conversation error:",
-
                 error
-
             );
 
         }
@@ -2189,6 +2021,7 @@
         if (isSending) {
 
             return;
+
         }
 
 
@@ -2199,6 +2032,7 @@
         if (!message) {
 
             return;
+
         }
 
 
@@ -2249,38 +2083,67 @@
 
 
             /* =============================================
-               SHOW USER MESSAGE
-            ============================================= */
+               SAVE CURRENT USER MESSAGE
+               ============================================= */
 
             addMessage(
-
                 "user",
-
                 message
-
             );
 
 
-            input.value =
-                "";
-
+            input.value = "";
 
             resizeTextarea();
 
 
+            /*
+             * IMPORTANT:
+             * Save the message first,
+             * but do not stop the AI request
+             * if Supabase saving fails.
+             */
+
+            try {
+
+                await saveMessage(
+                    "user",
+                    message,
+                    selectedModel
+                );
+
+            } catch (saveError) {
+
+                console.error(
+                    "User message save error:",
+                    saveError
+                );
+
+            }
+
+
             /* =============================================
-               SAVE USER MESSAGE
+               AI HISTORY
             ============================================= */
 
-            await saveMessage(
+            const aiHistory =
+                [...history];
 
-                "user",
 
-                message,
+            /*
+             * The current user message is not yet inside
+             * history at this exact point, so include it.
+             */
 
-                selectedModel
+            aiHistory.push({
 
-            );
+                role:
+                    "user",
+
+                content:
+                    message
+
+            });
 
 
             /* =============================================
@@ -2289,14 +2152,6 @@
 
             thinking =
                 addThinking();
-
-
-            /* =============================================
-               UPDATE HISTORY FOR AI
-            ============================================= */
-
-            const aiHistory =
-                [...history];
 
 
             /* =============================================
@@ -2339,8 +2194,21 @@
                 );
 
 
-            const data =
-                await response.json();
+            let data = null;
+
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch {
+
+                throw new Error(
+                    `Invalid API response (${response.status})`
+                );
+
+            }
 
 
             if (
@@ -2349,10 +2217,8 @@
             ) {
 
                 throw new Error(
-
                     data.error ||
-                    "AI request failed."
-
+                    `AI request failed (${response.status})`
                 );
 
             }
@@ -2396,19 +2262,30 @@
                SAVE AI RESPONSE
             ============================================= */
 
-            await saveMessage(
+            try {
 
-                "assistant",
+                await saveMessage(
 
-                reply,
+                    "assistant",
 
-                selectedModel
+                    reply,
 
-            );
+                    selectedModel
+
+                );
+
+            } catch (saveError) {
+
+                console.error(
+                    "Assistant message save error:",
+                    saveError
+                );
+
+            }
 
 
             /* =============================================
-               UPDATE HISTORY
+               UPDATE LOCAL HISTORY
             ============================================= */
 
             history.push({
@@ -2436,11 +2313,8 @@
         } catch (error) {
 
             console.error(
-
                 "Send message error:",
-
                 error
-
             );
 
 
@@ -2459,7 +2333,6 @@
                 error.message
 
             );
-
 
         } finally {
 
@@ -2488,6 +2361,7 @@
             if (isSending) {
 
                 return;
+
             }
 
 
@@ -2526,11 +2400,8 @@
         function() {
 
             console.log(
-
                 "B&B AI model:",
-
                 modelSelect.value
-
             );
 
         }
@@ -2543,11 +2414,8 @@
     ===================================================== */
 
     sendButton.addEventListener(
-
         "click",
-
         sendMessage
-
     );
 
 
@@ -2591,24 +2459,17 @@
 
 
         input.style.height =
-
             Math.min(
-
                 input.scrollHeight,
-
                 180
-
             ) + "px";
 
     }
 
 
     input.addEventListener(
-
         "input",
-
         resizeTextarea
-
     );
 
 
@@ -2619,11 +2480,8 @@
     supabaseClient.auth.onAuthStateChange(
 
         async function(
-
             event,
-
             session
-
         ) {
 
             currentSession =
@@ -2646,13 +2504,10 @@
                 currentSession =
                     null;
 
-
                 currentConversationId =
                     null;
 
-
                 history = [];
-
 
                 showWelcome();
 
@@ -2671,9 +2526,9 @@
 
         loadTheme();
 
+        resizeTextarea();
 
         await loadSession();
-
 
         await checkAPI();
 
