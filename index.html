@@ -6,30 +6,28 @@
 
     <title>B&B AI</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="api.js"></script>
 
     <style>
-        /* =====================================================
-           B&B AI - THEME
-        ===================================================== */
-
         :root {
             --bg: #ffffff;
-            --surface: #f7f7f8;
+            --sidebar: #f7f7f8;
+            --surface: #ffffff;
             --surface-2: #eeeeef;
             --text: #111111;
             --muted: #707070;
             --border: #dddddd;
             --button: #111111;
             --button-text: #ffffff;
-            --danger: #d33;
-            --success: #16803c;
             --accent: #8b5cf6;
+            --success: #16803c;
+            --danger: #d33;
+            --user-message: #f0f0f0;
         }
 
         body.dark {
             --bg: #09090b;
+            --sidebar: #111114;
             --surface: #151518;
             --surface-2: #202024;
             --text: #ffffff;
@@ -37,9 +35,10 @@
             --border: #2d2d32;
             --button: #ffffff;
             --button-text: #111111;
-            --danger: #ff6b6b;
-            --success: #4ade80;
             --accent: #a78bfa;
+            --success: #4ade80;
+            --danger: #ff6b6b;
+            --user-message: #242428;
         }
 
         * {
@@ -59,7 +58,8 @@
             background: var(--bg);
             color: var(--text);
 
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
 
             transition:
                 background 0.25s ease,
@@ -67,7 +67,8 @@
         }
 
         button,
-        input {
+        textarea,
+        select {
             font: inherit;
         }
 
@@ -76,32 +77,51 @@
         }
 
         /* =====================================================
-           HEADER
+           APP
         ===================================================== */
 
-        header {
+        .app {
+            display: flex;
             width: 100%;
-            height: 72px;
+            height: 100vh;
+        }
 
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+
+            display: flex;
+            flex-direction: column;
+
+            padding: 16px;
+
+            transition:
+                width 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .sidebar-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            padding: 0 32px;
-
-            border-bottom: 1px solid var(--border);
-
-            background: var(--bg);
+            margin-bottom: 22px;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
 
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            letter-spacing: -0.4px;
         }
 
         .brand img {
@@ -113,567 +133,544 @@
             border-radius: 8px;
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .new-chat-btn {
+            width: 100%;
+            height: 42px;
 
-        .theme-btn,
-        .login-top-btn {
             border: 1px solid var(--border);
+            border-radius: 9px;
+
             background: var(--surface);
             color: var(--text);
 
-            height: 40px;
-            padding: 0 16px;
+            font-weight: 600;
 
-            border-radius: 9px;
+            margin-bottom: 18px;
 
             transition:
                 background 0.2s ease,
                 transform 0.2s ease;
         }
 
-        .theme-btn {
-            width: 40px;
-            padding: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 17px;
-        }
-
-        .theme-btn:hover,
-        .login-top-btn:hover {
+        .new-chat-btn:hover {
             background: var(--surface-2);
         }
 
-        .login-top-btn {
-            background: var(--button);
-            color: var(--button-text);
-
-            border-color: var(--button);
-
-            font-weight: 600;
-        }
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
-
-        main {
-            min-height: calc(100vh - 72px);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 40px 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 430px;
-        }
-
-        /* =====================================================
-           AUTH CARD
-        ===================================================== */
-
-        .auth-card {
-            width: 100%;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-
-            border-radius: 18px;
-
-            padding: 30px;
-
-            box-shadow:
-                0 10px 35px rgba(0, 0, 0, 0.05);
-
-            animation: cardIn 0.45s ease;
-        }
-
-        body.dark .auth-card {
-            box-shadow:
-                0 10px 35px rgba(0, 0, 0, 0.25);
-        }
-
-        @keyframes cardIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .auth-title {
-            text-align: center;
-            margin-bottom: 8px;
-
-            font-size: 27px;
+        .nav-title {
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: -0.7px;
-        }
-
-        .auth-subtitle {
-            text-align: center;
 
             color: var(--muted);
 
-            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
 
-            margin-bottom: 25px;
+            margin-bottom: 8px;
         }
 
-        /* =====================================================
-           TABS
-        ===================================================== */
+        .nav-item {
+            width: 100%;
+            height: 42px;
 
-        .tabs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            align-items: center;
 
-            background: var(--surface-2);
+            gap: 11px;
 
-            padding: 4px;
+            padding: 0 12px;
 
-            border-radius: 10px;
-
-            margin-bottom: 24px;
-        }
-
-        .tab {
             border: none;
+            border-radius: 9px;
 
             background: transparent;
             color: var(--muted);
 
-            padding: 10px;
+            text-align: left;
 
-            border-radius: 7px;
-
-            font-weight: 600;
+            margin-bottom: 4px;
 
             transition:
                 background 0.2s ease,
                 color 0.2s ease;
         }
 
-        .tab.active {
-            background: var(--bg);
+        .nav-item:hover {
+            background: var(--surface-2);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: var(--surface-2);
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .status-box {
+            padding: 11px 12px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            background: var(--surface);
+
+            margin-bottom: 10px;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: var(--danger);
+
+            flex-shrink: 0;
+        }
+
+        .status-dot.online {
+            background: var(--success);
+        }
+
+        .status-text {
+            color: var(--muted);
+        }
+
+        .theme-btn {
+            width: 100%;
+            height: 42px;
+
+            border: 1px solid var(--border);
+            border-radius: 9px;
+
+            background: var(--surface);
             color: var(--text);
 
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+        }
+
+        .theme-btn:hover {
+            background: var(--surface-2);
         }
 
         /* =====================================================
-           FORM
+           MAIN
         ===================================================== */
 
-        .form {
-            display: none;
-        }
+        .main {
+            flex: 1;
 
-        .form.active {
-            display: block;
+            min-width: 0;
 
-            animation: formIn 0.25s ease;
-        }
-
-        @keyframes formIn {
-            from {
-                opacity: 0;
-                transform: translateY(5px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .field {
-            margin-bottom: 17px;
-        }
-
-        .field label {
-            display: block;
-
-            font-size: 13px;
-            font-weight: 600;
-
-            margin-bottom: 7px;
-        }
-
-        .field input {
-            width: 100%;
-
-            height: 46px;
-
-            border: 1px solid var(--border);
-
-            border-radius: 9px;
+            display: flex;
+            flex-direction: column;
 
             background: var(--bg);
+        }
 
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .topbar {
+            height: 64px;
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 24px;
+
+            border-bottom: 1px solid var(--border);
+
+            background: var(--bg);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-menu {
+            display: none;
+
+            width: 38px;
+            height: 38px;
+
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            background: var(--surface);
             color: var(--text);
+        }
 
-            padding: 0 13px;
+        .page-title {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .model-select {
+            height: 38px;
+
+            padding: 0 12px;
+
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            background: var(--surface);
+            color: var(--text);
 
             outline: none;
 
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
+            cursor: pointer;
         }
 
-        .field input:focus {
-            border-color: var(--accent);
+        /* =====================================================
+           CHAT
+        ===================================================== */
 
-            box-shadow:
-                0 0 0 3px rgba(139, 92, 246, 0.12);
+        .chat {
+            flex: 1;
+
+            overflow-y: auto;
+
+            padding: 30px 20px 150px;
         }
 
-        .submit-btn {
+        .chat-inner {
+            width: 100%;
+            max-width: 850px;
+
+            margin: 0 auto;
+        }
+
+        .welcome {
+            min-height: 55vh;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+        .welcome-logo {
+            width: 70px;
+            height: 70px;
+
+            object-fit: contain;
+
+            border-radius: 16px;
+
+            margin-bottom: 20px;
+        }
+
+        .welcome h1 {
+            font-size: 30px;
+
+            margin-bottom: 10px;
+
+            letter-spacing: -0.7px;
+        }
+
+        .welcome p {
+            color: var(--muted);
+
+            font-size: 15px;
+
+            max-width: 500px;
+
+            line-height: 1.6;
+        }
+
+        .message-row {
+            display: flex;
+
             width: 100%;
 
-            height: 46px;
+            margin-bottom: 24px;
+        }
+
+        .message-row.user {
+            justify-content: flex-end;
+        }
+
+        .message {
+            max-width: 78%;
+
+            padding: 12px 15px;
+
+            border-radius: 13px;
+
+            font-size: 15px;
+
+            line-height: 1.65;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+        }
+
+        .message.user {
+            background: var(--user-message);
+            color: var(--text);
+
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant {
+            background: transparent;
+
+            color: var(--text);
+
+            padding-left: 0;
+            padding-right: 0;
+
+            max-width: 90%;
+        }
+
+        .assistant-label {
+            font-size: 12px;
+            font-weight: 700;
+
+            color: var(--accent);
+
+            margin-bottom: 5px;
+        }
+
+        .typing {
+            color: var(--muted);
+
+            font-size: 14px;
+
+            animation: typingPulse 1.2s infinite;
+        }
+
+        @keyframes typingPulse {
+            0%,
+            100% {
+                opacity: 0.45;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* =====================================================
+           INPUT
+        ===================================================== */
+
+        .input-area {
+            position: fixed;
+
+            left: 250px;
+            right: 0;
+            bottom: 0;
+
+            padding: 18px 20px 22px;
+
+            background:
+                linear-gradient(
+                    to top,
+                    var(--bg) 70%,
+                    transparent
+                );
+        }
+
+        .input-inner {
+            width: 100%;
+            max-width: 850px;
+
+            margin: 0 auto;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: flex-end;
+
+            gap: 10px;
+
+            padding: 10px;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        body.dark .input-box {
+            box-shadow:
+                0 5px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        textarea {
+            flex: 1;
+
+            resize: none;
+
+            min-height: 24px;
+            max-height: 150px;
 
             border: none;
+            outline: none;
 
+            background: transparent;
+
+            color: var(--text);
+
+            padding: 5px 6px;
+
+            line-height: 1.5;
+        }
+
+        textarea::placeholder {
+            color: var(--muted);
+        }
+
+        .send-btn {
+            width: 40px;
+            height: 40px;
+
+            flex-shrink: 0;
+
+            border: none;
             border-radius: 9px;
 
             background: var(--button);
             color: var(--button-text);
 
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            margin-top: 4px;
+            font-size: 17px;
+            font-weight: 700;
 
             transition:
                 opacity 0.2s ease,
                 transform 0.2s ease;
         }
 
-        .submit-btn:hover {
-            opacity: 0.88;
+        .send-btn:hover {
+            opacity: 0.85;
         }
 
-        .submit-btn:active {
-            transform: scale(0.99);
+        .send-btn:active {
+            transform: scale(0.96);
         }
 
-        .submit-btn:disabled {
-            opacity: 0.5;
+        .send-btn:disabled {
+            opacity: 0.4;
             cursor: not-allowed;
         }
 
+        .input-note {
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 8px;
+        }
+
         /* =====================================================
-           MESSAGE
+           ERROR
         ===================================================== */
 
-        .message {
-            display: none;
+        .error-box {
+            margin: 10px 0;
 
-            margin-top: 16px;
+            padding: 12px 14px;
 
-            padding: 11px 13px;
+            border: 1px solid rgba(211, 51, 51, 0.3);
 
             border-radius: 9px;
+
+            background: rgba(211, 51, 51, 0.08);
+
+            color: var(--danger);
 
             font-size: 13px;
 
             line-height: 1.5;
         }
 
-        .message.show {
-            display: block;
-        }
-
-        .message.error {
-            background: rgba(211, 51, 51, 0.1);
-            color: var(--danger);
-        }
-
-        .message.success {
-            background: rgba(22, 128, 60, 0.1);
-            color: var(--success);
-        }
-
-        /* =====================================================
-           EMAIL VERIFICATION SCREEN
-        ===================================================== */
-
-        #verificationScreen {
-            display: none;
-
-            width: 100%;
-            max-width: 560px;
-
-            text-align: center;
-
-            animation: verificationIn 0.55s ease;
-        }
-
-        @keyframes verificationIn {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .email-animation {
-            width: 130px;
-            height: 130px;
-
-            margin: 0 auto 28px;
-
-            position: relative;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .email-circle {
-            position: absolute;
-
-            width: 120px;
-            height: 120px;
-
-            border-radius: 50%;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%,
-            100% {
-                transform: scale(0.96);
-                opacity: 0.7;
-            }
-
-            50% {
-                transform: scale(1.04);
-                opacity: 1;
-            }
-        }
-
-        .email-icon {
-            position: relative;
-            z-index: 2;
-
-            font-size: 56px;
-
-            animation: floatEmail 2.2s infinite ease-in-out;
-        }
-
-        @keyframes floatEmail {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-7px);
-            }
-        }
-
-        .check-badge {
-            position: absolute;
-
-            right: 3px;
-            bottom: 5px;
-
-            z-index: 3;
-
-            width: 35px;
-            height: 35px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: var(--button);
-            color: var(--button-text);
-
-            border: 4px solid var(--bg);
-
-            font-size: 16px;
-
-            animation: badgeIn 0.8s ease 0.3s both;
-        }
-
-        @keyframes badgeIn {
-            from {
-                opacity: 0;
-                transform: scale(0);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .verification-title {
-            font-size: 32px;
-            font-weight: 750;
-
-            letter-spacing: -1px;
-
-            margin-bottom: 12px;
-        }
-
-        .verification-description {
-            max-width: 500px;
-
-            margin: 0 auto;
-
-            color: var(--muted);
-
-            font-size: 15px;
-
-            line-height: 1.7;
-        }
-
-        .verification-email {
-            margin: 18px auto;
-
-            display: inline-block;
-
-            padding: 9px 14px;
-
-            border-radius: 8px;
-
-            background: var(--surface);
-
-            border: 1px solid var(--border);
-
-            font-weight: 600;
-
-            word-break: break-all;
-        }
-
-        .important-box {
-            max-width: 500px;
-
-            margin: 22px auto;
-
-            padding: 16px 18px;
-
-            text-align: left;
-
-            border: 1px solid var(--border);
-
-            background: var(--surface);
-
-            border-radius: 11px;
-
-            font-size: 13px;
-
-            line-height: 1.65;
-
-            color: var(--muted);
-        }
-
-        .important-box strong {
-            display: block;
-
-            color: var(--text);
-
-            margin-bottom: 5px;
-        }
-
-        .back-login-btn {
-            margin-top: 5px;
-
-            height: 45px;
-
-            padding: 0 22px;
-
-            border-radius: 9px;
-
-            border: none;
-
-            background: var(--button);
-
-            color: var(--button-text);
-
-            font-weight: 600;
-
-            transition: opacity 0.2s ease;
-        }
-
-        .back-login-btn:hover {
-            opacity: 0.88;
-        }
-
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        footer {
-            position: fixed;
-
-            bottom: 14px;
-            left: 0;
-            right: 0;
-
-            text-align: center;
-
-            color: var(--muted);
-
-            font-size: 11px;
-
-            pointer-events: none;
-        }
-
         /* =====================================================
            MOBILE
         ===================================================== */
 
-        @media (max-width: 600px) {
-            header {
-                padding: 0 16px;
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: fixed;
+
+                z-index: 100;
+
+                top: 0;
+                left: 0;
+                bottom: 0;
+
+                transform: translateX(-100%);
+
+                box-shadow:
+                    10px 0 30px rgba(0, 0, 0, 0.15);
             }
 
-            .auth-card {
-                padding: 23px;
+            .sidebar.open {
+                transform: translateX(0);
             }
 
-            .verification-title {
-                font-size: 27px;
+            .mobile-menu {
+                display: block;
             }
 
-            .verification-description {
-                font-size: 14px;
+            .input-area {
+                left: 0;
             }
 
-            footer {
-                display: none;
+            .topbar {
+                padding: 0 14px;
+            }
+
+            .chat {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .model-select {
+                max-width: 150px;
             }
         }
     </style>
@@ -681,392 +678,402 @@
 
 <body>
 
+<div class="app">
+
     <!-- =====================================================
-         HEADER
+         SIDEBAR
     ===================================================== -->
 
-    <header>
+    <aside class="sidebar" id="sidebar">
 
-        <div class="brand">
-            <img src="logo.jpg" alt="B&B AI">
-            <span>B&B AI</span>
+        <div>
+
+            <div class="sidebar-top">
+
+                <div class="brand">
+
+                    <img
+                        src="logo.jpg"
+                        alt="B&B AI"
+                    >
+
+                    <span>B&B AI</span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="new-chat-btn"
+                id="newChatBtn"
+                type="button"
+            >
+                + New Chat
+            </button>
+
+
+            <div class="nav-title">
+                Modes
+            </div>
+
+
+            <button
+                class="nav-item active"
+                type="button"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span>
+                    Chat / Text
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                type="button"
+                disabled
+            >
+
+                <span class="nav-icon">
+                    🖼️
+                </span>
+
+                <span>
+                    Image
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                type="button"
+                disabled
+            >
+
+                <span class="nav-icon">
+                    🎬
+                </span>
+
+                <span>
+                    Video
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                type="button"
+                disabled
+            >
+
+                <span class="nav-icon">
+                    🎵
+                </span>
+
+                <span>
+                    Music
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                type="button"
+                disabled
+            >
+
+                <span class="nav-icon">
+                    🧊
+                </span>
+
+                <span>
+                    3D
+                </span>
+
+            </button>
+
         </div>
 
-        <div class="header-actions">
+
+        <div class="sidebar-bottom">
+
+            <div
+                class="status-box"
+                id="statusBox"
+            >
+
+                <div class="status-row">
+
+                    <span
+                        class="status-dot"
+                        id="statusDot"
+                    ></span>
+
+                    <span
+                        class="status-text"
+                        id="statusText"
+                    >
+                        Checking API...
+                    </span>
+
+                </div>
+
+            </div>
+
 
             <button
                 class="theme-btn"
                 id="themeBtn"
                 type="button"
-                aria-label="Toggle theme"
             >
-                ☾
-            </button>
-
-            <button
-                class="login-top-btn"
-                id="topLoginBtn"
-                type="button"
-            >
-                Login
+                ☾ Dark Mode
             </button>
 
         </div>
 
-    </header>
+    </aside>
 
 
     <!-- =====================================================
          MAIN
     ===================================================== -->
 
-    <main>
+    <section class="main">
 
-        <!-- =========================
-             AUTH
-        ========================== -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="mobile-menu"
+                    id="mobileMenu"
+                    type="button"
+                >
+                    ☰
+                </button>
+
+                <span class="page-title">
+                    B&B AI
+                </span>
+
+            </div>
+
+
+            <select
+                class="model-select"
+                id="modelSelect"
+            >
+
+                <option value="B&B AI">
+                    B&B AI
+                </option>
+
+                <option value="B&B AI Lite">
+                    B&B AI Lite
+                </option>
+
+                <option value="B&B AI Pro">
+                    B&B AI Pro
+                </option>
+
+                <option value="B&B AI Deep">
+                    B&B AI Deep
+                </option>
+
+            </select>
+
+        </header>
+
+
+        <!-- =================================================
+             CHAT
+        ================================================= -->
 
         <div
-            class="container"
-            id="authContainer"
+            class="chat"
+            id="chat"
         >
 
-            <div class="auth-card">
-
-                <h1 class="auth-title">
-                    Welcome to B&B AI
-                </h1>
-
-                <p class="auth-subtitle">
-                    Sign in or create your account
-                </p>
-
-
-                <!-- TABS -->
-
-                <div class="tabs">
-
-                    <button
-                        class="tab active"
-                        id="loginTab"
-                        type="button"
-                    >
-                        Login
-                    </button>
-
-                    <button
-                        class="tab"
-                        id="signupTab"
-                        type="button"
-                    >
-                        Sign Up
-                    </button>
-
-                </div>
-
-
-                <!-- =========================
-                     LOGIN FORM
-                ========================== -->
-
-                <form
-                    class="form active"
-                    id="loginForm"
-                >
-
-                    <div class="field">
-
-                        <label for="loginEmail">
-                            Email
-                        </label>
-
-                        <input
-                            id="loginEmail"
-                            type="email"
-                            placeholder="Enter your email"
-                            autocomplete="email"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="loginPassword">
-                            Password
-                        </label>
-
-                        <input
-                            id="loginPassword"
-                            type="password"
-                            placeholder="Enter your password"
-                            autocomplete="current-password"
-                            required
-                        >
-
-                    </div>
-
-
-                    <button
-                        class="submit-btn"
-                        id="loginBtn"
-                        type="submit"
-                    >
-                        Login
-                    </button>
-
-                </form>
-
-
-                <!-- =========================
-                     SIGN UP FORM
-                ========================== -->
-
-                <form
-                    class="form"
-                    id="signupForm"
-                >
-
-                    <div class="field">
-
-                        <label for="signupEmail">
-                            Email
-                        </label>
-
-                        <input
-                            id="signupEmail"
-                            type="email"
-                            placeholder="Enter your email"
-                            autocomplete="email"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="signupPassword">
-                            Password
-                        </label>
-
-                        <input
-                            id="signupPassword"
-                            type="password"
-                            placeholder="Create a password"
-                            autocomplete="new-password"
-                            minlength="6"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="signupConfirm">
-                            Confirm Password
-                        </label>
-
-                        <input
-                            id="signupConfirm"
-                            type="password"
-                            placeholder="Confirm your password"
-                            autocomplete="new-password"
-                            minlength="6"
-                            required
-                        >
-
-                    </div>
-
-
-                    <button
-                        class="submit-btn"
-                        id="signupBtn"
-                        type="submit"
-                    >
-                        Create Account
-                    </button>
-
-                </form>
-
+            <div
+                class="chat-inner"
+                id="chatInner"
+            >
 
                 <div
-                    class="message"
-                    id="message"
-                ></div>
+                    class="welcome"
+                    id="welcome"
+                >
+
+                    <img
+                        class="welcome-logo"
+                        src="logo.jpg"
+                        alt="B&B AI"
+                    >
+
+                    <h1>
+                        B&B AI
+                    </h1>
+
+                    <p>
+                        Your AI assistant, created by B&B Studio.
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
+    </section>
 
-        <!-- =========================
-             EMAIL VERIFICATION
-        ========================== -->
-
-        <section
-            id="verificationScreen"
-            aria-live="polite"
-        >
-
-            <div class="email-animation">
-
-                <div class="email-circle"></div>
-
-                <div class="email-icon">
-                    ✉
-                </div>
-
-                <div class="check-badge">
-                    ✓
-                </div>
-
-            </div>
+</div>
 
 
-            <h1 class="verification-title">
-                Check Your Email
-            </h1>
+<!-- =====================================================
+     INPUT
+===================================================== -->
 
+<div class="input-area">
 
-            <p class="verification-description">
-                We've sent a confirmation link to your email address.
-                Please open your email and click the confirmation link
-                to verify your account.
-            </p>
+    <div class="input-inner">
 
+        <div class="input-box">
 
-            <div
-                class="verification-email"
-                id="verificationEmail"
-            >
-            </div>
-
-
-            <div class="important-box">
-
-                <strong>
-                    Important
-                </strong>
-
-                After clicking the confirmation link, you may see
-                an error page. Don't worry — this is expected.
-
-                Simply return to B&B AI and log in with your email
-                and password.
-
-            </div>
+            <textarea
+                id="messageInput"
+                rows="1"
+                placeholder="Message B&B AI..."
+            ></textarea>
 
 
             <button
-                class="back-login-btn"
-                id="backLoginBtn"
+                class="send-btn"
+                id="sendBtn"
                 type="button"
+                aria-label="Send"
             >
-                Back to Login
+                ↑
             </button>
 
-        </section>
-
-    </main>
+        </div>
 
 
-    <footer>
-        B&B AI
-    </footer>
+        <div class="input-note">
+            B&B AI • Created by B&B Studio
+        </div>
+
+    </div>
+
+</div>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ===================================================== -->
+<script>
 
-    <script>
+    /* =====================================================
+       CONFIG
+    ===================================================== */
 
-        /* =====================================================
-           SUPABASE
-        ===================================================== */
+    const API_BASE =
+        String(
+            BBAI_CONFIG.ai.baseUrl
+        ).replace(/\/+$/, "");
 
-        const supabaseClient =
-            window.supabase.createClient(
-                BBAI_CONFIG.supabase.url,
-                BBAI_CONFIG.supabase.publishableKey
-            );
+    const CHAT_ENDPOINT =
+        BBAI_CONFIG.ai.endpoints.chat;
 
 
-        /* =====================================================
-           ELEMENTS
-        ===================================================== */
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
-        const authContainer =
-            document.getElementById("authContainer");
+    const sidebar =
+        document.getElementById("sidebar");
 
-        const verificationScreen =
-            document.getElementById("verificationScreen");
+    const mobileMenu =
+        document.getElementById("mobileMenu");
 
-        const verificationEmail =
-            document.getElementById("verificationEmail");
+    const themeBtn =
+        document.getElementById("themeBtn");
 
-        const loginTab =
-            document.getElementById("loginTab");
+    const newChatBtn =
+        document.getElementById("newChatBtn");
 
-        const signupTab =
-            document.getElementById("signupTab");
+    const modelSelect =
+        document.getElementById("modelSelect");
 
-        const loginForm =
-            document.getElementById("loginForm");
+    const chat =
+        document.getElementById("chat");
 
-        const signupForm =
-            document.getElementById("signupForm");
+    const chatInner =
+        document.getElementById("chatInner");
 
-        const loginBtn =
-            document.getElementById("loginBtn");
+    const welcome =
+        document.getElementById("welcome");
 
-        const signupBtn =
-            document.getElementById("signupBtn");
+    const messageInput =
+        document.getElementById("messageInput");
 
-        const message =
-            document.getElementById("message");
+    const sendBtn =
+        document.getElementById("sendBtn");
 
-        const themeBtn =
-            document.getElementById("themeBtn");
+    const statusDot =
+        document.getElementById("statusDot");
 
-        const topLoginBtn =
-            document.getElementById("topLoginBtn");
-
-        const backLoginBtn =
-            document.getElementById("backLoginBtn");
+    const statusText =
+        document.getElementById("statusText");
 
 
-        /* =====================================================
-           THEME
-        ===================================================== */
+    /* =====================================================
+       CHAT HISTORY
+    ===================================================== */
 
-        function applyTheme(theme) {
+    let history = [];
 
-            if (theme === "dark") {
+    let sending = false;
 
-                document.body.classList.add("dark");
 
-                themeBtn.textContent = "☀";
+    /* =====================================================
+       THEME
+    ===================================================== */
 
-            } else {
+    function applyTheme(theme) {
 
-                document.body.classList.remove("dark");
+        if (theme === "dark") {
 
-                themeBtn.textContent = "☾";
-            }
+            document.body.classList.add("dark");
+
+            themeBtn.textContent =
+                "☀ Light Mode";
+
+        } else {
+
+            document.body.classList.remove("dark");
+
+            themeBtn.textContent =
+                "☾ Dark Mode";
         }
+    }
 
 
-        const savedTheme =
-            localStorage.getItem("bbai-theme") || "light";
+    const savedTheme =
+        localStorage.getItem("bbai-theme") ||
+        "light";
 
-        applyTheme(savedTheme);
+    applyTheme(savedTheme);
 
 
-        themeBtn.addEventListener("click", () => {
+    themeBtn.addEventListener(
+        "click",
+        () => {
 
             const dark =
                 document.body.classList.toggle("dark");
@@ -1080,459 +1087,605 @@
             );
 
             themeBtn.textContent =
-                dark ? "☀" : "☾";
+                dark
+                    ? "☀ Light Mode"
+                    : "☾ Dark Mode";
+
+        }
+    );
+
+
+    /* =====================================================
+       MOBILE SIDEBAR
+    ===================================================== */
+
+    mobileMenu.addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle("open");
+
+        }
+    );
+
+
+    /* =====================================================
+       NEW CHAT
+    ===================================================== */
+
+    newChatBtn.addEventListener(
+        "click",
+        () => {
+
+            history = [];
+
+            chatInner.innerHTML = "";
+
+            const newWelcome =
+                document.createElement("div");
+
+            newWelcome.className =
+                "welcome";
+
+            newWelcome.innerHTML = `
+                <img
+                    class="welcome-logo"
+                    src="logo.jpg"
+                    alt="B&B AI"
+                >
+
+                <h1>
+                    B&B AI
+                </h1>
+
+                <p>
+                    Your AI assistant, created by B&B Studio.
+                </p>
+            `;
+
+            chatInner.appendChild(
+                newWelcome
+            );
+
+            messageInput.focus();
+
+            sidebar.classList.remove("open");
+
+        }
+    );
+
+
+    /* =====================================================
+       ADD USER MESSAGE
+    ===================================================== */
+
+    function addUserMessage(text) {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-row user";
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            "message user";
+
+        message.textContent =
+            text;
+
+        row.appendChild(message);
+
+        chatInner.appendChild(row);
+
+        scrollToBottom();
+    }
+
+
+    /* =====================================================
+       ADD ASSISTANT MESSAGE
+    ===================================================== */
+
+    function addAssistantMessage(
+        name,
+        text
+    ) {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-row";
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "message assistant";
+
+        const label =
+            document.createElement("div");
+
+        label.className =
+            "assistant-label";
+
+        label.textContent =
+            name || "B&B AI";
+
+        const content =
+            document.createElement("div");
+
+        content.textContent =
+            text;
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(content);
+
+        row.appendChild(wrapper);
+
+        chatInner.appendChild(row);
+
+        scrollToBottom();
+
+        return content;
+    }
+
+
+    /* =====================================================
+       TYPING MESSAGE
+    ===================================================== */
+
+    function addTypingMessage() {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-row";
+
+        row.id =
+            "typingRow";
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "message assistant";
+
+        const label =
+            document.createElement("div");
+
+        label.className =
+            "assistant-label";
+
+        label.textContent =
+            modelSelect.value;
+
+        const typing =
+            document.createElement("div");
+
+        typing.className =
+            "typing";
+
+        typing.textContent =
+            "Thinking...";
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(typing);
+
+        row.appendChild(wrapper);
+
+        chatInner.appendChild(row);
+
+        scrollToBottom();
+    }
+
+
+    /* =====================================================
+       REMOVE TYPING
+    ===================================================== */
+
+    function removeTypingMessage() {
+
+        const typingRow =
+            document.getElementById(
+                "typingRow"
+            );
+
+        if (typingRow) {
+            typingRow.remove();
+        }
+    }
+
+
+    /* =====================================================
+       ERROR MESSAGE
+    ===================================================== */
+
+    function addErrorMessage(text) {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-row";
+
+        const box =
+            document.createElement("div");
+
+        box.className =
+            "error-box";
+
+        box.textContent =
+            text;
+
+        row.appendChild(box);
+
+        chatInner.appendChild(row);
+
+        scrollToBottom();
+    }
+
+
+    /* =====================================================
+       SCROLL
+    ===================================================== */
+
+    function scrollToBottom() {
+
+        requestAnimationFrame(() => {
+
+            chat.scrollTop =
+                chat.scrollHeight;
 
         });
+    }
 
 
-        /* =====================================================
-           MESSAGE
-        ===================================================== */
+    /* =====================================================
+       API STATUS
+    ===================================================== */
 
-        function showMessage(text, type = "error") {
+    async function checkAPI() {
 
-            message.textContent = text;
+        statusText.textContent =
+            "Checking API...";
 
-            message.className =
-                `message show ${type}`;
-        }
-
-
-        function clearMessage() {
-
-            message.textContent = "";
-
-            message.className = "message";
-        }
-
-
-        /* =====================================================
-           TABS
-        ===================================================== */
-
-        function showLogin() {
-
-            loginTab.classList.add("active");
-            signupTab.classList.remove("active");
-
-            loginForm.classList.add("active");
-            signupForm.classList.remove("active");
-
-            clearMessage();
-
-            authContainer.style.display = "block";
-            verificationScreen.style.display = "none";
-        }
-
-
-        function showSignup() {
-
-            signupTab.classList.add("active");
-            loginTab.classList.remove("active");
-
-            signupForm.classList.add("active");
-            loginForm.classList.remove("active");
-
-            clearMessage();
-        }
-
-
-        loginTab.addEventListener(
-            "click",
-            showLogin
+        statusDot.classList.remove(
+            "online"
         );
 
-        signupTab.addEventListener(
-            "click",
-            showSignup
-        );
+        try {
 
-
-        topLoginBtn.addEventListener(
-            "click",
-            showLogin
-        );
-
-
-        backLoginBtn.addEventListener(
-            "click",
-            () => {
-
-                verificationScreen.style.display = "none";
-
-                authContainer.style.display = "block";
-
-                showLogin();
-
-                document
-                    .getElementById("loginEmail")
-                    .focus();
-
-            }
-        );
-
-
-        /* =====================================================
-           SHOW EMAIL VERIFICATION
-        ===================================================== */
-
-        function showVerification(email) {
-
-            verificationEmail.textContent = email;
-
-            authContainer.style.display = "none";
-
-            verificationScreen.style.display = "block";
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-
-        /* =====================================================
-           LOGIN
-        ===================================================== */
-
-        loginForm.addEventListener(
-            "submit",
-            async (event) => {
-
-                event.preventDefault();
-
-                clearMessage();
-
-                const email =
-                    document
-                        .getElementById("loginEmail")
-                        .value
-                        .trim();
-
-                const password =
-                    document
-                        .getElementById("loginPassword")
-                        .value;
-
-
-                loginBtn.disabled = true;
-
-                loginBtn.textContent = "Logging in...";
-
-
-                try {
-
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient.auth.signInWithPassword({
-                            email,
-                            password
-                        });
-
-
-                    if (error) {
-                        throw error;
+            const response =
+                await fetch(
+                    `${API_BASE}/api/status`,
+                    {
+                        method: "GET",
+                        cache: "no-store"
                     }
+                );
 
 
-                    /*
-                       Supabase normally blocks login when
-                       email confirmation is required.
-                    */
+            if (!response.ok) {
 
-                    if (
-                        data.user &&
-                        !data.user.email_confirmed_at
-                    ) {
-
-                        await supabaseClient.auth.signOut();
-
-                        showMessage(
-                            "Please confirm your email address before logging in.",
-                            "error"
-                        );
-
-                        return;
-                    }
-
-
-                    window.location.href =
-                        "text.html";
-
-                }
-
-                catch (error) {
-
-                    let errorText =
-                        error.message ||
-                        "Login failed. Please try again.";
-
-
-                    if (
-                        errorText
-                            .toLowerCase()
-                            .includes("email not confirmed")
-                    ) {
-
-                        errorText =
-                            "Please check your email and confirm your account before logging in.";
-                    }
-
-
-                    showMessage(
-                        errorText,
-                        "error"
-                    );
-
-                }
-
-                finally {
-
-                    loginBtn.disabled = false;
-
-                    loginBtn.textContent = "Login";
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           SIGN UP
-        ===================================================== */
-
-        signupForm.addEventListener(
-            "submit",
-            async (event) => {
-
-                event.preventDefault();
-
-                clearMessage();
-
-                const email =
-                    document
-                        .getElementById("signupEmail")
-                        .value
-                        .trim();
-
-                const password =
-                    document
-                        .getElementById("signupPassword")
-                        .value;
-
-                const confirmPassword =
-                    document
-                        .getElementById("signupConfirm")
-                        .value;
-
-
-                if (password.length < 6) {
-
-                    showMessage(
-                        "Password must be at least 6 characters long.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                if (password !== confirmPassword) {
-
-                    showMessage(
-                        "Passwords do not match.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                signupBtn.disabled = true;
-
-                signupBtn.textContent =
-                    "Creating Account...";
-
-
-                try {
-
-                    const {
-                        data,
-                        error
-                    } =
-                        await supabaseClient.auth.signUp({
-                            email,
-                            password
-                        });
-
-
-                    if (error) {
-                        throw error;
-                    }
-
-
-                    /*
-                       IMPORTANT:
-
-                       Do NOT redirect to text.html here.
-
-                       When email confirmation is enabled,
-                       Supabase returns a user without a session.
-
-                       The user must first confirm the email.
-                    */
-
-                    if (data.user) {
-
-                        /*
-                           If Supabase somehow returned a session,
-                           immediately sign out because this flow
-                           requires email confirmation first.
-                        */
-
-                        if (data.session) {
-
-                            await supabaseClient.auth.signOut();
-                        }
-
-
-                        showVerification(email);
-
-                        return;
-                    }
-
-
-                    showVerification(email);
-
-                }
-
-                catch (error) {
-
-                    showMessage(
-                        error.message ||
-                        "Could not create your account. Please try again.",
-                        "error"
-                    );
-
-                }
-
-                finally {
-
-                    signupBtn.disabled = false;
-
-                    signupBtn.textContent =
-                        "Create Account";
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           CHECK EXISTING SESSION
-        ===================================================== */
-
-        async function checkExistingSession() {
-
-            try {
-
-                const {
-                    data
-                } =
-                    await supabaseClient.auth.getSession();
-
-
-                const session = data.session;
-
-
-                if (!session) {
-                    return;
-                }
-
-
-                const user =
-                    session.user;
-
-
-                /*
-                   Do not allow an unconfirmed account
-                   to enter the main application.
-                */
-
-                if (
-                    user &&
-                    !user.email_confirmed_at
-                ) {
-
-                    await supabaseClient.auth.signOut();
-
-                    return;
-                }
-
-
-                window.location.href =
-                    "text.html";
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Session check failed:",
-                    error
+                throw new Error(
+                    `HTTP ${response.status}`
                 );
 
             }
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "B&B AI API status:",
+                data
+            );
+
+
+            if (
+                data &&
+                data.success === true &&
+                data.ollama === true
+            ) {
+
+                statusDot.classList.add(
+                    "online"
+                );
+
+                statusText.textContent =
+                    "API Online";
+
+            } else {
+
+                throw new Error(
+                    "API returned an invalid status."
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "API status check failed:",
+                error
+            );
+
+            statusDot.classList.remove(
+                "online"
+            );
+
+            statusText.textContent =
+                "API Offline";
+        }
+    }
+
+
+    /* =====================================================
+       SEND MESSAGE
+    ===================================================== */
+
+    async function sendMessage() {
+
+        if (sending) {
+            return;
         }
 
 
-        /* =====================================================
-           AUTH STATE
-        ===================================================== */
-
-        supabaseClient.auth.onAuthStateChange(
-            (event, session) => {
-
-                /*
-                   Do not automatically redirect immediately
-                   after SIGNED_UP.
-
-                   The user must confirm their email first.
-                */
-
-                if (
-                    event === "SIGNED_IN" &&
-                    session &&
-                    session.user
-                ) {
-
-                    if (
-                        !session.user.email_confirmed_at
-                    ) {
-
-                        supabaseClient.auth.signOut();
-
-                        return;
-                    }
+        const message =
+            messageInput.value.trim();
 
 
-                    window.location.href =
-                        "text.html";
-                }
+        if (!message) {
+            return;
+        }
 
-            }
+
+        sending = true;
+
+        sendBtn.disabled = true;
+
+
+        if (welcome) {
+            welcome.remove();
+        }
+
+
+        addUserMessage(
+            message
         );
 
 
-        /* =====================================================
-           START
-        ===================================================== */
+        const selectedModel =
+            modelSelect.value;
 
-        checkExistingSession();
 
-    </script>
+        const previousHistory =
+            [...history];
+
+
+        history.push({
+            role: "user",
+            content: message
+        });
+
+
+        messageInput.value = "";
+
+        resizeTextarea();
+
+
+        addTypingMessage();
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}${CHAT_ENDPOINT}`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            message:
+                                message,
+
+                            model:
+                                selectedModel,
+
+                            history:
+                                previousHistory
+
+                        }),
+
+                        cache: "no-store"
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    `HTTP ${response.status}`
+                );
+
+            }
+
+
+            if (
+                !data ||
+                data.success !== true
+            ) {
+
+                throw new Error(
+                    data?.error ||
+                    "The API returned an invalid response."
+                );
+
+            }
+
+
+            removeTypingMessage();
+
+
+            const reply =
+                String(
+                    data.reply ||
+                    ""
+                ).trim();
+
+
+            if (!reply) {
+
+                throw new Error(
+                    "B&B AI returned an empty response."
+                );
+
+            }
+
+
+            addAssistantMessage(
+                data.name ||
+                selectedModel,
+
+                reply
+            );
+
+
+            history.push({
+                role: "assistant",
+                content: reply
+            });
+
+
+        }
+
+        catch (error) {
+
+            removeTypingMessage();
+
+
+            /*
+               Remove the user message from
+               conversation history if the
+               request failed.
+            */
+
+            history = previousHistory;
+
+
+            console.error(
+                "B&B AI request failed:",
+                error
+            );
+
+
+            addErrorMessage(
+                `Could not connect to B&B AI. ${error.message}`
+            );
+
+        }
+
+        finally {
+
+            sending = false;
+
+            sendBtn.disabled = false;
+
+            messageInput.focus();
+
+        }
+    }
+
+
+    /* =====================================================
+       SEND BUTTON
+    ===================================================== */
+
+    sendBtn.addEventListener(
+        "click",
+        sendMessage
+    );
+
+
+    /* =====================================================
+       ENTER TO SEND
+    ===================================================== */
+
+    messageInput.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       AUTO RESIZE TEXTAREA
+    ===================================================== */
+
+    function resizeTextarea() {
+
+        messageInput.style.height =
+            "auto";
+
+        messageInput.style.height =
+            Math.min(
+                messageInput.scrollHeight,
+                150
+            ) + "px";
+    }
+
+
+    messageInput.addEventListener(
+        "input",
+        resizeTextarea
+    );
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    checkAPI();
+
+    setInterval(
+        checkAPI,
+        30000
+    );
+
+    messageInput.focus();
+
+</script>
 
 </body>
 </html>
