@@ -3,878 +3,999 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta
-        name="theme-color"
-        content="#ffffff"
-    >
+<meta
+    name="theme-color"
+    content="#0b0b12"
+>
 
-    <title>B&B AI</title>
+<title>B&B AI</title>
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- B&B AI API CONFIG -->
-    <script src="api.js"></script>
+<style>
 
-    <style>
+:root {
 
-        /* =====================================================
-           B&B AI - TEXT
-        ===================================================== */
+    --bg:#ffffff;
+    --sidebar:#f7f7f8;
+    --surface:#ffffff;
+    --surface2:#f1f1f4;
 
-        :root {
+    --text:#111111;
+    --muted:#777780;
 
-            --bg: #ffffff;
-            --sidebar: #f7f7f8;
-            --surface: #ffffff;
-            --surface-2: #f3f3f3;
-            --text: #111111;
-            --muted: #777777;
-            --border: #e5e5e5;
-            --user-bg: #f1f1f1;
-            --assistant-bg: transparent;
+    --border:#e5e5eb;
 
-            --accent: #7c5cff;
-            --accent-hover: #6948ed;
+    --accent:#7c5cff;
+    --accent2:#6948ed;
 
-            --danger: #e5484d;
+    --danger:#e5484d;
 
-            --shadow:
-                0 8px 30px rgba(0, 0, 0, 0.06);
-        }
+    --user:#f0eff4;
 
+    --shadow:
+        0 10px 35px rgba(0,0,0,.07);
+}
 
-        html.dark {
+html.dark {
 
-            --bg: #0b0b0f;
-            --sidebar: #101014;
-            --surface: #0b0b0f;
-            --surface-2: #18181d;
-            --text: #f5f5f5;
-            --muted: #929292;
-            --border: #29292f;
-            --user-bg: #1b1b21;
-            --assistant-bg: transparent;
+    --bg:#09090f;
+    --sidebar:#101016;
+    --surface:#0d0d14;
+    --surface2:#181820;
 
-            --accent: #9277ff;
-            --accent-hover: #a58dff;
+    --text:#f5f5f7;
+    --muted:#92929d;
 
-            --shadow:
-                0 8px 30px rgba(0, 0, 0, 0.25);
-        }
+    --border:#292932;
 
+    --accent:#9277ff;
+    --accent2:#a58dff;
 
-        /* =====================================================
-           RESET
-        ===================================================== */
+    --user:#1b1b24;
 
-        * {
-            box-sizing: border-box;
-        }
+    --shadow:
+        0 12px 40px rgba(0,0,0,.28);
+}
 
+* {
+    box-sizing:border-box;
+}
 
-        html,
-        body {
+html,
+body {
 
-            margin: 0;
-            padding: 0;
+    width:100%;
+    height:100%;
 
-            width: 100%;
-            height: 100%;
+    margin:0;
+    padding:0;
 
-            font-family:
-                Inter,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
+    overflow:hidden;
 
-            background: var(--bg);
-            color: var(--text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 
-            overflow: hidden;
-        }
+    background:var(--bg);
+    color:var(--text);
+}
 
+button,
+textarea,
+select,
+input {
+    font:inherit;
+}
 
-        button,
-        textarea,
-        select {
-            font: inherit;
-        }
+button {
+    color:inherit;
+}
 
 
-        /* =====================================================
-           APP
-        ===================================================== */
+/* ============================================================
+   APP
+============================================================ */
 
-        .app {
+.app {
 
-            display: flex;
+    width:100%;
+    height:100vh;
 
-            width: 100%;
-            height: 100vh;
+    display:flex;
 
-            background: var(--bg);
-        }
+    background:var(--bg);
+}
 
 
-        /* =====================================================
-           SIDEBAR
-        ===================================================== */
+/* ============================================================
+   SIDEBAR
+============================================================ */
 
-        .sidebar {
+.sidebar {
 
-            width: 260px;
+    width:280px;
+    flex-shrink:0;
 
-            background: var(--sidebar);
+    display:flex;
+    flex-direction:column;
 
-            border-right:
-                1px solid var(--border);
+    padding:16px;
 
-            display: flex;
-            flex-direction: column;
+    background:var(--sidebar);
 
-            padding: 16px;
+    border-right:
+        1px solid var(--border);
+}
 
-            transition:
-                width 0.2s ease;
-        }
+.brand {
 
+    display:flex;
+    align-items:center;
 
-        .brand {
+    gap:10px;
 
-            display: flex;
-            align-items: center;
+    padding:
+        6px 6px 18px;
+}
 
-            gap: 10px;
+.brand-logo {
 
-            padding:
-                8px 6px 20px;
-        }
+    width:36px;
+    height:36px;
 
+    border-radius:11px;
 
-        .brand-logo {
+    object-fit:cover;
 
-            width: 34px;
-            height: 34px;
+    background:var(--surface2);
+}
 
-            border-radius: 10px;
+.brand-name {
 
-            object-fit: cover;
+    font-size:16px;
+    font-weight:750;
+}
 
-            background:
-                var(--surface-2);
-        }
+.brand-subtitle {
 
+    color:var(--muted);
+    font-size:11px;
 
-        .brand-name {
+    margin-top:2px;
+}
 
-            font-size: 16px;
-            font-weight: 700;
-        }
 
+/* ============================================================
+   NEW CHAT
+============================================================ */
 
-        .brand-subtitle {
+.new-chat {
 
-            font-size: 11px;
+    width:100%;
 
-            color:
-                var(--muted);
+    border:
+        1px solid var(--border);
 
-            margin-top: 2px;
-        }
+    background:var(--surface);
 
+    border-radius:11px;
 
-        /* =====================================================
-           NEW CHAT
-        ===================================================== */
+    padding:11px 13px;
 
-        .new-chat {
+    cursor:pointer;
 
-            width: 100%;
+    text-align:left;
 
-            border:
-                1px solid var(--border);
+    transition:.15s;
+}
 
-            background:
-                var(--surface);
+.new-chat:hover {
 
-            color:
-                var(--text);
+    background:var(--surface2);
+}
 
-            border-radius: 10px;
 
-            padding:
-                11px 13px;
+/* ============================================================
+   CHAT LIST
+============================================================ */
 
-            cursor: pointer;
+.chat-section {
 
-            text-align: left;
+    margin-top:18px;
 
-            transition:
-                0.15s ease;
-        }
+    flex:1;
 
+    min-height:0;
 
-        .new-chat:hover {
+    display:flex;
+    flex-direction:column;
+}
 
-            background:
-                var(--surface-2);
-        }
+.section-title {
 
+    padding:
+        0 7px 8px;
 
-        /* =====================================================
-           NAV
-        ===================================================== */
+    color:var(--muted);
 
-        .nav {
+    font-size:10px;
 
-            margin-top: 20px;
-        }
+    text-transform:uppercase;
 
+    letter-spacing:.08em;
+}
 
-        .nav-title {
+.chat-list {
 
-            font-size: 11px;
+    overflow-y:auto;
 
-            color:
-                var(--muted);
+    min-height:0;
 
-            padding:
-                0 7px 8px;
+    padding-right:2px;
+}
 
-            text-transform:
-                uppercase;
+.chat-row {
 
-            letter-spacing:
-                0.06em;
-        }
+    display:flex;
 
+    align-items:center;
 
-        .nav-item {
+    gap:4px;
 
-            display: flex;
-            align-items: center;
+    margin-bottom:3px;
 
-            gap: 10px;
+    border-radius:9px;
 
-            width: 100%;
+    transition:.15s;
+}
 
-            padding:
-                10px 9px;
+.chat-row.active {
 
-            border-radius: 9px;
+    background:var(--surface2);
+}
 
-            color:
-                var(--text);
+.chat-open {
 
-            text-decoration: none;
+    flex:1;
 
-            font-size: 14px;
+    min-width:0;
 
-            background:
-                transparent;
-        }
+    border:0;
 
+    background:transparent;
 
-        .nav-item.active {
+    color:var(--text);
 
-            background:
-                var(--surface-2);
-        }
+    padding:9px 8px;
 
+    cursor:pointer;
 
-        /* =====================================================
-           SIDEBAR BOTTOM
-        ===================================================== */
+    text-align:left;
 
-        .sidebar-bottom {
+    overflow:hidden;
 
-            margin-top: auto;
+    text-overflow:ellipsis;
 
-            display: flex;
-            flex-direction: column;
+    white-space:nowrap;
 
-            gap: 8px;
-        }
+    font-size:13px;
+}
 
+.chat-actions {
 
-        .sidebar-button {
+    display:flex;
 
-            width: 100%;
+    gap:2px;
 
-            border:
-                1px solid transparent;
+    padding-right:4px;
+}
 
-            background:
-                transparent;
+.chat-action {
 
-            color:
-                var(--text);
+    width:27px;
+    height:27px;
 
-            padding: 10px;
+    border:0;
 
-            border-radius: 9px;
+    background:transparent;
 
-            cursor: pointer;
+    border-radius:7px;
 
-            text-align: left;
-        }
+    cursor:pointer;
 
+    opacity:.55;
+}
 
-        .sidebar-button:hover {
+.chat-action:hover {
 
-            background:
-                var(--surface-2);
-        }
+    opacity:1;
 
+    background:var(--surface);
+}
 
-        /* =====================================================
-           MAIN
-        ===================================================== */
+.chat-empty {
 
-        .main {
+    color:var(--muted);
 
-            flex: 1;
+    font-size:12px;
 
-            min-width: 0;
+    padding:12px 7px;
+}
 
-            display: flex;
-            flex-direction: column;
 
-            height: 100vh;
-        }
+/* ============================================================
+   SIDEBAR BOTTOM
+============================================================ */
 
+.sidebar-bottom {
 
-        /* =====================================================
-           HEADER
-        ===================================================== */
+    display:flex;
+    flex-direction:column;
 
-        .header {
+    gap:5px;
 
-            height: 64px;
+    margin-top:10px;
+}
 
-            flex-shrink: 0;
+.sidebar-button {
 
-            display: flex;
-            align-items: center;
+    width:100%;
 
-            justify-content:
-                space-between;
+    border:0;
 
-            padding:
-                0 24px;
+    background:transparent;
 
-            border-bottom:
-                1px solid var(--border);
+    color:var(--text);
 
-            background:
-                var(--surface);
-        }
+    padding:9px;
 
+    border-radius:9px;
 
-        .header-left {
+    cursor:pointer;
 
-            display: flex;
-            align-items: center;
+    text-align:left;
 
-            gap: 12px;
-        }
+    font-size:13px;
+}
 
+.sidebar-button:hover {
 
-        .header-title {
+    background:var(--surface2);
+}
 
-            font-size: 15px;
-            font-weight: 650;
-        }
 
+/* ============================================================
+   MAIN
+============================================================ */
 
-        .status {
+.main {
 
-            display: flex;
-            align-items: center;
+    flex:1;
 
-            gap: 6px;
+    min-width:0;
 
-            font-size: 11px;
+    height:100vh;
 
-            color:
-                var(--muted);
-        }
+    display:flex;
+    flex-direction:column;
+}
 
 
-        .status-dot {
+/* ============================================================
+   HEADER
+============================================================ */
 
-            width: 7px;
-            height: 7px;
+.header {
 
-            border-radius: 50%;
+    height:64px;
 
-            background:
-                #35b86b;
-        }
+    flex-shrink:0;
 
+    display:flex;
 
-        .status-dot.offline {
+    align-items:center;
 
-            background:
-                var(--danger);
-        }
+    justify-content:space-between;
 
+    padding:0 24px;
 
-        /* =====================================================
-           MODEL SELECT
-        ===================================================== */
+    border-bottom:
+        1px solid var(--border);
 
-        .model-select {
+    background:var(--surface);
+}
 
-            border:
-                1px solid var(--border);
+.header-title {
 
-            background:
-                var(--surface);
+    font-size:15px;
+    font-weight:700;
+}
 
-            color:
-                var(--text);
+.status {
 
-            border-radius: 9px;
+    display:flex;
 
-            padding:
-                8px 11px;
+    align-items:center;
 
-            outline: none;
+    gap:6px;
 
-            cursor: pointer;
-        }
+    color:var(--muted);
 
+    font-size:11px;
 
-        /* =====================================================
-           CHAT
-        ===================================================== */
+    margin-top:2px;
+}
 
-        .chat {
+.status-dot {
 
-            flex: 1;
+    width:7px;
+    height:7px;
 
-            min-height: 0;
+    border-radius:50%;
 
-            overflow-y: auto;
+    background:#35b86b;
+}
 
-            scroll-behavior: smooth;
-        }
+.status-dot.offline {
 
+    background:var(--danger);
+}
 
-        .chat-inner {
+.model-select {
 
-            width: 100%;
+    border:
+        1px solid var(--border);
 
-            max-width: 900px;
+    background:var(--surface);
 
-            margin: 0 auto;
+    color:var(--text);
 
-            padding:
-                30px 24px 150px;
-        }
+    border-radius:9px;
 
+    padding:8px 10px;
 
-        /* =====================================================
-           WELCOME
-        ===================================================== */
+    outline:none;
+}
 
-        .welcome {
 
-            min-height: 55vh;
+/* ============================================================
+   CHAT
+============================================================ */
 
-            display: flex;
-            flex-direction: column;
+.chat {
 
-            align-items: center;
-            justify-content: center;
+    flex:1;
 
-            text-align: center;
-        }
+    min-height:0;
 
+    overflow-y:auto;
 
-        .welcome-logo {
+    scroll-behavior:smooth;
+}
 
-            width: 58px;
-            height: 58px;
+.chat-inner {
 
-            border-radius: 17px;
+    width:100%;
 
-            object-fit: cover;
+    max-width:900px;
 
-            margin-bottom: 18px;
-        }
+    margin:auto;
 
+    padding:
+        25px 24px 155px;
+}
 
-        .welcome h1 {
 
-            margin: 0;
+/* ============================================================
+   WELCOME
+============================================================ */
 
-            font-size: 30px;
+.welcome {
 
-            letter-spacing:
-                -0.03em;
-        }
+    min-height:55vh;
 
+    display:flex;
 
-        .welcome p {
+    flex-direction:column;
 
-            margin:
-                10px 0 0;
+    justify-content:center;
 
-            color:
-                var(--muted);
+    align-items:center;
 
-            font-size: 14px;
-        }
+    text-align:center;
+}
 
+.welcome-logo {
 
-        /* =====================================================
-           MESSAGES
-        ===================================================== */
+    width:60px;
+    height:60px;
 
-        .message {
+    object-fit:cover;
 
-            display: flex;
+    border-radius:18px;
 
-            width: 100%;
+    margin-bottom:18px;
+}
 
-            margin:
-                18px 0;
-        }
+.welcome h1 {
 
+    margin:0;
 
-        .message.user {
+    font-size:30px;
 
-            justify-content:
-                flex-end;
-        }
+    letter-spacing:-.03em;
+}
 
+.welcome p {
 
-        .message.assistant {
+    color:var(--muted);
 
-            justify-content:
-                flex-start;
-        }
+    font-size:14px;
 
+    margin-top:10px;
+}
 
-        .message-content {
 
-            max-width: 78%;
+/* ============================================================
+   MESSAGES
+============================================================ */
 
-            line-height: 1.65;
+.message {
 
-            font-size: 15px;
+    display:flex;
 
-            white-space: pre-wrap;
+    width:100%;
 
-            word-break: break-word;
-        }
+    margin:18px 0;
+}
 
+.message.user {
 
-        .user .message-content {
+    justify-content:flex-end;
+}
 
-            background:
-                var(--user-bg);
+.message.assistant {
 
-            border-radius: 16px;
+    justify-content:flex-start;
+}
 
-            padding:
-                11px 15px;
-        }
+.message-wrapper {
 
+    max-width:78%;
+}
 
-        .assistant .message-content {
+.message-content {
 
-            padding:
-                5px 0;
-        }
+    font-size:15px;
 
+    line-height:1.65;
 
-        .message-meta {
+    white-space:pre-wrap;
 
-            font-size: 10px;
+    word-break:break-word;
+}
 
-            color:
-                var(--muted);
+.user .message-content {
 
-            margin-bottom: 5px;
-        }
+    background:var(--user);
 
+    border-radius:16px;
 
-        /* =====================================================
-           THINKING
-        ===================================================== */
+    padding:11px 15px;
+}
 
-        .thinking {
+.assistant .message-content {
 
-            display: flex;
-            align-items: center;
+    padding:5px 0;
+}
 
-            gap: 5px;
+.message-meta {
 
-            padding:
-                8px 0;
-        }
+    color:var(--muted);
 
+    font-size:10px;
 
-        .thinking span {
+    margin-bottom:5px;
+}
 
-            width: 6px;
-            height: 6px;
 
-            background:
-                var(--muted);
+/* ============================================================
+   REACTIONS
+============================================================ */
 
-            border-radius: 50%;
+.reactions {
 
-            animation:
-                thinking 1.2s infinite ease-in-out;
-        }
+    display:flex;
 
+    gap:4px;
 
-        .thinking span:nth-child(2) {
+    margin-top:5px;
+}
 
-            animation-delay:
-                0.15s;
-        }
+.reaction {
 
+    border:0;
 
-        .thinking span:nth-child(3) {
+    background:transparent;
 
-            animation-delay:
-                0.3s;
-        }
+    color:var(--muted);
 
+    border-radius:7px;
 
-        @keyframes thinking {
+    padding:3px 6px;
 
-            0%,
-            80%,
-            100% {
+    cursor:pointer;
 
-                opacity: 0.25;
+    font-size:12px;
+}
 
-                transform:
-                    translateY(0);
-            }
+.reaction:hover {
 
-            40% {
+    background:var(--surface2);
 
-                opacity: 1;
+    color:var(--text);
+}
 
-                transform:
-                    translateY(-3px);
-            }
-        }
+.reaction.selected {
 
+    background:
+        rgba(124,92,255,.14);
 
-        /* =====================================================
-           INPUT
-        ===================================================== */
+    color:var(--accent);
+}
 
-        .composer {
 
-            position: fixed;
+/* ============================================================
+   THINKING
+============================================================ */
 
-            bottom: 0;
+.thinking {
 
-            left: 260px;
-            right: 0;
+    display:flex;
 
-            padding:
-                18px 24px 22px;
+    gap:5px;
 
-            background:
-                linear-gradient(
-                    to top,
-                    var(--bg) 65%,
-                    transparent
-                );
+    padding:8px 0;
+}
 
-            pointer-events: none;
-        }
+.thinking span {
 
+    width:6px;
+    height:6px;
 
-        .composer-inner {
+    border-radius:50%;
 
-            width: 100%;
+    background:var(--muted);
 
-            max-width: 900px;
+    animation:
+        thinking 1.2s infinite ease-in-out;
+}
 
-            margin: 0 auto;
+.thinking span:nth-child(2) {
+    animation-delay:.15s;
+}
 
-            pointer-events: auto;
-        }
+.thinking span:nth-child(3) {
+    animation-delay:.3s;
+}
 
+@keyframes thinking {
 
-        .input-box {
+    0%,80%,100% {
+        opacity:.25;
+        transform:translateY(0);
+    }
 
-            display: flex;
+    40% {
+        opacity:1;
+        transform:translateY(-3px);
+    }
+}
 
-            align-items: flex-end;
 
-            gap: 10px;
+/* ============================================================
+   COMPOSER
+============================================================ */
 
-            background:
-                var(--surface);
+.composer {
 
-            border:
-                1px solid var(--border);
+    position:fixed;
 
-            border-radius: 16px;
+    bottom:0;
 
-            padding:
-                10px 10px 10px 15px;
+    left:280px;
+    right:0;
 
-            box-shadow:
-                var(--shadow);
-        }
+    padding:
+        18px 24px 22px;
 
+    background:
+        linear-gradient(
+            to top,
+            var(--bg) 65%,
+            transparent
+        );
 
-        textarea {
+    pointer-events:none;
+}
 
-            flex: 1;
+.composer-inner {
 
-            resize: none;
+    width:100%;
 
-            border: none;
+    max-width:900px;
 
-            outline: none;
+    margin:auto;
 
-            background:
-                transparent;
+    pointer-events:auto;
+}
 
-            color:
-                var(--text);
+.input-box {
 
-            min-height: 24px;
+    display:flex;
 
-            max-height: 180px;
+    align-items:flex-end;
 
-            line-height: 1.5;
+    gap:10px;
 
-            padding:
-                4px 0;
+    padding:
+        10px 10px 10px 15px;
 
-            font-size: 15px;
-        }
+    border:
+        1px solid var(--border);
 
+    border-radius:16px;
 
-        textarea::placeholder {
+    background:var(--surface);
 
-            color:
-                var(--muted);
-        }
+    box-shadow:var(--shadow);
+}
 
+textarea {
 
-        .send-button {
+    flex:1;
 
-            width: 38px;
-            height: 38px;
+    resize:none;
 
-            border: none;
+    border:0;
 
-            border-radius: 11px;
+    outline:0;
 
-            background:
-                var(--accent);
+    background:transparent;
 
-            color: white;
+    color:var(--text);
 
-            cursor: pointer;
+    min-height:24px;
 
-            font-size: 17px;
+    max-height:180px;
 
-            display: flex;
+    line-height:1.5;
 
-            align-items: center;
-            justify-content: center;
+    padding:4px 0;
+}
 
-            transition:
-                0.15s ease;
-        }
+textarea::placeholder {
 
+    color:var(--muted);
+}
 
-        .send-button:hover {
+.send-button {
 
-            background:
-                var(--accent-hover);
-        }
+    width:38px;
+    height:38px;
 
+    border:0;
 
-        .send-button:disabled {
+    border-radius:11px;
 
-            opacity: 0.45;
+    background:var(--accent);
 
-            cursor:
-                not-allowed;
-        }
+    color:white;
 
+    cursor:pointer;
 
-        .composer-note {
+    font-size:18px;
 
-            text-align: center;
+    transition:.15s;
+}
 
-            color:
-                var(--muted);
+.send-button:hover {
 
-            font-size: 10px;
+    background:var(--accent2);
+}
 
-            margin-top: 8px;
-        }
+.send-button:disabled {
 
+    opacity:.45;
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
+    cursor:not-allowed;
+}
 
-        @media (max-width: 800px) {
+.composer-note {
 
-            .sidebar {
-                display: none;
-            }
+    text-align:center;
 
-            .composer {
-                left: 0;
-            }
+    color:var(--muted);
 
-            .header {
-                padding:
-                    0 15px;
-            }
+    font-size:10px;
 
-            .chat-inner {
-                padding-left:
-                    15px;
+    margin-top:8px;
+}
 
-                padding-right:
-                    15px;
-            }
 
-            .message-content {
-                max-width:
-                    90%;
-            }
+/* ============================================================
+   MODAL
+============================================================ */
 
-            .welcome h1 {
-                font-size:
-                    25px;
-            }
+.modal-backdrop {
 
-        }
+    position:fixed;
 
-    </style>
+    inset:0;
+
+    z-index:100;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(0,0,0,.48);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+.modal-backdrop.show {
+
+    display:flex;
+}
+
+.modal {
+
+    width:100%;
+
+    max-width:420px;
+
+    background:var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.25);
+}
+
+.modal h2 {
+
+    margin:0 0 8px;
+
+    font-size:19px;
+}
+
+.modal p {
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    margin:0 0 16px;
+}
+
+.modal-input {
+
+    width:100%;
+
+    border:
+        1px solid var(--border);
+
+    background:var(--surface2);
+
+    color:var(--text);
+
+    border-radius:10px;
+
+    padding:10px 12px;
+
+    outline:none;
+}
+
+.modal-buttons {
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:8px;
+
+    margin-top:16px;
+}
+
+.modal-button {
+
+    border:0;
+
+    border-radius:9px;
+
+    padding:9px 13px;
+
+    cursor:pointer;
+
+    background:var(--surface2);
+
+    color:var(--text);
+}
+
+.modal-button.primary {
+
+    background:var(--accent);
+
+    color:white;
+}
+
+.modal-button.danger {
+
+    background:var(--danger);
+
+    color:white;
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media(max-width:800px) {
+
+    .sidebar {
+        display:none;
+    }
+
+    .composer {
+        left:0;
+    }
+
+    .header {
+        padding:0 15px;
+    }
+
+    .chat-inner {
+        padding:
+            20px 15px 150px;
+    }
+
+    .message-wrapper {
+        max-width:90%;
+    }
+
+    .welcome h1 {
+        font-size:25px;
+    }
+}
+
+</style>
 
 </head>
 
@@ -885,781 +1006,2284 @@
 <div class="app">
 
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+<!-- ==========================================================
+     SIDEBAR
+=========================================================== -->
 
-    <aside class="sidebar">
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <img
+            src="logo.jpg"
+            class="brand-logo"
+            alt="B&B AI"
+        >
+
+        <div>
+
+            <div class="brand-name">
+                B&B AI
+            </div>
+
+            <div class="brand-subtitle">
+                B&B Studio
+            </div>
+
+        </div>
+
+    </div>
 
 
-        <div class="brand">
+    <button
+        class="new-chat"
+        id="newChatButton"
+    >
+        + New chat
+    </button>
+
+
+    <div class="chat-section">
+
+        <div
+            class="section-title"
+            id="chatListTitle"
+        >
+            Chats
+        </div>
+
+        <div
+            class="chat-list"
+            id="chatList"
+        >
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-bottom">
+
+        <button
+            class="sidebar-button"
+            id="languageButton"
+        >
+            🌐 Language
+        </button>
+
+        <button
+            class="sidebar-button"
+            id="themeButton"
+        >
+            🌙 Dark mode
+        </button>
+
+        <button
+            class="sidebar-button"
+            id="aboutButton"
+        >
+            ℹ️ About B&B Studio
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- ==========================================================
+     MAIN
+=========================================================== -->
+
+<main class="main">
+
+
+<header class="header">
+
+    <div>
+
+        <div class="header-title">
+            B&B AI
+        </div>
+
+        <div class="status">
+
+            <span
+                class="status-dot"
+                id="statusDot"
+            ></span>
+
+            <span id="statusText">
+                Checking API...
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <select
+        class="model-select"
+        id="modelSelect"
+    >
+
+        <option value="B&B AI">
+            B&B AI
+        </option>
+
+        <option value="B&B AI Lite">
+            B&B AI Lite
+        </option>
+
+        <option value="B&B AI Pro">
+            B&B AI Pro
+        </option>
+
+        <option value="B&B AI Deep">
+            B&B AI Deep
+        </option>
+
+    </select>
+
+</header>
+
+
+<section
+    class="chat"
+    id="chat"
+>
+
+    <div
+        class="chat-inner"
+        id="chatInner"
+    >
+
+        <div
+            class="welcome"
+            id="welcome"
+        >
 
             <img
                 src="logo.jpg"
-                class="brand-logo"
+                class="welcome-logo"
                 alt="B&B AI"
             >
 
-            <div>
+            <h1>
+                What can I help with?
+            </h1>
 
-                <div class="brand-name">
-                    B&B AI
-                </div>
-
-                <div class="brand-subtitle">
-                    B&B Studio
-                </div>
-
-            </div>
+            <p>
+                B&B AI · Created by B&B Studio
+            </p>
 
         </div>
 
+    </div>
 
-        <button
-            class="new-chat"
-            id="newChatButton"
-        >
-            + New chat
-        </button>
+</section>
 
 
-        <div class="nav">
+<div class="composer">
 
-            <div class="nav-title">
-                Modes
-            </div>
+    <div class="composer-inner">
 
-            <a
-                class="nav-item active"
-                href="text.html"
-            >
+        <div class="input-box">
 
-                💬
-
-                <span>
-                    Chat / Text
-                </span>
-
-            </a>
-
-        </div>
-
-
-        <div class="sidebar-bottom">
+            <textarea
+                id="messageInput"
+                rows="1"
+                placeholder="Message B&B AI..."
+            ></textarea>
 
             <button
-                class="sidebar-button"
-                id="themeButton"
+                class="send-button"
+                id="sendButton"
+                title="Send"
             >
-                🌙 Dark mode
+                ↑
             </button>
 
         </div>
 
+        <div class="composer-note">
+            B&B AI can make mistakes. Check important information.
+        </div>
 
-    </aside>
+    </div>
 
-
-    <!-- =====================================================
-         MAIN
-    ===================================================== -->
-
-    <main class="main">
+</div>
 
 
-        <header class="header">
+</main>
 
-            <div class="header-left">
-
-                <div>
-
-                    <div class="header-title">
-                        B&B AI
-                    </div>
-
-                    <div class="status">
-
-                        <span
-                            class="status-dot"
-                            id="statusDot"
-                        ></span>
-
-                        <span id="statusText">
-                            Checking API...
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
+</div>
 
 
-            <select
-                class="model-select"
-                id="modelSelect"
+<!-- ==========================================================
+     CONNECTION MODAL
+=========================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="connectionModal"
+>
+
+    <div class="modal">
+
+        <h2 id="connectionTitle">
+            Connect to B&B AI
+        </h2>
+
+        <p id="connectionText">
+            B&B AI needs one connection check before it can use
+            the local AI server.
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="modal-button"
+                id="closeConnectionButton"
             >
+                Close
+            </button>
 
-                <option value="B&B AI">
-                    B&B AI
-                </option>
-
-                <option value="B&B AI Lite">
-                    B&B AI Lite
-                </option>
-
-                <option value="B&B AI Pro">
-                    B&B AI Pro
-                </option>
-
-                <option value="B&B AI Deep">
-                    B&B AI Deep
-                </option>
-
-            </select>
-
-        </header>
-
-
-        <!-- =================================================
-             CHAT
-        ================================================== -->
-
-        <section
-            class="chat"
-            id="chat"
-        >
-
-            <div
-                class="chat-inner"
-                id="chatInner"
+            <button
+                class="modal-button primary"
+                id="openTunnelButton"
             >
+                Open API
+            </button>
 
-                <div
-                    class="welcome"
-                    id="welcome"
-                >
-
-                    <img
-                        src="logo.jpg"
-                        class="welcome-logo"
-                        alt="B&B AI"
-                    >
-
-                    <h1>
-                        What can I help with?
-                    </h1>
-
-                    <p>
-                        B&B AI · Created by B&B Studio
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             COMPOSER
-        ================================================== -->
-
-        <div class="composer">
-
-            <div class="composer-inner">
-
-                <div class="input-box">
-
-                    <textarea
-                        id="messageInput"
-                        rows="1"
-                        placeholder="Message B&B AI..."
-                    ></textarea>
-
-                    <button
-                        class="send-button"
-                        id="sendButton"
-                        title="Send"
-                    >
-                        ↑
-                    </button>
-
-                </div>
-
-                <div class="composer-note">
-
-                    B&B AI can make mistakes.
-                    Check important information.
-
-                </div>
-
-            </div>
+            <button
+                class="modal-button primary"
+                id="retryApiButton"
+            >
+                Check again
+            </button>
 
         </div>
 
+    </div>
 
-    </main>
+</div>
 
+
+<!-- ==========================================================
+     SETTINGS MODAL
+=========================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="settingsModal"
+>
+
+    <div class="modal">
+
+        <h2 id="settingsTitle">
+            Language
+        </h2>
+
+        <p id="settingsText">
+            Choose the language of the B&B AI interface.
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="modal-button"
+                data-language="en"
+            >
+                English
+            </button>
+
+            <button
+                class="modal-button primary"
+                data-language="fa"
+            >
+                فارسی
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     ABOUT MODAL
+=========================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="aboutModal"
+>
+
+    <div class="modal">
+
+        <h2>
+            B&B Studio
+        </h2>
+
+        <p>
+            B&B AI is part of B&B Studio.<br><br>
+            ایده‌ها را واقعی می‌کنیم
+            <br><br>
+            B&B Studio · B&B AI
+            <br>
+            Created by Barad Bolhasani
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="modal-button primary"
+                id="closeAboutButton"
+            >
+                OK
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     RENAME MODAL
+=========================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="renameModal"
+>
+
+    <div class="modal">
+
+        <h2 id="renameTitle">
+            Rename chat
+        </h2>
+
+        <p>
+            Enter a new name for this conversation.
+        </p>
+
+        <input
+            class="modal-input"
+            id="renameInput"
+            maxlength="100"
+        >
+
+        <div class="modal-buttons">
+
+            <button
+                class="modal-button"
+                id="cancelRenameButton"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="modal-button primary"
+                id="saveRenameButton"
+            >
+                Save
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
 
 <script>
 
-    /* =====================================================
-       B&B AI - TEXT CLIENT
-       SUPABASE CHAT MEMORY
-    ===================================================== */
+/* ============================================================
+   CONFIG
+============================================================ */
 
+/*
+ * The public Supabase key is intended for browser use.
+ * Do NOT put a Supabase service_role/secret key here.
+ */
 
-    /* =====================================================
-       API CONFIG
-    ===================================================== */
+const BBAI_CONFIG = {
 
-    const API_BASE =
-        BBAI_CONFIG.ai.baseUrl.replace(/\/+$/, "");
+    supabase: {
 
+        url:
+            "https://pgzkclbzouxtheyabjhy.supabase.co",
 
-    const CHAT_ENDPOINT =
-        BBAI_CONFIG.ai.endpoints.chat;
+        publishableKey:
+            "sb_publishable__KjAlRfBBwv07nr7Rwb_CA_ijkB8rTi"
+    },
 
+    ai: {
 
-    /* =====================================================
-       SUPABASE CLIENT
-    ===================================================== */
+        baseUrl:
+            "https://bbai.loca.lt",
 
-    const supabaseClient =
-        window.supabase.createClient(
+        endpoints: {
 
-            BBAI_CONFIG.supabase.url,
+            chat:
+                "/v1/chat",
 
-            BBAI_CONFIG.supabase.publishableKey
+            text:
+                "/v1/text",
 
-        );
+            image:
+                "/v1/image",
 
+            video:
+                "/v1/video",
 
-    /* =====================================================
-       STATE
-    ===================================================== */
+            music:
+                "/v1/music",
 
-    let history = [];
-
-    let isSending = false;
-
-    let currentConversationId = null;
-
-    let currentSession = null;
-
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
-
-    const chat =
-        document.getElementById("chat");
-
-
-    const chatInner =
-        document.getElementById("chatInner");
-
-
-    const input =
-        document.getElementById("messageInput");
-
-
-    const sendButton =
-        document.getElementById("sendButton");
-
-
-    const modelSelect =
-        document.getElementById("modelSelect");
-
-
-    const newChatButton =
-        document.getElementById("newChatButton");
-
-
-    const themeButton =
-        document.getElementById("themeButton");
-
-
-    const statusDot =
-        document.getElementById("statusDot");
-
-
-    const statusText =
-        document.getElementById("statusText");
-
-
-    /* =====================================================
-       THEME
-    ===================================================== */
-
-    function loadTheme() {
-
-        const saved =
-            localStorage.getItem("bbai_theme");
-
-
-        if (saved === "dark") {
-
-            document.documentElement
-                .classList
-                .add("dark");
-
-            themeButton.textContent =
-                "☀️ Light mode";
-
-        } else {
-
-            document.documentElement
-                .classList
-                .remove("dark");
-
-            themeButton.textContent =
-                "🌙 Dark mode";
+            model3d:
+                "/v1/3d"
 
         }
 
     }
 
-
-    function toggleTheme() {
-
-        const isDark =
-            document.documentElement
-                .classList
-                .contains("dark");
+};
 
 
-        if (isDark) {
+/* ============================================================
+   API
+============================================================ */
 
-            document.documentElement
-                .classList
-                .remove("dark");
-
-            localStorage.setItem(
-                "bbai_theme",
-                "light"
-            );
-
-            themeButton.textContent =
-                "🌙 Dark mode";
-
-        } else {
-
-            document.documentElement
-                .classList
-                .add("dark");
-
-            localStorage.setItem(
-                "bbai_theme",
-                "dark"
-            );
-
-            themeButton.textContent =
-                "☀️ Light mode";
-
-        }
-
-    }
-
-
-    themeButton.addEventListener(
-        "click",
-        toggleTheme
+const API_BASE =
+    BBAI_CONFIG.ai.baseUrl.replace(
+        /\/+$/,
+        ""
     );
 
 
-    loadTheme();
+const TUNNEL_HEADERS = {
+
+    "bypass-tunnel-reminder":
+        "true"
+
+};
 
 
-    /* =====================================================
-       GET SESSION
-    ===================================================== */
+async function apiFetch(
+    path,
+    options = {}
+) {
 
-    async function loadSession() {
+    const headers = {
 
-        try {
+        ...(options.headers || {}),
 
-            const result =
-                await supabaseClient.auth.getSession();
+        ...TUNNEL_HEADERS
 
+    };
 
-            if (result.error) {
+    return fetch(
+        `${API_BASE}${path}`,
+        {
+            ...options,
+            headers
+        }
+    );
 
-                console.error(
-                    "Supabase session error:",
-                    result.error
-                );
-
-                currentSession = null;
-
-                return null;
-            }
-
-
-            currentSession =
-                result.data.session;
+}
 
 
-            return currentSession;
+/* ============================================================
+   SUPABASE
+============================================================ */
+
+const supabaseClient =
+    window.supabase.createClient(
+
+        BBAI_CONFIG.supabase.url,
+
+        BBAI_CONFIG.supabase.publishableKey
+
+    );
 
 
-        } catch (error) {
+/* ============================================================
+   STATE
+============================================================ */
 
-            console.error(
-                "Session error:",
-                error
-            );
+let history = [];
+
+let isSending = false;
+
+let currentConversationId = null;
+
+let currentSession = null;
+
+let conversations = [];
+
+let apiOnline = false;
+
+let renameConversationId = null;
+
+let language =
+    localStorage.getItem(
+        "bbai_language"
+    ) || "en";
+
+
+/* ============================================================
+   ELEMENTS
+============================================================ */
+
+const chat =
+    document.getElementById(
+        "chat"
+    );
+
+const chatInner =
+    document.getElementById(
+        "chatInner"
+    );
+
+const input =
+    document.getElementById(
+        "messageInput"
+    );
+
+const sendButton =
+    document.getElementById(
+        "sendButton"
+    );
+
+const modelSelect =
+    document.getElementById(
+        "modelSelect"
+    );
+
+const newChatButton =
+    document.getElementById(
+        "newChatButton"
+    );
+
+const themeButton =
+    document.getElementById(
+        "themeButton"
+    );
+
+const languageButton =
+    document.getElementById(
+        "languageButton"
+    );
+
+const aboutButton =
+    document.getElementById(
+        "aboutButton"
+    );
+
+const chatList =
+    document.getElementById(
+        "chatList"
+    );
+
+const statusDot =
+    document.getElementById(
+        "statusDot"
+    );
+
+const statusText =
+    document.getElementById(
+        "statusText"
+    );
+
+const connectionModal =
+    document.getElementById(
+        "connectionModal"
+    );
+
+const settingsModal =
+    document.getElementById(
+        "settingsModal"
+    );
+
+const aboutModal =
+    document.getElementById(
+        "aboutModal"
+    );
+
+const renameModal =
+    document.getElementById(
+        "renameModal"
+    );
+
+const renameInput =
+    document.getElementById(
+        "renameInput"
+    );
+
+
+/* ============================================================
+   TRANSLATIONS
+============================================================ */
+
+const translations = {
+
+    en: {
+
+        newChat:
+            "+ New chat",
+
+        chats:
+            "Chats",
+
+        language:
+            "🌐 Language",
+
+        dark:
+            "🌙 Dark mode",
+
+        light:
+            "☀️ Light mode",
+
+        about:
+            "ℹ️ About B&B Studio",
+
+        online:
+            "Online",
+
+        offline:
+            "API offline",
+
+        checking:
+            "Checking API...",
+
+        placeholder:
+            "Message B&B AI...",
+
+        welcome:
+            "What can I help with?",
+
+        welcomeSub:
+            "B&B AI · Created by B&B Studio",
+
+        rename:
+            "Rename chat",
+
+        save:
+            "Save",
+
+        cancel:
+            "Cancel",
+
+        connection:
+            "Connect to B&B AI",
+
+        connectionText:
+            "If LocalTunnel shows a connection page, open the API once, continue there, then return here and press Check again.",
+
+        openApi:
+            "Open API",
+
+        checkAgain:
+            "Check again",
+
+        close:
+            "Close",
+
+        languageTitle:
+            "Language",
+
+        languageText:
+            "Choose the language of the B&B AI interface.",
+
+        aboutText:
+            "B&B AI is part of B&B Studio.\n\nایده‌ها را واقعی می‌کنیم\n\nB&B Studio · B&B AI\nCreated by Barad Bolhasani",
+
+        renameText:
+            "Enter a new name for this conversation.",
+
+        error:
+            "Error: "
+
+    },
+
+    fa: {
+
+        newChat:
+            "+ گفت‌وگوی جدید",
+
+        chats:
+            "گفت‌وگوها",
+
+        language:
+            "🌐 زبان",
+
+        dark:
+            "🌙 حالت تاریک",
+
+        light:
+            "☀️ حالت روشن",
+
+        about:
+            "ℹ️ درباره B&B Studio",
+
+        online:
+            "آنلاین",
+
+        offline:
+            "API آفلاین",
+
+        checking:
+            "در حال بررسی API...",
+
+        placeholder:
+            "پیام خود را بنویسید...",
+
+        welcome:
+            "چه کاری می‌توانم برایتان انجام دهم؟",
+
+        welcomeSub:
+            "B&B AI · ساخته‌شده توسط B&B Studio",
+
+        rename:
+            "تغییر نام گفت‌وگو",
+
+        save:
+            "ذخیره",
+
+        cancel:
+            "لغو",
+
+        connection:
+            "اتصال به B&B AI",
+
+        connectionText:
+            "اگر LocalTunnel صفحه اتصال نشان داد، یک بار API را باز و تأیید کنید، سپس برگردید و «بررسی دوباره» را بزنید.",
+
+        openApi:
+            "باز کردن API",
+
+        checkAgain:
+            "بررسی دوباره",
+
+        close:
+            "بستن",
+
+        languageTitle:
+            "زبان",
+
+        languageText:
+            "زبان رابط B&B AI را انتخاب کنید.",
+
+        aboutText:
+            "B&B AI بخشی از B&B Studio است.\n\nایده‌ها را واقعی می‌کنیم\n\nB&B Studio · B&B AI\nساخته‌شده توسط Barad Bolhasani",
+
+        renameText:
+            "نام جدید این گفت‌وگو را وارد کنید.",
+
+        error:
+            "خطا: "
+
+    }
+
+};
+
+
+function t(key) {
+
+    return (
+        translations[language]?.[key] ||
+        translations.en[key] ||
+        key
+    );
+
+}
+
+
+/* ============================================================
+   LANGUAGE
+============================================================ */
+
+function applyLanguage() {
+
+    document.documentElement.lang =
+        language;
+
+    document.documentElement.dir =
+        language === "fa"
+            ? "rtl"
+            : "ltr";
+
+    newChatButton.textContent =
+        t("newChat");
+
+    document.getElementById(
+        "chatListTitle"
+    ).textContent =
+        t("chats");
+
+    languageButton.textContent =
+        t("language");
+
+    aboutButton.textContent =
+        t("about");
+
+    input.placeholder =
+        t("placeholder");
+
+    document.querySelector(
+        "#connectionTitle"
+    ).textContent =
+        t("connection");
+
+    document.querySelector(
+        "#connectionText"
+    ).textContent =
+        t("connectionText");
+
+    document.querySelector(
+        "#openTunnelButton"
+    ).textContent =
+        t("openApi");
+
+    document.querySelector(
+        "#retryApiButton"
+    ).textContent =
+        t("checkAgain");
+
+    document.querySelector(
+        "#closeConnectionButton"
+    ).textContent =
+        t("close");
+
+    document.querySelector(
+        "#settingsTitle"
+    ).textContent =
+        t("languageTitle");
+
+    document.querySelector(
+        "#settingsText"
+    ).textContent =
+        t("languageText");
+
+    document.querySelector(
+        "#renameTitle"
+    ).textContent =
+        t("rename");
+
+    document.querySelector(
+        "#renameInput"
+    ).placeholder =
+        t("rename");
+
+    document.querySelector(
+        "#cancelRenameButton"
+    ).textContent =
+        t("cancel");
+
+    document.querySelector(
+        "#saveRenameButton"
+    ).textContent =
+        t("save");
+
+    updateThemeButton();
+
+    updateWelcome();
+
+    if (apiOnline) {
+
+        statusText.textContent =
+            t("online");
+
+    }
+
+}
+
+
+function setLanguage(value) {
+
+    language = value;
+
+    localStorage.setItem(
+        "bbai_language",
+        language
+    );
+
+    applyLanguage();
+
+    settingsModal.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   THEME
+============================================================ */
+
+function updateThemeButton() {
+
+    const dark =
+        document.documentElement
+            .classList
+            .contains("dark");
+
+    themeButton.textContent =
+        dark
+            ? t("light")
+            : t("dark");
+
+}
+
+
+function loadTheme() {
+
+    const saved =
+        localStorage.getItem(
+            "bbai_theme"
+        );
+
+    if (saved === "dark") {
+
+        document.documentElement
+            .classList
+            .add("dark");
+
+    } else {
+
+        document.documentElement
+            .classList
+            .remove("dark");
+
+    }
+
+    updateThemeButton();
+
+}
+
+
+function toggleTheme() {
+
+    const dark =
+        document.documentElement
+            .classList
+            .contains("dark");
+
+    if (dark) {
+
+        document.documentElement
+            .classList
+            .remove("dark");
+
+        localStorage.setItem(
+            "bbai_theme",
+            "light"
+        );
+
+    } else {
+
+        document.documentElement
+            .classList
+            .add("dark");
+
+        localStorage.setItem(
+            "bbai_theme",
+            "dark"
+        );
+
+    }
+
+    updateThemeButton();
+
+}
+
+
+/* ============================================================
+   SESSION
+============================================================ */
+
+async function loadSession() {
+
+    try {
+
+        const result =
+            await supabaseClient
+                .auth
+                .getSession();
+
+        if (result.error) {
 
             currentSession = null;
 
             return null;
-        }
-
-    }
-
-
-    /* =====================================================
-       AUTH HEADERS
-    ===================================================== */
-
-    function getAuthHeaders() {
-
-        const headers = {
-
-            "Content-Type":
-                "application/json"
-
-        };
-
-
-        if (
-            currentSession &&
-            currentSession.access_token
-        ) {
-
-            headers["Authorization"] =
-                `Bearer ${currentSession.access_token}`;
 
         }
 
+        currentSession =
+            result.data.session;
 
-        return headers;
+        return currentSession;
 
-    }
+    } catch (error) {
 
+        console.error(
+            "Session error:",
+            error
+        );
 
-    /* =====================================================
-       API STATUS
-    ===================================================== */
+        currentSession = null;
 
-    async function checkAPI() {
-
-        try {
-
-            const response =
-                await fetch(
-
-                    `${API_BASE}/api/status`,
-
-                    {
-                        method: "GET",
-                        cache: "no-store"
-                    }
-
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    `API HTTP ${response.status}`
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            const healthy =
-                data.success === true &&
-                data.ollama === true;
-
-
-            if (healthy) {
-
-                statusDot.classList.remove(
-                    "offline"
-                );
-
-                statusText.textContent =
-                    "Online";
-
-            } else {
-
-                statusDot.classList.add(
-                    "offline"
-                );
-
-                statusText.textContent =
-                    "AI offline";
-
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "API status error:",
-                error
-            );
-
-            statusDot.classList.add(
-                "offline"
-            );
-
-            statusText.textContent =
-                "API offline";
-
-        }
+        return null;
 
     }
 
+}
 
-    /* =====================================================
-       ADD MESSAGE
-    ===================================================== */
 
-    function addMessage(
-        role,
-        content,
-        modelName = null
+function getAuthHeaders() {
+
+    const headers = {
+
+        "Content-Type":
+            "application/json"
+
+    };
+
+    if (
+        currentSession &&
+        currentSession.access_token
     ) {
 
-        const welcome =
-            document.getElementById("welcome");
-
-
-        if (welcome) {
-
-            welcome.style.display =
-                "none";
-
-        }
-
-
-        const message =
-            document.createElement("div");
-
-
-        message.className =
-            `message ${role}`;
-
-
-        const wrapper =
-            document.createElement("div");
-
-
-        const meta =
-            document.createElement("div");
-
-
-        meta.className =
-            "message-meta";
-
-
-        meta.textContent =
-            role === "user"
-                ? "You"
-                : (
-                    modelName ||
-                    modelSelect.value
-                );
-
-
-        const text =
-            document.createElement("div");
-
-
-        text.className =
-            "message-content";
-
-
-        text.textContent =
-            content;
-
-
-        wrapper.appendChild(meta);
-
-        wrapper.appendChild(text);
-
-        message.appendChild(wrapper);
-
-        chatInner.appendChild(message);
-
-
-        scrollToBottom();
-
-
-        return message;
+        headers.Authorization =
+            `Bearer ${currentSession.access_token}`;
 
     }
 
+    return headers;
 
-    /* =====================================================
-       THINKING
-    ===================================================== */
-
-    function addThinking() {
-
-        const welcome =
-            document.getElementById("welcome");
+}
 
 
-        if (welcome) {
+/* ============================================================
+   CONNECTION
+============================================================ */
 
-            welcome.style.display =
-                "none";
+function setApiStatus(
+    online
+) {
 
-        }
+    apiOnline = online;
 
+    if (online) {
 
-        const message =
-            document.createElement("div");
+        statusDot.classList.remove(
+            "offline"
+        );
 
+        statusText.textContent =
+            t("online");
 
-        message.className =
-            "message assistant";
+    } else {
 
+        statusDot.classList.add(
+            "offline"
+        );
 
-        const thinking =
-            document.createElement("div");
-
-
-        thinking.className =
-            "thinking";
-
-
-        thinking.innerHTML = `
-            <span></span>
-            <span></span>
-            <span></span>
-        `;
-
-
-        message.appendChild(thinking);
-
-        chatInner.appendChild(message);
-
-
-        scrollToBottom();
-
-
-        return message;
+        statusText.textContent =
+            t("offline");
 
     }
 
-
-    /* =====================================================
-       SCROLL
-    ===================================================== */
-
-    function scrollToBottom() {
-
-        requestAnimationFrame(() => {
-
-            chat.scrollTop =
-                chat.scrollHeight;
-
-        });
-
-    }
+}
 
 
-    /* =====================================================
-       CREATE CONVERSATION
-    ===================================================== */
+async function checkAPI(
+    showModalOnFail = true
+) {
 
-    async function createConversation() {
+    statusText.textContent =
+        t("checking");
 
-        if (!currentSession) {
-
-            throw new Error(
-                "Please log in first."
-            );
-
-        }
-
+    try {
 
         const response =
-            await fetch(
-
-                `${API_BASE}/v1/conversations`,
-
+            await apiFetch(
+                "/api/status",
                 {
-
-                    method: "POST",
-
-                    headers:
-                        getAuthHeaders(),
-
-                    body:
-                        JSON.stringify({
-
-                            title:
-                                "New Chat",
-
-                            model:
-                                modelSelect.value
-
-                        })
-
+                    method:"GET",
+                    cache:"no-store"
                 }
-
             );
 
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
 
         const data =
             await response.json();
 
+        const healthy =
+            data.success === true &&
+            data.ollama === true;
+
+        setApiStatus(
+            healthy
+        );
 
         if (
-            !response.ok ||
-            !data.success ||
-            !data.conversation
+            !healthy &&
+            showModalOnFail
         ) {
 
-            throw new Error(
-                data.error ||
-                "Could not create conversation."
+            connectionModal.classList.add(
+                "show"
+            );
+
+        }
+
+        return healthy;
+
+    } catch (error) {
+
+        console.error(
+            "API connection error:",
+            error
+        );
+
+        setApiStatus(false);
+
+        if (showModalOnFail) {
+
+            connectionModal.classList.add(
+                "show"
+            );
+
+        }
+
+        return false;
+
+    }
+
+}
+
+
+/* ============================================================
+   WELCOME
+============================================================ */
+
+function updateWelcome() {
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+    if (!welcome) {
+        return;
+    }
+
+    const h1 =
+        welcome.querySelector("h1");
+
+    const p =
+        welcome.querySelector("p");
+
+    if (h1) {
+        h1.textContent =
+            t("welcome");
+    }
+
+    if (p) {
+        p.textContent =
+            t("welcomeSub");
+    }
+
+}
+
+
+function showWelcome() {
+
+    chatInner.innerHTML = `
+
+        <div
+            class="welcome"
+            id="welcome"
+        >
+
+            <img
+                src="logo.jpg"
+                class="welcome-logo"
+                alt="B&B AI"
+            >
+
+            <h1>
+                ${escapeHtml(t("welcome"))}
+            </h1>
+
+            <p>
+                ${escapeHtml(t("welcomeSub"))}
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHtml(
+    value
+) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* ============================================================
+   ADD MESSAGE
+============================================================ */
+
+function addMessage(
+    role,
+    content,
+    modelName = null,
+    messageId = null
+) {
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+    if (welcome) {
+        welcome.style.display =
+            "none";
+    }
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        `message ${role}`;
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "message-wrapper";
+
+    const meta =
+        document.createElement(
+            "div"
+        );
+
+    meta.className =
+        "message-meta";
+
+    meta.textContent =
+        role === "user"
+            ? "You"
+            : (
+                modelName ||
+                modelSelect.value
+            );
+
+    const text =
+        document.createElement(
+            "div"
+        );
+
+    text.className =
+        "message-content";
+
+    text.textContent =
+        content;
+
+    wrapper.appendChild(meta);
+
+    wrapper.appendChild(text);
+
+
+    if (
+        role === "assistant"
+    ) {
+
+        const reactions =
+            document.createElement(
+                "div"
+            );
+
+        reactions.className =
+            "reactions";
+
+        const like =
+            document.createElement(
+                "button"
+            );
+
+        like.className =
+            "reaction";
+
+        like.textContent =
+            "👍";
+
+        const dislike =
+            document.createElement(
+                "button"
+            );
+
+        dislike.className =
+            "reaction";
+
+        dislike.textContent =
+            "👎";
+
+        const reactionKey =
+            messageId ||
+            `temp_${Date.now()}_${Math.random()}`;
+
+        const savedReaction =
+            getReaction(
+                reactionKey
+            );
+
+        if (
+            savedReaction === "like"
+        ) {
+
+            like.classList.add(
+                "selected"
+            );
+
+        }
+
+        if (
+            savedReaction === "dislike"
+        ) {
+
+            dislike.classList.add(
+                "selected"
+            );
+
+        }
+
+        like.onclick = () => {
+
+            setReaction(
+                reactionKey,
+                "like"
+            );
+
+            like.classList.toggle(
+                "selected",
+                getReaction(
+                    reactionKey
+                ) === "like"
+            );
+
+            dislike.classList.remove(
+                "selected"
+            );
+
+        };
+
+        dislike.onclick = () => {
+
+            setReaction(
+                reactionKey,
+                "dislike"
+            );
+
+            dislike.classList.toggle(
+                "selected",
+                getReaction(
+                    reactionKey
+                ) === "dislike"
+            );
+
+            like.classList.remove(
+                "selected"
+            );
+
+        };
+
+        reactions.appendChild(
+            like
+        );
+
+        reactions.appendChild(
+            dislike
+        );
+
+        wrapper.appendChild(
+            reactions
+        );
+
+    }
+
+
+    message.appendChild(
+        wrapper
+    );
+
+    chatInner.appendChild(
+        message
+    );
+
+    scrollToBottom();
+
+    return message;
+
+}
+
+
+/* ============================================================
+   REACTIONS
+============================================================ */
+
+function getReaction(
+    id
+) {
+
+    try {
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(
+                    "bbai_reactions"
+                ) || "{}"
+            );
+
+        return data[id] || null;
+
+    } catch {
+
+        return null;
+
+    }
+
+}
+
+
+function setReaction(
+    id,
+    value
+) {
+
+    try {
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(
+                    "bbai_reactions"
+                ) || "{}"
+            );
+
+        if (
+            data[id] === value
+        ) {
+
+            delete data[id];
+
+        } else {
+
+            data[id] = value;
+
+        }
+
+        localStorage.setItem(
+            "bbai_reactions",
+            JSON.stringify(data)
+        );
+
+    } catch {}
+
+}
+
+
+/* ============================================================
+   THINKING
+============================================================ */
+
+function addThinking() {
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        "message assistant";
+
+    const thinking =
+        document.createElement(
+            "div"
+        );
+
+    thinking.className =
+        "thinking";
+
+    thinking.innerHTML = `
+        <span></span>
+        <span></span>
+        <span></span>
+    `;
+
+    message.appendChild(
+        thinking
+    );
+
+    chatInner.appendChild(
+        message
+    );
+
+    scrollToBottom();
+
+    return message;
+
+}
+
+
+/* ============================================================
+   SCROLL
+============================================================ */
+
+function scrollToBottom() {
+
+    requestAnimationFrame(
+        () => {
+
+            chat.scrollTop =
+                chat.scrollHeight;
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   CREATE CONVERSATION
+============================================================ */
+
+async function createConversation() {
+
+    if (!currentSession) {
+
+        throw new Error(
+            "Please log in first."
+        );
+
+    }
+
+    const response =
+        await apiFetch(
+            "/v1/conversations",
+            {
+                method:"POST",
+
+                headers:
+                    getAuthHeaders(),
+
+                body:
+                    JSON.stringify({
+
+                        title:
+                            "New Chat",
+
+                        model:
+                            modelSelect.value
+
+                    })
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (
+        !response.ok ||
+        !data.success ||
+        !data.conversation
+    ) {
+
+        throw new Error(
+            data.error ||
+            "Could not create conversation."
+        );
+
+    }
+
+    currentConversationId =
+        data.conversation.id;
+
+    saveCurrentConversation();
+
+    await refreshConversationList();
+
+    return currentConversationId;
+
+}
+
+
+/* ============================================================
+   SAVE CURRENT CONVERSATION
+============================================================ */
+
+function currentStorageKey() {
+
+    if (
+        !currentSession?.user?.id
+    ) {
+
+        return "bbai_current_conversation";
+
+    }
+
+    return (
+        "bbai_current_conversation_" +
+        currentSession.user.id
+    );
+
+}
+
+
+function saveCurrentConversation() {
+
+    if (currentConversationId) {
+
+        localStorage.setItem(
+            currentStorageKey(),
+            currentConversationId
+        );
+
+    } else {
+
+        localStorage.removeItem(
+            currentStorageKey()
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   SAVE MESSAGE
+============================================================ */
+
+async function saveMessage(
+    role,
+    content,
+    model = null
+) {
+
+    if (!currentConversationId) {
+
+        await createConversation();
+
+    }
+
+    const response =
+        await apiFetch(
+            `/v1/conversations/` +
+            `${currentConversationId}` +
+            `/messages`,
+            {
+                method:"POST",
+
+                headers:
+                    getAuthHeaders(),
+
+                body:
+                    JSON.stringify({
+
+                        role,
+                        content,
+
+                        model:
+                            model ||
+                            modelSelect.value
+
+                    })
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (
+        !response.ok ||
+        !data.success
+    ) {
+
+        throw new Error(
+            data.error ||
+            "Could not save message."
+        );
+
+    }
+
+    return data.message;
+
+}
+
+
+/* ============================================================
+   LOAD CONVERSATIONS
+============================================================ */
+
+async function loadConversations() {
+
+    if (!currentSession) {
+        return [];
+    }
+
+    const response =
+        await apiFetch(
+            "/v1/conversations",
+            {
+                method:"GET",
+
+                headers:
+                    getAuthHeaders(),
+
+                cache:"no-store"
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (
+        !response.ok ||
+        !data.success
+    ) {
+
+        throw new Error(
+            data.error ||
+            "Could not load conversations."
+        );
+
+    }
+
+    return data.conversations || [];
+
+}
+
+
+/* ============================================================
+   REFRESH CHAT LIST
+============================================================ */
+
+async function refreshConversationList() {
+
+    try {
+
+        conversations =
+            await loadConversations();
+
+        renderConversationList();
+
+    } catch (error) {
+
+        console.error(
+            "Conversation list error:",
+            error
+        );
+
+        chatList.innerHTML = "";
+
+    }
+
+}
+
+
+function renderConversationList() {
+
+    chatList.innerHTML = "";
+
+    if (!conversations.length) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+        empty.className =
+            "chat-empty";
+
+        empty.textContent =
+            language === "fa"
+                ? "هنوز گفت‌وگویی ندارید."
+                : "No conversations yet.";
+
+        chatList.appendChild(
+            empty
+        );
+
+        return;
+
+    }
+
+
+    for (
+        const conversation
+        of conversations
+    ) {
+
+        const row =
+            document.createElement(
+                "div"
+            );
+
+        row.className =
+            "chat-row";
+
+        if (
+            conversation.id ===
+            currentConversationId
+        ) {
+
+            row.classList.add(
+                "active"
             );
 
         }
 
 
-        currentConversationId =
-            data.conversation.id;
+        const openButton =
+            document.createElement(
+                "button"
+            );
+
+        openButton.className =
+            "chat-open";
+
+        openButton.textContent =
+            conversation.title ||
+            "New Chat";
+
+        openButton.title =
+            conversation.title ||
+            "New Chat";
+
+        openButton.onclick =
+            () => openConversation(
+                conversation
+            );
 
 
-        return currentConversationId;
+        const actions =
+            document.createElement(
+                "div"
+            );
+
+        actions.className =
+            "chat-actions";
+
+
+        const rename =
+            document.createElement(
+                "button"
+            );
+
+        rename.className =
+            "chat-action";
+
+        rename.textContent =
+            "✏️";
+
+        rename.title =
+            language === "fa"
+                ? "تغییر نام"
+                : "Rename";
+
+        rename.onclick =
+            event => {
+
+                event.stopPropagation();
+
+                openRenameModal(
+                    conversation
+                );
+
+            };
+
+
+        const remove =
+            document.createElement(
+                "button"
+            );
+
+        remove.className =
+            "chat-action";
+
+        remove.textContent =
+            "🗑️";
+
+        remove.title =
+            language === "fa"
+                ? "حذف"
+                : "Delete";
+
+        remove.onclick =
+            event => {
+
+                event.stopPropagation();
+
+                deleteConversation(
+                    conversation
+                );
+
+            };
+
+
+        actions.appendChild(
+            rename
+        );
+
+        actions.appendChild(
+            remove
+        );
+
+        row.appendChild(
+            openButton
+        );
+
+        row.appendChild(
+            actions
+        );
+
+        chatList.appendChild(
+            row
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   OPEN CONVERSATION
+============================================================ */
+
+async function openConversation(
+    conversation
+) {
+
+    if (isSending) {
+        return;
+    }
+
+    currentConversationId =
+        conversation.id;
+
+    saveCurrentConversation();
+
+    if (
+        conversation.model &&
+        [
+            "B&B AI",
+            "B&B AI Lite",
+            "B&B AI Pro",
+            "B&B AI Deep"
+        ].includes(
+            conversation.model
+        )
+    ) {
+
+        modelSelect.value =
+            conversation.model;
+
+    }
+
+    try {
+
+        const messages =
+            await loadMessages(
+                conversation.id
+            );
+
+        displayMessages(
+            messages
+        );
+
+        renderConversationList();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   LOAD MESSAGES
+============================================================ */
+
+async function loadMessages(
+    conversationId
+) {
+
+    const response =
+        await apiFetch(
+            `/v1/conversations/` +
+            `${conversationId}` +
+            `/messages`,
+            {
+                method:"GET",
+
+                headers:
+                    getAuthHeaders(),
+
+                cache:"no-store"
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (
+        !response.ok ||
+        !data.success
+    ) {
+
+        throw new Error(
+            data.error ||
+            "Could not load messages."
+        );
+
+    }
+
+    return data.messages || [];
+
+}
+
+
+/* ============================================================
+   DISPLAY MESSAGES
+============================================================ */
+
+function displayMessages(
+    messages
+) {
+
+    chatInner.innerHTML = "";
+
+    if (!messages.length) {
+
+        history = [];
+
+        showWelcome();
+
+        return;
+
+    }
+
+    history =
+        messages.map(
+            message => ({
+
+                role:
+                    message.role,
+
+                content:
+                    message.content
+
+            })
+        );
+
+
+    for (
+        const message
+        of messages
+    ) {
+
+        addMessage(
+
+            message.role,
+
+            message.content,
+
+            message.model,
+
+            message.id
+
+        );
+
+    }
+
+    scrollToBottom();
+
+}
+
+
+/* ============================================================
+   LOAD SELECTED CHAT
+============================================================ */
+
+async function loadSelectedConversation() {
+
+    if (!currentSession) {
+        return;
+    }
+
+    conversations =
+        await loadConversations();
+
+    renderConversationList();
+
+
+    const savedId =
+        localStorage.getItem(
+            currentStorageKey()
+        );
+
+
+    let selected =
+        conversations.find(
+            item =>
+                item.id === savedId
+        );
+
+
+    if (!selected) {
+
+        selected =
+            conversations[0];
 
     }
 
 
-    /* =====================================================
-       SAVE MESSAGE
-    ===================================================== */
+    if (!selected) {
 
-    async function saveMessage(
-        role,
-        content,
-        model = null
+        currentConversationId = null;
+
+        showWelcome();
+
+        return;
+
+    }
+
+
+    currentConversationId =
+        selected.id;
+
+    saveCurrentConversation();
+
+    if (
+        selected.model &&
+        [
+            "B&B AI",
+            "B&B AI Lite",
+            "B&B AI Pro",
+            "B&B AI Deep"
+        ].includes(
+            selected.model
+        )
     ) {
+
+        modelSelect.value =
+            selected.model;
+
+    }
+
+
+    const messages =
+        await loadMessages(
+            selected.id
+        );
+
+    displayMessages(
+        messages
+    );
+
+    renderConversationList();
+
+}
+
+
+/* ============================================================
+   SEND MESSAGE
+============================================================ */
+
+async function sendMessage() {
+
+    if (isSending) {
+        return;
+    }
+
+    const message =
+        input.value.trim();
+
+    if (!message) {
+        return;
+    }
+
+    isSending = true;
+
+    sendButton.disabled =
+        true;
+
+    const selectedModel =
+        modelSelect.value;
+
+    let thinking = null;
+
+
+    try {
+
+        if (!apiOnline) {
+
+            const connected =
+                await checkAPI(true);
+
+            if (!connected) {
+
+                throw new Error(
+                    language === "fa"
+                        ? "API متصل نیست."
+                        : "API is not connected."
+                );
+
+            }
+
+        }
+
+
+        if (!currentSession) {
+
+            await loadSession();
+
+        }
+
 
         if (!currentSession) {
 
@@ -1677,575 +3301,129 @@
         }
 
 
+        addMessage(
+            "user",
+            message
+        );
+
+
+        input.value = "";
+
+        resizeTextarea();
+
+
+        try {
+
+            await saveMessage(
+                "user",
+                message,
+                selectedModel
+            );
+
+        } catch (saveError) {
+
+            console.error(
+                "User message save error:",
+                saveError
+            );
+
+        }
+
+
+        const aiHistory =
+            [...history];
+
+        aiHistory.push({
+
+            role:
+                "user",
+
+            content:
+                message
+
+        });
+
+
+        thinking =
+            addThinking();
+
+
         const response =
-            await fetch(
-
-                `${API_BASE}` +
-                `/v1/conversations/` +
-                `${currentConversationId}` +
-                `/messages`,
-
+            await apiFetch(
+                BBAI_CONFIG
+                    .ai
+                    .endpoints
+                    .chat,
                 {
 
-                    method: "POST",
+                    method:"POST",
 
-                    headers:
-                        getAuthHeaders(),
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
 
                     body:
                         JSON.stringify({
 
-                            role:
-                                role,
-
-                            content:
-                                content,
+                            message,
 
                             model:
-                                model ||
-                                modelSelect.value
+                                selectedModel,
+
+                            history:
+                                aiHistory
 
                         })
 
                 }
-
             );
 
 
-        const data =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.error ||
-                "Could not save message."
-            );
-
-        }
-
-
-        return data.message;
-
-    }
-
-
-    /* =====================================================
-       LOAD CONVERSATIONS
-    ===================================================== */
-
-    async function loadConversations() {
-
-        if (!currentSession) {
-
-            return [];
-
-        }
-
-
-        const response =
-            await fetch(
-
-                `${API_BASE}/v1/conversations`,
-
-                {
-
-                    method: "GET",
-
-                    headers:
-                        getAuthHeaders(),
-
-                    cache:
-                        "no-store"
-
-                }
-
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.error ||
-                "Could not load conversations."
-            );
-
-        }
-
-
-        return (
-            data.conversations ||
-            []
-        );
-
-    }
-
-
-    /* =====================================================
-       LOAD MESSAGES
-    ===================================================== */
-
-    async function loadMessages(
-        conversationId
-    ) {
-
-        if (!currentSession) {
-
-            return [];
-
-        }
-
-
-        const response =
-            await fetch(
-
-                `${API_BASE}` +
-                `/v1/conversations/` +
-                `${conversationId}` +
-                `/messages`,
-
-                {
-
-                    method: "GET",
-
-                    headers:
-                        getAuthHeaders(),
-
-                    cache:
-                        "no-store"
-
-                }
-
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.error ||
-                "Could not load messages."
-            );
-
-        }
-
-
-        return (
-            data.messages ||
-            []
-        );
-
-    }
-
-
-    /* =====================================================
-       DISPLAY MESSAGES
-    ===================================================== */
-
-    function displayMessages(messages) {
-
-        chatInner.innerHTML = "";
-
-
-        if (!messages.length) {
-
-            showWelcome();
-
-            history = [];
-
-            return;
-
-        }
-
-
-        history =
-            messages.map(message => ({
-
-                role:
-                    message.role,
-
-                content:
-                    message.content
-
-            }));
-
-
-        for (const message of messages) {
-
-            addMessage(
-
-                message.role,
-
-                message.content,
-
-                message.model
-
-            );
-
-        }
-
-
-        scrollToBottom();
-
-    }
-
-
-    /* =====================================================
-       SHOW WELCOME
-    ===================================================== */
-
-    function showWelcome() {
-
-        chatInner.innerHTML = `
-
-            <div
-                class="welcome"
-                id="welcome"
-            >
-
-                <img
-                    src="logo.jpg"
-                    class="welcome-logo"
-                    alt="B&B AI"
-                >
-
-                <h1>
-                    What can I help with?
-                </h1>
-
-                <p>
-                    B&B AI · Created by B&B Studio
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* =====================================================
-       LOAD LAST CONVERSATION
-    ===================================================== */
-
-    async function loadLastConversation() {
-
-        if (!currentSession) {
-
-            return;
-
-        }
-
+        let data;
 
         try {
 
-            const conversations =
-                await loadConversations();
+            data =
+                await response.json();
 
+        } catch {
 
-            if (!conversations.length) {
-
-                return;
-
-            }
-
-
-            const latest =
-                conversations[0];
-
-
-            currentConversationId =
-                latest.id;
-
-
-            if (
-                latest.model &&
-                [
-                    "B&B AI",
-                    "B&B AI Lite",
-                    "B&B AI Pro",
-                    "B&B AI Deep"
-                ].includes(latest.model)
-            ) {
-
-                modelSelect.value =
-                    latest.model;
-
-            }
-
-
-            const messages =
-                await loadMessages(
-                    latest.id
-                );
-
-
-            displayMessages(messages);
-
-
-        } catch (error) {
-
-            console.error(
-                "Load conversation error:",
-                error
+            throw new Error(
+                `Invalid API response (${response.status})`
             );
 
         }
 
-    }
 
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
-    /* =====================================================
-       SEND MESSAGE
-    ===================================================== */
-
-    async function sendMessage() {
-
-        if (isSending) {
-
-            return;
-
-        }
-
-
-        const message =
-            input.value.trim();
-
-
-        if (!message) {
-
-            return;
-
-        }
-
-
-        isSending = true;
-
-        sendButton.disabled =
-            true;
-
-
-        const selectedModel =
-            modelSelect.value;
-
-
-        let thinking = null;
-
-
-        try {
-
-            /* =============================================
-               AUTH
-            ============================================= */
-
-            if (!currentSession) {
-
-                await loadSession();
-
-            }
-
-
-            if (!currentSession) {
-
-                throw new Error(
-                    "Please log in first."
-                );
-
-            }
-
-
-            /* =============================================
-               CONVERSATION
-            ============================================= */
-
-            if (!currentConversationId) {
-
-                await createConversation();
-
-            }
-
-
-            /* =============================================
-               SAVE CURRENT USER MESSAGE
-               ============================================= */
-
-            addMessage(
-                "user",
-                message
+            throw new Error(
+                data.error ||
+                `AI request failed (${response.status})`
             );
 
-
-            input.value = "";
-
-            resizeTextarea();
+        }
 
 
-            /*
-             * IMPORTANT:
-             * Save the message first,
-             * but do not stop the AI request
-             * if Supabase saving fails.
-             */
+        if (thinking) {
 
-            try {
+            thinking.remove();
 
-                await saveMessage(
-                    "user",
-                    message,
-                    selectedModel
-                );
+            thinking = null;
 
-            } catch (saveError) {
-
-                console.error(
-                    "User message save error:",
-                    saveError
-                );
-
-            }
+        }
 
 
-            /* =============================================
-               AI HISTORY
-            ============================================= */
-
-            const aiHistory =
-                [...history];
+        const reply =
+            data.reply ||
+            "No response received.";
 
 
-            /*
-             * The current user message is not yet inside
-             * history at this exact point, so include it.
-             */
-
-            aiHistory.push({
-
-                role:
-                    "user",
-
-                content:
-                    message
-
-            });
-
-
-            /* =============================================
-               THINKING
-            ============================================= */
-
-            thinking =
-                addThinking();
-
-
-            /* =============================================
-               CALL B&B AI
-            ============================================= */
-
-            const response =
-                await fetch(
-
-                    `${API_BASE}` +
-                    `${CHAT_ENDPOINT}`,
-
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                            JSON.stringify({
-
-                                message:
-                                    message,
-
-                                model:
-                                    selectedModel,
-
-                                history:
-                                    aiHistory
-
-                            })
-
-                    }
-
-                );
-
-
-            let data = null;
-
-
-            try {
-
-                data =
-                    await response.json();
-
-            } catch {
-
-                throw new Error(
-                    `Invalid API response (${response.status})`
-                );
-
-            }
-
-
-            if (
-                !response.ok ||
-                !data.success
-            ) {
-
-                throw new Error(
-                    data.error ||
-                    `AI request failed (${response.status})`
-                );
-
-            }
-
-
-            /* =============================================
-               REMOVE THINKING
-            ============================================= */
-
-            if (thinking) {
-
-                thinking.remove();
-
-                thinking = null;
-
-            }
-
-
-            const reply =
-                data.reply ||
-                "No response received.";
-
-
-            /* =============================================
-               SHOW AI RESPONSE
-            ============================================= */
-
+        const savedAssistant =
             addMessage(
 
                 "assistant",
@@ -2258,12 +3436,9 @@
             );
 
 
-            /* =============================================
-               SAVE AI RESPONSE
-            ============================================= */
+        try {
 
-            try {
-
+            const savedMessage =
                 await saveMessage(
 
                     "assistant",
@@ -2274,282 +3449,707 @@
 
                 );
 
-            } catch (saveError) {
 
-                console.error(
-                    "Assistant message save error:",
-                    saveError
-                );
+            /*
+             * Re-render reaction ID is not necessary
+             * for the current message. Future reloads
+             * use the Supabase message ID.
+             */
 
-            }
-
-
-            /* =============================================
-               UPDATE LOCAL HISTORY
-            ============================================= */
-
-            history.push({
-
-                role:
-                    "user",
-
-                content:
-                    message
-
-            });
-
-
-            history.push({
-
-                role:
-                    "assistant",
-
-                content:
-                    reply
-
-            });
-
-
-        } catch (error) {
+        } catch (saveError) {
 
             console.error(
-                "Send message error:",
-                error
+                "Assistant save error:",
+                saveError
             );
 
-
-            if (thinking) {
-
-                thinking.remove();
-
-            }
+        }
 
 
-            addMessage(
+        history.push({
 
+            role:
+                "user",
+
+            content:
+                message
+
+        });
+
+        history.push({
+
+            role:
                 "assistant",
 
-                "⚠️ Error: " +
-                error.message
+            content:
+                reply
 
-            );
+        });
 
-        } finally {
 
-            isSending = false;
+        await refreshConversationList();
 
-            sendButton.disabled =
-                false;
 
-            input.focus();
+    } catch (error) {
 
+        console.error(
+            "Send error:",
+            error
+        );
+
+        if (thinking) {
+            thinking.remove();
         }
 
-    }
+        showError(
+            error.message
+        );
 
 
-    /* =====================================================
-       NEW CHAT
-    ===================================================== */
+    } finally {
 
-    newChatButton.addEventListener(
+        isSending = false;
 
-        "click",
-
-        function() {
-
-            if (isSending) {
-
-                return;
-
-            }
-
-
-            history = [];
-
-
-            currentConversationId =
-                null;
-
-
-            showWelcome();
-
-
-            input.value =
-                "";
-
-
-            resizeTextarea();
-
-
-            input.focus();
-
-        }
-
-    );
-
-
-    /* =====================================================
-       MODEL CHANGE
-    ===================================================== */
-
-    modelSelect.addEventListener(
-
-        "change",
-
-        function() {
-
-            console.log(
-                "B&B AI model:",
-                modelSelect.value
-            );
-
-        }
-
-    );
-
-
-    /* =====================================================
-       SEND BUTTON
-    ===================================================== */
-
-    sendButton.addEventListener(
-        "click",
-        sendMessage
-    );
-
-
-    /* =====================================================
-       ENTER TO SEND
-    ===================================================== */
-
-    input.addEventListener(
-
-        "keydown",
-
-        function(event) {
-
-            if (
-
-                event.key === "Enter" &&
-
-                !event.shiftKey
-
-            ) {
-
-                event.preventDefault();
-
-                sendMessage();
-
-            }
-
-        }
-
-    );
-
-
-    /* =====================================================
-       AUTO RESIZE
-    ===================================================== */
-
-    function resizeTextarea() {
-
-        input.style.height =
-            "auto";
-
-
-        input.style.height =
-            Math.min(
-                input.scrollHeight,
-                180
-            ) + "px";
-
-    }
-
-
-    input.addEventListener(
-        "input",
-        resizeTextarea
-    );
-
-
-    /* =====================================================
-       SUPABASE AUTH STATE
-    ===================================================== */
-
-    supabaseClient.auth.onAuthStateChange(
-
-        async function(
-            event,
-            session
-        ) {
-
-            currentSession =
-                session;
-
-
-            if (
-                event === "SIGNED_IN"
-            ) {
-
-                await loadLastConversation();
-
-            }
-
-
-            if (
-                event === "SIGNED_OUT"
-            ) {
-
-                currentSession =
-                    null;
-
-                currentConversationId =
-                    null;
-
-                history = [];
-
-                showWelcome();
-
-            }
-
-        }
-
-    );
-
-
-    /* =====================================================
-       START
-    ===================================================== */
-
-    async function start() {
-
-        loadTheme();
-
-        resizeTextarea();
-
-        await loadSession();
-
-        await checkAPI();
-
-
-        if (currentSession) {
-
-            await loadLastConversation();
-
-        }
-
+        sendButton.disabled =
+            false;
 
         input.focus();
 
     }
 
+}
 
-    start();
+
+/* ============================================================
+   ERROR
+============================================================ */
+
+function showError(
+    message
+) {
+
+    addMessage(
+        "assistant",
+        t("error") + message
+    );
+
+}
+
+
+/* ============================================================
+   NEW CHAT
+============================================================ */
+
+newChatButton.onclick =
+    function() {
+
+        if (isSending) {
+            return;
+        }
+
+        history = [];
+
+        currentConversationId =
+            null;
+
+        saveCurrentConversation();
+
+        showWelcome();
+
+        renderConversationList();
+
+        input.value = "";
+
+        resizeTextarea();
+
+        input.focus();
+
+    };
+
+
+/* ============================================================
+   RENAME
+============================================================ */
+
+function openRenameModal(
+    conversation
+) {
+
+    renameConversationId =
+        conversation.id;
+
+    renameInput.value =
+        conversation.title ||
+        "";
+
+    renameModal.classList.add(
+        "show"
+    );
+
+    setTimeout(
+        () => {
+
+            renameInput.focus();
+
+            renameInput.select();
+
+        },
+        50
+    );
+
+}
+
+
+async function renameConversation() {
+
+    if (!renameConversationId) {
+        return;
+    }
+
+    const title =
+        renameInput.value.trim();
+
+    if (!title) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await apiFetch(
+                `/v1/conversations/` +
+                `${renameConversationId}`,
+                {
+
+                    method:"PATCH",
+
+                    headers:
+                        getAuthHeaders(),
+
+                    body:
+                        JSON.stringify({
+                            title
+                        })
+
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "Rename failed."
+            );
+
+        }
+
+        renameModal.classList.remove(
+            "show"
+        );
+
+        renameConversationId =
+            null;
+
+        await refreshConversationList();
+
+    } catch (error) {
+
+        alert(error.message);
+
+    }
+
+}
+
+
+/* ============================================================
+   DELETE
+============================================================ */
+
+async function deleteConversation(
+    conversation
+) {
+
+    const title =
+        conversation.title ||
+        "New Chat";
+
+    const confirmed =
+        confirm(
+            language === "fa"
+                ? `گفت‌وگوی «${title}» حذف شود؟`
+                : `Delete "${title}"?`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await apiFetch(
+                `/v1/conversations/` +
+                `${conversation.id}`,
+                {
+
+                    method:"DELETE",
+
+                    headers:
+                        getAuthHeaders()
+
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error ||
+                "Delete failed."
+            );
+
+        }
+
+
+        if (
+            currentConversationId ===
+            conversation.id
+        ) {
+
+            currentConversationId =
+                null;
+
+            saveCurrentConversation();
+
+            history = [];
+
+            showWelcome();
+
+        }
+
+
+        await refreshConversationList();
+
+
+        if (
+            !currentConversationId &&
+            conversations.length
+        ) {
+
+            await openConversation(
+                conversations[0]
+            );
+
+        }
+
+    } catch (error) {
+
+        alert(error.message);
+
+    }
+
+}
+
+
+/* ============================================================
+   TEXTAREA
+============================================================ */
+
+function resizeTextarea() {
+
+    input.style.height =
+        "auto";
+
+    input.style.height =
+        Math.min(
+            input.scrollHeight,
+            180
+        ) + "px";
+
+}
+
+
+input.addEventListener(
+    "input",
+    resizeTextarea
+);
+
+
+/* ============================================================
+   SEND
+============================================================ */
+
+sendButton.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+input.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   MODEL
+============================================================ */
+
+modelSelect.addEventListener(
+    "change",
+    async () => {
+
+        if (
+            currentConversationId
+        ) {
+
+            try {
+
+                await apiFetch(
+                    `/v1/conversations/` +
+                    `${currentConversationId}`,
+                    {
+
+                        method:"PATCH",
+
+                        headers:
+                            getAuthHeaders(),
+
+                        body:
+                            JSON.stringify({
+
+                                title:
+                                    conversations
+                                        .find(
+                                            item =>
+                                                item.id ===
+                                                currentConversationId
+                                        )
+                                        ?.title ||
+                                    "New Chat"
+
+                            })
+
+                    }
+                );
+
+            } catch {}
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+
+themeButton.onclick =
+    toggleTheme;
+
+
+languageButton.onclick =
+    () => {
+
+        settingsModal.classList.add(
+            "show"
+        );
+
+    };
+
+
+aboutButton.onclick =
+    () => {
+
+        aboutModal.classList.add(
+            "show"
+        );
+
+    };
+
+
+document.querySelectorAll(
+    "[data-language]"
+).forEach(
+    button => {
+
+        button.onclick =
+            () => {
+
+                setLanguage(
+                    button.dataset.language
+                );
+
+            };
+
+    }
+);
+
+
+document.getElementById(
+    "closeAboutButton"
+).onclick =
+    () => {
+
+        aboutModal.classList.remove(
+            "show"
+        );
+
+    };
+
+
+document.getElementById(
+    "cancelRenameButton"
+).onclick =
+    () => {
+
+        renameModal.classList.remove(
+            "show"
+        );
+
+        renameConversationId =
+            null;
+
+    };
+
+
+document.getElementById(
+    "saveRenameButton"
+).onclick =
+    renameConversation;
+
+
+renameInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            renameConversation();
+
+        }
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            renameModal.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   CONNECTION
+============================================================ */
+
+document.getElementById(
+    "openTunnelButton"
+).onclick =
+    () => {
+
+        window.open(
+            BBAI_CONFIG.ai.baseUrl + "/",
+            "_blank",
+            "noopener"
+        );
+
+    };
+
+
+document.getElementById(
+    "retryApiButton"
+).onclick =
+    async () => {
+
+        const connected =
+            await checkAPI(false);
+
+        if (connected) {
+
+            connectionModal.classList.remove(
+                "show"
+            );
+
+        }
+
+    };
+
+
+document.getElementById(
+    "closeConnectionButton"
+).onclick =
+    () => {
+
+        connectionModal.classList.remove(
+            "show"
+        );
+
+    };
+
+
+/* ============================================================
+   MODAL BACKDROP
+============================================================ */
+
+[
+    connectionModal,
+    settingsModal,
+    aboutModal,
+    renameModal
+].forEach(
+    modal => {
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === modal
+                ) {
+
+                    modal.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* ============================================================
+   AUTH STATE
+============================================================ */
+
+supabaseClient.auth.onAuthStateChange(
+    async (
+        event,
+        session
+    ) => {
+
+        currentSession =
+            session;
+
+        if (
+            event === "SIGNED_IN"
+        ) {
+
+            await refreshConversationList();
+
+            await loadSelectedConversation();
+
+        }
+
+
+        if (
+            event === "SIGNED_OUT"
+        ) {
+
+            currentSession = null;
+
+            currentConversationId =
+                null;
+
+            history = [];
+
+            conversations = [];
+
+            saveCurrentConversation();
+
+            chatList.innerHTML = "";
+
+            showWelcome();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   START
+============================================================ */
+
+async function start() {
+
+    loadTheme();
+
+    applyLanguage();
+
+    resizeTextarea();
+
+    await loadSession();
+
+    /*
+     * First check the public LocalTunnel API.
+     * If its interstitial blocks the request,
+     * the connection modal appears.
+     */
+
+    await checkAPI(true);
+
+
+    if (currentSession) {
+
+        try {
+
+            await loadSelectedConversation();
+
+        } catch (error) {
+
+            console.error(
+                "Initial chat load:",
+                error
+            );
+
+        }
+
+    }
+
+
+    input.focus();
+
+}
+
+
+start();
 
 </script>
 
-
 </body>
-
 </html>
