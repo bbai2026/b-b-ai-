@@ -12,13 +12,14 @@ const BBAI_CONFIG = {
 
         url: "https://pgzkclbzouxtheyabjhy.supabase.co",
 
-        publishableKey: "sb_publishable__KjAlRfBBwv07nr7Rwb_CA_ijkB8rTi"
+        publishableKey:
+            "sb_publishable__KjAlRfBBwv07nr7Rwb_CA_ijkB8rTi"
 
     },
 
 
     /* =========================
-       B&B AI LOCAL API
+       B&B AI API
     ========================= */
 
     ai: {
