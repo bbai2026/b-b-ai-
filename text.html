@@ -2,14 +2,27 @@
 <html lang="en" dir="ltr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#ffffff">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
 
     <title>B&B AI</title>
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- B&B AI API CONFIG -->
     <script src="api.js"></script>
+
 
     <style>
 
@@ -18,45 +31,62 @@
         ===================================================== */
 
         :root {
+
             --bg: #ffffff;
+
             --sidebar: #f7f7f8;
+
             --surface: #ffffff;
+
             --surface-2: #f3f3f3;
 
             --text: #111111;
+
             --muted: #777777;
 
             --border: #e5e5e5;
 
             --user-bg: #f1f1f1;
+
             --assistant-bg: transparent;
 
             --accent: #7c5cff;
+
             --accent-hover: #6948ed;
 
             --danger: #e5484d;
 
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            --shadow:
+                0 8px 30px rgba(0, 0, 0, 0.06);
         }
 
+
         html.dark {
+
             --bg: #0b0b0f;
+
             --sidebar: #101014;
+
             --surface: #0b0b0f;
+
             --surface-2: #18181d;
 
             --text: #f5f5f5;
+
             --muted: #929292;
 
             --border: #29292f;
 
             --user-bg: #1b1b21;
+
             --assistant-bg: transparent;
 
             --accent: #9277ff;
+
             --accent-hover: #a58dff;
 
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            --shadow:
+                0 8px 30px rgba(0, 0, 0, 0.25);
         }
 
 
@@ -68,12 +98,16 @@
             box-sizing: border-box;
         }
 
+
         html,
         body {
+
             margin: 0;
+
             padding: 0;
 
             width: 100%;
+
             height: 100%;
 
             font-family:
@@ -85,10 +119,12 @@
                 sans-serif;
 
             background: var(--bg);
+
             color: var(--text);
 
             overflow: hidden;
         }
+
 
         button,
         textarea,
@@ -102,9 +138,11 @@
         ===================================================== */
 
         .app {
+
             display: flex;
 
             width: 100%;
+
             height: 100vh;
 
             background: var(--bg);
@@ -116,30 +154,42 @@
         ===================================================== */
 
         .sidebar {
+
             width: 260px;
 
             background: var(--sidebar);
 
-            border-right: 1px solid var(--border);
+            border-right:
+                1px solid var(--border);
 
             display: flex;
+
             flex-direction: column;
 
             padding: 16px;
 
-            transition: width 0.2s ease;
+            transition:
+                width 0.2s ease;
         }
+
 
         .brand {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
 
-            padding: 8px 6px 20px;
+            padding:
+                8px 6px 20px;
         }
 
+
         .brand-logo {
+
             width: 34px;
+
             height: 34px;
 
             border-radius: 10px;
@@ -149,14 +199,21 @@
             background: var(--surface-2);
         }
 
+
         .brand-name {
+
             font-size: 16px;
+
             font-weight: 700;
         }
 
+
         .brand-subtitle {
+
             font-size: 11px;
+
             color: var(--muted);
+
             margin-top: 2px;
         }
 
@@ -166,9 +223,11 @@
         ===================================================== */
 
         .new-chat {
+
             width: 100%;
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
             background: var(--surface);
 
@@ -176,17 +235,22 @@
 
             border-radius: 10px;
 
-            padding: 11px 13px;
+            padding:
+                11px 13px;
 
             cursor: pointer;
 
             text-align: left;
 
-            transition: 0.15s ease;
+            transition:
+                0.15s ease;
         }
 
+
         .new-chat:hover {
-            background: var(--surface-2);
+
+            background:
+                var(--surface-2);
         }
 
 
@@ -195,29 +259,40 @@
         ===================================================== */
 
         .nav {
+
             margin-top: 20px;
         }
 
+
         .nav-title {
+
             font-size: 11px;
 
             color: var(--muted);
 
-            padding: 0 7px 8px;
+            padding:
+                0 7px 8px;
 
-            text-transform: uppercase;
+            text-transform:
+                uppercase;
 
-            letter-spacing: 0.06em;
+            letter-spacing:
+                0.06em;
         }
 
+
         .nav-item {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
 
             width: 100%;
 
-            padding: 10px 9px;
+            padding:
+                10px 9px;
 
             border-radius: 9px;
 
@@ -227,11 +302,15 @@
 
             font-size: 14px;
 
-            background: transparent;
+            background:
+                transparent;
         }
 
+
         .nav-item.active {
-            background: var(--surface-2);
+
+            background:
+                var(--surface-2);
         }
 
 
@@ -240,20 +319,26 @@
         ===================================================== */
 
         .sidebar-bottom {
+
             margin-top: auto;
 
             display: flex;
+
             flex-direction: column;
 
             gap: 8px;
         }
 
+
         .sidebar-button {
+
             width: 100%;
 
-            border: 1px solid transparent;
+            border:
+                1px solid transparent;
 
-            background: transparent;
+            background:
+                transparent;
 
             color: var(--text);
 
@@ -266,8 +351,11 @@
             text-align: left;
         }
 
+
         .sidebar-button:hover {
-            background: var(--surface-2);
+
+            background:
+                var(--surface-2);
         }
 
 
@@ -276,11 +364,13 @@
         ===================================================== */
 
         .main {
+
             flex: 1;
 
             min-width: 0;
 
             display: flex;
+
             flex-direction: column;
 
             height: 100vh;
@@ -292,6 +382,7 @@
         ===================================================== */
 
         .header {
+
             height: 64px;
 
             flex-shrink: 0;
@@ -300,29 +391,44 @@
 
             align-items: center;
 
-            justify-content: space-between;
+            justify-content:
+                space-between;
 
-            padding: 0 24px;
+            padding:
+                0 24px;
 
-            border-bottom: 1px solid var(--border);
+            border-bottom:
+                1px solid var(--border);
 
-            background: var(--surface);
+            background:
+                var(--surface);
         }
 
+
         .header-left {
+
             display: flex;
+
             align-items: center;
+
             gap: 12px;
         }
 
+
         .header-title {
+
             font-size: 15px;
+
             font-weight: 650;
         }
 
+
         .status {
+
             display: flex;
+
             align-items: center;
+
             gap: 6px;
 
             font-size: 11px;
@@ -330,17 +436,24 @@
             color: var(--muted);
         }
 
+
         .status-dot {
+
             width: 7px;
+
             height: 7px;
 
             border-radius: 50%;
 
-            background: #35b86b;
+            background:
+                #35b86b;
         }
 
+
         .status-dot.offline {
-            background: var(--danger);
+
+            background:
+                var(--danger);
         }
 
 
@@ -349,15 +462,20 @@
         ===================================================== */
 
         .model-select {
-            border: 1px solid var(--border);
 
-            background: var(--surface);
+            border:
+                1px solid var(--border);
 
-            color: var(--text);
+            background:
+                var(--surface);
+
+            color:
+                var(--text);
 
             border-radius: 9px;
 
-            padding: 8px 11px;
+            padding:
+                8px 11px;
 
             outline: none;
 
@@ -370,6 +488,7 @@
         ===================================================== */
 
         .chat {
+
             flex: 1;
 
             min-height: 0;
@@ -379,14 +498,17 @@
             scroll-behavior: smooth;
         }
 
+
         .chat-inner {
+
             width: 100%;
 
             max-width: 900px;
 
             margin: 0 auto;
 
-            padding: 30px 24px 150px;
+            padding:
+                30px 24px 150px;
         }
 
 
@@ -395,6 +517,7 @@
         ===================================================== */
 
         .welcome {
+
             min-height: 55vh;
 
             display: flex;
@@ -408,8 +531,11 @@
             text-align: center;
         }
 
+
         .welcome-logo {
+
             width: 58px;
+
             height: 58px;
 
             border-radius: 17px;
@@ -419,16 +545,22 @@
             margin-bottom: 18px;
         }
 
+
         .welcome h1 {
+
             margin: 0;
 
             font-size: 30px;
 
-            letter-spacing: -0.03em;
+            letter-spacing:
+                -0.03em;
         }
 
+
         .welcome p {
-            margin: 10px 0 0;
+
+            margin:
+                10px 0 0;
 
             color: var(--muted);
 
@@ -441,22 +573,32 @@
         ===================================================== */
 
         .message {
+
             display: flex;
 
             width: 100%;
 
-            margin: 18px 0;
+            margin:
+                18px 0;
         }
+
 
         .message.user {
-            justify-content: flex-end;
+
+            justify-content:
+                flex-end;
         }
+
 
         .message.assistant {
-            justify-content: flex-start;
+
+            justify-content:
+                flex-start;
         }
 
+
         .message-content {
+
             max-width: 78%;
 
             line-height: 1.65;
@@ -468,19 +610,28 @@
             word-break: break-word;
         }
 
+
         .user .message-content {
-            background: var(--user-bg);
+
+            background:
+                var(--user-bg);
 
             border-radius: 16px;
 
-            padding: 11px 15px;
+            padding:
+                11px 15px;
         }
+
 
         .assistant .message-content {
-            padding: 5px 0;
+
+            padding:
+                5px 0;
         }
 
+
         .message-meta {
+
             font-size: 10px;
 
             color: var(--muted);
@@ -494,46 +645,66 @@
         ===================================================== */
 
         .thinking {
+
             display: flex;
 
             align-items: center;
 
             gap: 5px;
 
-            padding: 8px 0;
+            padding:
+                8px 0;
         }
 
+
         .thinking span {
+
             width: 6px;
+
             height: 6px;
 
-            background: var(--muted);
+            background:
+                var(--muted);
 
             border-radius: 50%;
 
-            animation: thinking 1.2s infinite ease-in-out;
+            animation:
+                thinking 1.2s infinite ease-in-out;
         }
+
 
         .thinking span:nth-child(2) {
-            animation-delay: 0.15s;
+
+            animation-delay:
+                0.15s;
         }
 
+
         .thinking span:nth-child(3) {
-            animation-delay: 0.3s;
+
+            animation-delay:
+                0.3s;
         }
+
 
         @keyframes thinking {
 
             0%,
             80%,
             100% {
+
                 opacity: 0.25;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
             }
 
             40% {
+
                 opacity: 1;
-                transform: translateY(-3px);
+
+                transform:
+                    translateY(-3px);
             }
         }
 
@@ -543,14 +714,17 @@
         ===================================================== */
 
         .composer {
+
             position: fixed;
 
             bottom: 0;
 
             left: 260px;
+
             right: 0;
 
-            padding: 18px 24px 22px;
+            padding:
+                18px 24px 22px;
 
             background:
                 linear-gradient(
@@ -562,7 +736,9 @@
             pointer-events: none;
         }
 
+
         .composer-inner {
+
             width: 100%;
 
             max-width: 900px;
@@ -572,25 +748,33 @@
             pointer-events: auto;
         }
 
+
         .input-box {
+
             display: flex;
 
             align-items: flex-end;
 
             gap: 10px;
 
-            background: var(--surface);
+            background:
+                var(--surface);
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
             border-radius: 16px;
 
-            padding: 10px 10px 10px 15px;
+            padding:
+                10px 10px 10px 15px;
 
-            box-shadow: var(--shadow);
+            box-shadow:
+                var(--shadow);
         }
 
+
         textarea {
+
             flex: 1;
 
             resize: none;
@@ -599,9 +783,11 @@
 
             outline: none;
 
-            background: transparent;
+            background:
+                transparent;
 
-            color: var(--text);
+            color:
+                var(--text);
 
             min-height: 24px;
 
@@ -609,24 +795,32 @@
 
             line-height: 1.5;
 
-            padding: 4px 0;
+            padding:
+                4px 0;
 
             font-size: 15px;
         }
 
+
         textarea::placeholder {
-            color: var(--muted);
+
+            color:
+                var(--muted);
         }
 
+
         .send-button {
+
             width: 38px;
+
             height: 38px;
 
             border: none;
 
             border-radius: 11px;
 
-            background: var(--accent);
+            background:
+                var(--accent);
 
             color: white;
 
@@ -640,23 +834,33 @@
 
             justify-content: center;
 
-            transition: 0.15s ease;
+            transition:
+                0.15s ease;
         }
+
 
         .send-button:hover {
-            background: var(--accent-hover);
+
+            background:
+                var(--accent-hover);
         }
+
 
         .send-button:disabled {
+
             opacity: 0.45;
 
-            cursor: not-allowed;
+            cursor:
+                not-allowed;
         }
 
+
         .composer-note {
+
             text-align: center;
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             font-size: 10px;
 
@@ -671,39 +875,59 @@
         @media (max-width: 800px) {
 
             .sidebar {
+
                 display: none;
             }
 
+
             .composer {
+
                 left: 0;
             }
 
+
             .header {
-                padding: 0 15px;
+
+                padding:
+                    0 15px;
             }
+
 
             .chat-inner {
-                padding-left: 15px;
-                padding-right: 15px;
+
+                padding-left:
+                    15px;
+
+                padding-right:
+                    15px;
             }
+
 
             .message-content {
-                max-width: 90%;
+
+                max-width:
+                    90%;
             }
 
+
             .welcome h1 {
-                font-size: 25px;
+
+                font-size:
+                    25px;
             }
 
         }
 
     </style>
+
 </head>
 
 
 <body>
 
+
 <div class="app">
+
 
     <!-- =====================================================
          SIDEBAR
@@ -711,7 +935,9 @@
 
     <aside class="sidebar">
 
+
         <div class="brand">
+
 
             <img
                 src="logo.jpg"
@@ -719,17 +945,20 @@
                 alt="B&B AI"
             >
 
+
             <div>
 
                 <div class="brand-name">
                     B&B AI
                 </div>
 
+
                 <div class="brand-subtitle">
                     B&B Studio
                 </div>
 
             </div>
+
 
         </div>
 
@@ -744,22 +973,31 @@
 
         <div class="nav">
 
+
             <div class="nav-title">
                 Modes
             </div>
+
 
             <a
                 class="nav-item active"
                 href="text.html"
             >
+
                 💬
-                <span>Chat / Text</span>
+
+                <span>
+                    Chat / Text
+                </span>
+
             </a>
+
 
         </div>
 
 
         <div class="sidebar-bottom">
+
 
             <button
                 class="sidebar-button"
@@ -768,7 +1006,9 @@
                 🌙 Dark mode
             </button>
 
+
         </div>
+
 
     </aside>
 
@@ -780,32 +1020,43 @@
     <main class="main">
 
 
-        <!-- HEADER -->
+        <!-- =================================================
+             HEADER
+        ================================================== -->
 
         <header class="header">
 
+
             <div class="header-left">
 
+
                 <div>
+
 
                     <div class="header-title">
                         B&B AI
                     </div>
 
+
                     <div class="status">
+
 
                         <span
                             class="status-dot"
                             id="statusDot"
                         ></span>
 
+
                         <span id="statusText">
                             Checking API...
                         </span>
 
+
                     </div>
 
+
                 </div>
+
 
             </div>
 
@@ -815,43 +1066,54 @@
                 id="modelSelect"
             >
 
+
                 <option value="B&B AI">
                     B&B AI
                 </option>
+
 
                 <option value="B&B AI Lite">
                     B&B AI Lite
                 </option>
 
+
                 <option value="B&B AI Pro">
                     B&B AI Pro
                 </option>
+
 
                 <option value="B&B AI Deep">
                     B&B AI Deep
                 </option>
 
+
             </select>
+
 
         </header>
 
 
-        <!-- CHAT -->
+        <!-- =================================================
+             CHAT
+        ================================================== -->
 
         <section
             class="chat"
             id="chat"
         >
 
+
             <div
                 class="chat-inner"
                 id="chatInner"
             >
 
+
                 <div
                     class="welcome"
                     id="welcome"
                 >
+
 
                     <img
                         src="logo.jpg"
@@ -859,34 +1121,45 @@
                         alt="B&B AI"
                     >
 
+
                     <h1>
                         What can I help with?
                     </h1>
+
 
                     <p>
                         B&B AI · Created by B&B Studio
                     </p>
 
+
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- COMPOSER -->
+        <!-- =================================================
+             COMPOSER
+        ================================================== -->
 
         <div class="composer">
 
+
             <div class="composer-inner">
 
+
                 <div class="input-box">
+
 
                     <textarea
                         id="messageInput"
                         rows="1"
                         placeholder="Message B&B AI..."
                     ></textarea>
+
 
                     <button
                         class="send-button"
@@ -896,25 +1169,41 @@
                         ↑
                     </button>
 
+
                 </div>
 
+
                 <div class="composer-note">
-                    B&B AI can make mistakes. Check important information.
+
+                    B&B AI can make mistakes.
+                    Check important information.
+
                 </div>
+
 
             </div>
 
+
         </div>
 
+
     </main>
+
 
 </div>
 
 
 <script>
 
+
     /* =====================================================
        B&B AI - TEXT CLIENT
+       SUPABASE CHAT MEMORY
+    ===================================================== */
+
+
+    /* =====================================================
+       API CONFIG
     ===================================================== */
 
     const API_BASE =
@@ -926,6 +1215,20 @@
 
 
     /* =====================================================
+       SUPABASE CLIENT
+    ===================================================== */
+
+    const supabaseClient =
+        window.supabase.createClient(
+
+            BBAI_CONFIG.supabase.url,
+
+            BBAI_CONFIG.supabase.publishableKey
+
+        );
+
+
+    /* =====================================================
        STATE
     ===================================================== */
 
@@ -933,40 +1236,67 @@
 
     let isSending = false;
 
+    let currentConversationId = null;
+
+    let currentSession = null;
+
 
     /* =====================================================
        ELEMENTS
     ===================================================== */
 
     const chat =
-        document.getElementById("chat");
+        document.getElementById(
+            "chat"
+        );
+
 
     const chatInner =
-        document.getElementById("chatInner");
+        document.getElementById(
+            "chatInner"
+        );
 
-    const welcome =
-        document.getElementById("welcome");
 
     const input =
-        document.getElementById("messageInput");
+        document.getElementById(
+            "messageInput"
+        );
+
 
     const sendButton =
-        document.getElementById("sendButton");
+        document.getElementById(
+            "sendButton"
+        );
+
 
     const modelSelect =
-        document.getElementById("modelSelect");
+        document.getElementById(
+            "modelSelect"
+        );
+
 
     const newChatButton =
-        document.getElementById("newChatButton");
+        document.getElementById(
+            "newChatButton"
+        );
+
 
     const themeButton =
-        document.getElementById("themeButton");
+        document.getElementById(
+            "themeButton"
+        );
+
 
     const statusDot =
-        document.getElementById("statusDot");
+        document.getElementById(
+            "statusDot"
+        );
+
 
     const statusText =
-        document.getElementById("statusText");
+        document.getElementById(
+            "statusText"
+        );
 
 
     /* =====================================================
@@ -976,54 +1306,80 @@
     function loadTheme() {
 
         const saved =
-            localStorage.getItem("bbai_theme");
+            localStorage.getItem(
+                "bbai_theme"
+            );
+
 
         if (saved === "dark") {
 
-            document.documentElement.classList.add("dark");
+            document.documentElement
+                .classList
+                .add("dark");
+
 
             themeButton.textContent =
                 "☀️ Light mode";
 
+
         } else {
 
-            document.documentElement.classList.remove("dark");
+            document.documentElement
+                .classList
+                .remove("dark");
+
 
             themeButton.textContent =
                 "🌙 Dark mode";
+
         }
+
     }
 
 
     function toggleTheme() {
 
         const isDark =
-            document.documentElement.classList.contains("dark");
+            document.documentElement
+                .classList
+                .contains("dark");
+
 
         if (isDark) {
 
-            document.documentElement.classList.remove("dark");
+            document.documentElement
+                .classList
+                .remove("dark");
+
 
             localStorage.setItem(
                 "bbai_theme",
                 "light"
             );
 
+
             themeButton.textContent =
                 "🌙 Dark mode";
 
+
         } else {
 
-            document.documentElement.classList.add("dark");
+            document.documentElement
+                .classList
+                .add("dark");
+
 
             localStorage.setItem(
                 "bbai_theme",
                 "dark"
             );
 
+
             themeButton.textContent =
                 "☀️ Light mode";
+
         }
+
     }
 
 
@@ -1037,6 +1393,88 @@
 
 
     /* =====================================================
+       GET SESSION
+    ===================================================== */
+
+    async function loadSession() {
+
+        try {
+
+            const result =
+                await supabaseClient.auth.getSession();
+
+
+            const data =
+                result.data;
+
+
+            const error =
+                result.error;
+
+
+            if (error) {
+
+                console.error(
+                    "Supabase session error:",
+                    error
+                );
+
+
+                return null;
+            }
+
+
+            currentSession =
+                data.session;
+
+
+            return currentSession;
+
+
+        } catch (error) {
+
+            console.error(
+                "Session error:",
+                error
+            );
+
+
+            return null;
+        }
+
+    }
+
+
+    /* =====================================================
+       AUTH HEADERS
+    ===================================================== */
+
+    function getAuthHeaders() {
+
+        const headers = {
+
+            "Content-Type":
+                "application/json"
+
+        };
+
+
+        if (
+            currentSession &&
+            currentSession.access_token
+        ) {
+
+            headers["Authorization"] =
+                `Bearer ${currentSession.access_token}`;
+
+        }
+
+
+        return headers;
+    }
+
+
+    /* =====================================================
        API STATUS
     ===================================================== */
 
@@ -1046,27 +1484,42 @@
 
             const response =
                 await fetch(
+
                     `${API_BASE}/api/status`,
+
                     {
                         method: "GET"
                     }
+
                 );
 
+
             if (!response.ok) {
-                throw new Error("API offline");
+
+                throw new Error(
+                    "API offline"
+                );
+
             }
+
 
             const data =
                 await response.json();
 
-            if (data.success && data.ollama) {
+
+            if (
+                data.success &&
+                data.ollama
+            ) {
 
                 statusDot.classList.remove(
                     "offline"
                 );
 
+
                 statusText.textContent =
                     "Online";
+
 
             } else {
 
@@ -1074,9 +1527,12 @@
                     "offline"
                 );
 
+
                 statusText.textContent =
                     "AI offline";
+
             }
+
 
         } catch (error) {
 
@@ -1084,74 +1540,116 @@
                 "offline"
             );
 
+
             statusText.textContent =
                 "API offline";
+
         }
+
     }
 
 
-    checkAPI();
-
-
     /* =====================================================
-       ADD MESSAGE
+       ADD MESSAGE TO UI
     ===================================================== */
 
     function addMessage(
         role,
-        content
+        content,
+        modelName = null
     ) {
 
+        const welcome =
+            document.getElementById(
+                "welcome"
+            );
+
+
         if (welcome) {
-            welcome.style.display = "none";
+
+            welcome.style.display =
+                "none";
+
         }
 
 
         const message =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         message.className =
             `message ${role}`;
 
 
         const wrapper =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         const meta =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         meta.className =
             "message-meta";
 
+
         meta.textContent =
+
             role === "user"
+
                 ? "You"
-                : modelSelect.value;
+
+                : (
+                    modelName ||
+                    modelSelect.value
+                );
 
 
         const text =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         text.className =
             "message-content";
+
 
         text.textContent =
             content;
 
 
-        wrapper.appendChild(meta);
+        wrapper.appendChild(
+            meta
+        );
 
-        wrapper.appendChild(text);
 
-        message.appendChild(wrapper);
+        wrapper.appendChild(
+            text
+        );
 
-        chatInner.appendChild(message);
+
+        message.appendChild(
+            wrapper
+        );
+
+
+        chatInner.appendChild(
+            message
+        );
 
 
         scrollToBottom();
 
+
         return message;
+
     }
 
 
@@ -1161,35 +1659,55 @@
 
     function addThinking() {
 
+        const welcome =
+            document.getElementById(
+                "welcome"
+            );
+
+
         if (welcome) {
-            welcome.style.display = "none";
+
+            welcome.style.display =
+                "none";
+
         }
 
 
         const message =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         message.className =
             "message assistant";
 
 
         const thinking =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         thinking.className =
             "thinking";
 
 
         thinking.innerHTML = `
+
             <span></span>
+
             <span></span>
+
             <span></span>
+
         `;
 
 
         message.appendChild(
             thinking
         );
+
 
         chatInner.appendChild(
             message
@@ -1198,7 +1716,9 @@
 
         scrollToBottom();
 
+
         return message;
+
     }
 
 
@@ -1208,231 +1728,373 @@
 
     function scrollToBottom() {
 
-        requestAnimationFrame(() => {
+        requestAnimationFrame(
 
-            chat.scrollTop =
-                chat.scrollHeight;
+            () => {
 
-        });
-    }
+                chat.scrollTop =
+                    chat.scrollHeight;
 
+            }
 
-    /* =====================================================
-       SEND MESSAGE
-    ===================================================== */
-
-    async function sendMessage() {
-
-        if (isSending) {
-            return;
-        }
-
-
-        const message =
-            input.value.trim();
-
-
-        if (!message) {
-            return;
-        }
-
-
-        const selectedModel =
-            modelSelect.value;
-
-
-        isSending = true;
-
-        sendButton.disabled = true;
-
-
-        addMessage(
-            "user",
-            message
         );
 
-
-        input.value = "";
-
-        resizeTextarea();
+    }
 
 
-        const thinking =
-            addThinking();
+    /* =====================================================
+       CREATE CONVERSATION
+    ===================================================== */
+
+    async function createConversation() {
+
+        if (!currentSession) {
+
+            throw new Error(
+                "Please log in first."
+            );
+
+        }
 
 
-        try {
+        const response =
+            await fetch(
 
-            const response =
-                await fetch(
-                    `${API_BASE}${CHAT_ENDPOINT}`,
-                    {
-                        method: "POST",
+                `${API_BASE}/v1/conversations`,
 
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
+                {
 
-                        body: JSON.stringify({
+                    method: "POST",
 
-                            message: message,
+                    headers:
+                        getAuthHeaders(),
 
-                            model: selectedModel,
+                    body:
+                        JSON.stringify({
 
-                            history: history
+                            title:
+                                "New Chat",
+
+                            model:
+                                modelSelect.value
 
                         })
-                    }
-                );
 
+                }
 
-            const data =
-                await response.json();
-
-
-            if (!response.ok || !data.success) {
-
-                throw new Error(
-                    data.error ||
-                    "Request failed."
-                );
-            }
-
-
-            thinking.remove();
-
-
-            const reply =
-                data.reply ||
-                "No response received.";
-
-
-            addMessage(
-                "assistant",
-                reply
             );
 
 
-            /* =============================================
-               UPDATE HISTORY
-            ============================================= */
-
-            history.push({
-
-                role: "user",
-
-                content: message
-
-            });
+        const data =
+            await response.json();
 
 
-            history.push({
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.conversation
+        ) {
 
-                role: "assistant",
+            throw new Error(
 
-                content: reply
+                data.error ||
+                "Could not create conversation."
 
-            });
-
-
-        } catch (error) {
-
-            thinking.remove();
-
-
-            addMessage(
-                "assistant",
-                "⚠️ Error: " +
-                error.message
             );
 
-        } finally {
-
-            isSending = false;
-
-            sendButton.disabled = false;
-
-            input.focus();
         }
+
+
+        currentConversationId =
+            data.conversation.id;
+
+
+        return currentConversationId;
 
     }
 
 
     /* =====================================================
-       SEND BUTTON
+       SAVE MESSAGE
     ===================================================== */
 
-    sendButton.addEventListener(
-        "click",
-        sendMessage
-    );
+    async function saveMessage(
 
+        role,
 
-    /* =====================================================
-       ENTER TO SEND
-    ===================================================== */
+        content,
 
-    input.addEventListener(
-        "keydown",
-        function(event) {
+        model = null
 
-            if (
-                event.key === "Enter" &&
-                !event.shiftKey
-            ) {
+    ) {
 
-                event.preventDefault();
+        if (!currentSession) {
 
-                sendMessage();
-            }
+            throw new Error(
+                "Please log in first."
+            );
 
         }
-    );
 
 
-    /* =====================================================
-       AUTO RESIZE
-    ===================================================== */
+        if (!currentConversationId) {
 
-    function resizeTextarea() {
+            await createConversation();
 
-        input.style.height =
-            "auto";
+        }
 
-        input.style.height =
-            Math.min(
-                input.scrollHeight,
-                180
-            ) + "px";
+
+        const response =
+            await fetch(
+
+                `${API_BASE}` +
+                `/v1/conversations/` +
+                `${currentConversationId}` +
+                `/messages`,
+
+                {
+
+                    method: "POST",
+
+                    headers:
+                        getAuthHeaders(),
+
+                    body:
+                        JSON.stringify({
+
+                            role:
+                                role,
+
+                            content:
+                                content,
+
+                            model:
+                                model ||
+                                modelSelect.value
+
+                        })
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+
+                data.error ||
+                "Could not save message."
+
+            );
+
+        }
+
+
+        return data.message;
+
     }
 
 
-    input.addEventListener(
-        "input",
-        resizeTextarea
-    );
+    /* =====================================================
+       LOAD CONVERSATIONS
+    ===================================================== */
+
+    async function loadConversations() {
+
+        if (!currentSession) {
+
+            return [];
+
+        }
+
+
+        const response =
+            await fetch(
+
+                `${API_BASE}/v1/conversations`,
+
+                {
+
+                    method: "GET",
+
+                    headers:
+                        getAuthHeaders()
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+
+                data.error ||
+                "Could not load conversations."
+
+            );
+
+        }
+
+
+        return (
+            data.conversations ||
+            []
+        );
+
+    }
 
 
     /* =====================================================
-       NEW CHAT
+       LOAD MESSAGES
     ===================================================== */
 
-    newChatButton.addEventListener(
-        "click",
-        function() {
+    async function loadMessages(
+        conversationId
+    ) {
+
+        if (!currentSession) {
+
+            return [];
+
+        }
+
+
+        const response =
+            await fetch(
+
+                `${API_BASE}` +
+                `/v1/conversations/` +
+                `${conversationId}` +
+                `/messages`,
+
+                {
+
+                    method: "GET",
+
+                    headers:
+                        getAuthHeaders()
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+
+                data.error ||
+                "Could not load messages."
+
+            );
+
+        }
+
+
+        return (
+            data.messages ||
+            []
+        );
+
+    }
+
+
+    /* =====================================================
+       DISPLAY MESSAGES
+    ===================================================== */
+
+    function displayMessages(
+        messages
+    ) {
+
+        chatInner.innerHTML =
+            "";
+
+
+        if (!messages.length) {
+
+            showWelcome();
 
             history = [];
 
-            chatInner.innerHTML = "";
+            return;
+        }
 
-            const newWelcome =
-                document.createElement("div");
 
-            newWelcome.className =
-                "welcome";
+        history =
+            messages.map(
 
-            newWelcome.innerHTML = `
+                message => ({
+
+                    role:
+                        message.role,
+
+                    content:
+                        message.content
+
+                })
+
+            );
+
+
+        for (
+            const message
+            of messages
+        ) {
+
+            addMessage(
+
+                message.role,
+
+                message.content,
+
+                message.model
+
+            );
+
+        }
+
+
+        scrollToBottom();
+
+    }
+
+
+    /* =====================================================
+       SHOW WELCOME
+    ===================================================== */
+
+    function showWelcome() {
+
+        chatInner.innerHTML = `
+
+            <div
+                class="welcome"
+                id="welcome"
+            >
 
                 <img
                     src="logo.jpg"
@@ -1448,19 +2110,408 @@
                     B&B AI · Created by B&B Studio
                 </p>
 
-            `;
+            </div>
 
-            chatInner.appendChild(
-                newWelcome
+        `;
+
+    }
+
+
+    /* =====================================================
+       LOAD LAST CONVERSATION
+    ===================================================== */
+
+    async function loadLastConversation() {
+
+        if (!currentSession) {
+
+            return;
+        }
+
+
+        try {
+
+            const conversations =
+                await loadConversations();
+
+
+            if (!conversations.length) {
+
+                return;
+            }
+
+
+            const latest =
+                conversations[0];
+
+
+            currentConversationId =
+                latest.id;
+
+
+            modelSelect.value =
+                latest.model ||
+                "B&B AI";
+
+
+            const messages =
+                await loadMessages(
+                    latest.id
+                );
+
+
+            displayMessages(
+                messages
             );
 
-            input.value = "";
+
+        } catch (error) {
+
+            console.error(
+
+                "Load conversation error:",
+
+                error
+
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SEND MESSAGE
+    ===================================================== */
+
+    async function sendMessage() {
+
+        if (isSending) {
+
+            return;
+        }
+
+
+        const message =
+            input.value.trim();
+
+
+        if (!message) {
+
+            return;
+        }
+
+
+        isSending = true;
+
+        sendButton.disabled =
+            true;
+
+
+        const selectedModel =
+            modelSelect.value;
+
+
+        let thinking = null;
+
+
+        try {
+
+            /* =============================================
+               AUTH
+            ============================================= */
+
+            if (!currentSession) {
+
+                await loadSession();
+
+            }
+
+
+            if (!currentSession) {
+
+                throw new Error(
+                    "Please log in first."
+                );
+
+            }
+
+
+            /* =============================================
+               CONVERSATION
+            ============================================= */
+
+            if (!currentConversationId) {
+
+                await createConversation();
+
+            }
+
+
+            /* =============================================
+               SHOW USER MESSAGE
+            ============================================= */
+
+            addMessage(
+
+                "user",
+
+                message
+
+            );
+
+
+            input.value =
+                "";
+
 
             resizeTextarea();
+
+
+            /* =============================================
+               SAVE USER MESSAGE
+            ============================================= */
+
+            await saveMessage(
+
+                "user",
+
+                message,
+
+                selectedModel
+
+            );
+
+
+            /* =============================================
+               THINKING
+            ============================================= */
+
+            thinking =
+                addThinking();
+
+
+            /* =============================================
+               UPDATE HISTORY FOR AI
+            ============================================= */
+
+            const aiHistory =
+                [...history];
+
+
+            /* =============================================
+               CALL B&B AI
+            ============================================= */
+
+            const response =
+                await fetch(
+
+                    `${API_BASE}` +
+                    `${CHAT_ENDPOINT}`,
+
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                message:
+                                    message,
+
+                                model:
+                                    selectedModel,
+
+                                history:
+                                    aiHistory
+
+                            })
+
+                    }
+
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+
+                    data.error ||
+                    "AI request failed."
+
+                );
+
+            }
+
+
+            /* =============================================
+               REMOVE THINKING
+            ============================================= */
+
+            if (thinking) {
+
+                thinking.remove();
+
+                thinking = null;
+
+            }
+
+
+            const reply =
+                data.reply ||
+                "No response received.";
+
+
+            /* =============================================
+               SHOW AI RESPONSE
+            ============================================= */
+
+            addMessage(
+
+                "assistant",
+
+                reply,
+
+                data.name ||
+                selectedModel
+
+            );
+
+
+            /* =============================================
+               SAVE AI RESPONSE
+            ============================================= */
+
+            await saveMessage(
+
+                "assistant",
+
+                reply,
+
+                selectedModel
+
+            );
+
+
+            /* =============================================
+               UPDATE HISTORY
+            ============================================= */
+
+            history.push({
+
+                role:
+                    "user",
+
+                content:
+                    message
+
+            });
+
+
+            history.push({
+
+                role:
+                    "assistant",
+
+                content:
+                    reply
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+
+                "Send message error:",
+
+                error
+
+            );
+
+
+            if (thinking) {
+
+                thinking.remove();
+
+            }
+
+
+            addMessage(
+
+                "assistant",
+
+                "⚠️ Error: " +
+                error.message
+
+            );
+
+
+        } finally {
+
+            isSending = false;
+
+            sendButton.disabled =
+                false;
 
             input.focus();
 
         }
+
+    }
+
+
+    /* =====================================================
+       NEW CHAT
+    ===================================================== */
+
+    newChatButton.addEventListener(
+
+        "click",
+
+        function() {
+
+            if (isSending) {
+
+                return;
+            }
+
+
+            history = [];
+
+
+            currentConversationId =
+                null;
+
+
+            showWelcome();
+
+
+            input.value =
+                "";
+
+
+            resizeTextarea();
+
+
+            input.focus();
+
+        }
+
     );
 
 
@@ -1469,15 +2520,146 @@
     ===================================================== */
 
     modelSelect.addEventListener(
+
         "change",
+
         function() {
 
             console.log(
+
                 "B&B AI model:",
+
                 modelSelect.value
+
             );
 
         }
+
+    );
+
+
+    /* =====================================================
+       SEND BUTTON
+    ===================================================== */
+
+    sendButton.addEventListener(
+
+        "click",
+
+        sendMessage
+
+    );
+
+
+    /* =====================================================
+       ENTER TO SEND
+    ===================================================== */
+
+    input.addEventListener(
+
+        "keydown",
+
+        function(event) {
+
+            if (
+
+                event.key === "Enter" &&
+
+                !event.shiftKey
+
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+
+    );
+
+
+    /* =====================================================
+       AUTO RESIZE
+    ===================================================== */
+
+    function resizeTextarea() {
+
+        input.style.height =
+            "auto";
+
+
+        input.style.height =
+
+            Math.min(
+
+                input.scrollHeight,
+
+                180
+
+            ) + "px";
+
+    }
+
+
+    input.addEventListener(
+
+        "input",
+
+        resizeTextarea
+
+    );
+
+
+    /* =====================================================
+       SUPABASE AUTH STATE
+    ===================================================== */
+
+    supabaseClient.auth.onAuthStateChange(
+
+        async function(
+
+            event,
+
+            session
+
+        ) {
+
+            currentSession =
+                session;
+
+
+            if (
+                event === "SIGNED_IN"
+            ) {
+
+                await loadLastConversation();
+
+            }
+
+
+            if (
+                event === "SIGNED_OUT"
+            ) {
+
+                currentSession =
+                    null;
+
+
+                currentConversationId =
+                    null;
+
+
+                history = [];
+
+
+                showWelcome();
+
+            }
+
+        }
+
     );
 
 
@@ -1485,9 +2667,34 @@
        START
     ===================================================== */
 
-    input.focus();
+    async function start() {
+
+        loadTheme();
+
+
+        await loadSession();
+
+
+        await checkAPI();
+
+
+        if (currentSession) {
+
+            await loadLastConversation();
+
+        }
+
+
+        input.focus();
+
+    }
+
+
+    start();
 
 </script>
 
+
 </body>
+
 </html>
