@@ -6,6 +6,8 @@ const BBAI_CONFIG = {
 
     /* =========================
        SUPABASE
+       Public publishable key only. Never put a
+       service_role/secret key in frontend code.
     ========================= */
 
     supabase: {

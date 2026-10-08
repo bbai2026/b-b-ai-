@@ -4,61 +4,47 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <meta name="theme-color" content="#ffffff">
+<meta name="description" content="B&B AI - Log in or create your account.">
 
-<title>B&B AI</title>
+<title>Log In · B&B AI</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="api.js"></script>
 
 <style>
 
 :root {
-
-    --bg: #ffffff;
-    --sidebar: #f7f7f9;
+    --bg: #f7f7f9;
     --surface: #ffffff;
     --surface-2: #f1f1f4;
     --text: #111116;
-    --muted: #777780;
-    --border: #e5e5ea;
-
-    --user-bg: #f0f0f3;
-
+    --muted: #6f6f7a;
+    --border: #e2e2e8;
     --accent: #7c5cff;
     --accent-hover: #6948ed;
-
-    --danger: #e5484d;
-
-    --shadow:
-        0 12px 35px rgba(0,0,0,.07);
-
+    --danger: #d93a3f;
+    --danger-bg: #fdeeee;
+    --success: #1d7f4b;
+    --success-bg: #e9f7ef;
 }
 
-html.dark {
-
-    --bg: #09090d;
-    --sidebar: #101014;
-    --surface: #0d0d12;
-    --surface-2: #19191f;
-    --text: #f5f5f7;
-    --muted: #92929c;
-    --border: #292930;
-
-    --user-bg: #1b1b22;
-
-    --accent: #9277ff;
-    --accent-hover: #a58dff;
-
-    --danger: #ff6268;
-
-    --shadow:
-        0 15px 45px rgba(0,0,0,.3);
-
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #09090d;
+        --surface: #0f0f16;
+        --surface-2: #19191f;
+        --text: #f5f5f7;
+        --muted: #9a9aa6;
+        --border: #2a2a33;
+        --accent: #9277ff;
+        --accent-hover: #a58dff;
+        --danger: #ff6268;
+        --danger-bg: #2b1416;
+        --success: #53d18a;
+        --success-bg: #12261b;
+    }
 }
 
 * {
@@ -67,3837 +53,646 @@ html.dark {
 
 html,
 body {
-
-    width: 100%;
-    height: 100%;
-
     margin: 0;
-    padding: 0;
-
-    font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
+    min-height: 100%;
     background: var(--bg);
     color: var(--text);
-
-    overflow: hidden;
-
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
 }
 
-button,
-textarea,
-select {
-    font: inherit;
-}
-
-button {
-    -webkit-tap-highlight-color: transparent;
-}
-
-
-/* =====================================================
-   APP
-   ===================================================== */
-
-.app {
-
+body {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px 16px;
+}
 
+.card {
     width: 100%;
-    height: 100vh;
-
-    background: var(--bg);
-
+    max-width: 400px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px 26px 22px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
 }
-
-
-/* =====================================================
-   SIDEBAR
-   ===================================================== */
-
-.sidebar {
-
-    width: 280px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    padding: 14px;
-
-    background: var(--sidebar);
-
-    border-right:
-        1px solid var(--border);
-
-}
-
 
 .brand {
-
     display: flex;
     align-items: center;
-
-    gap: 10px;
-
-    padding:
-        8px 6px 18px;
-
+    gap: 12px;
+    margin-bottom: 22px;
 }
 
-
-.brand-logo {
-
-    width: 38px;
-    height: 38px;
-
-    border-radius: 11px;
-
-    object-fit: cover;
-
-    background:
-        var(--surface-2);
-
+.brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
 }
-
 
 .brand-name {
-
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 750;
-
 }
 
-
-.brand-subtitle {
-
-    margin-top: 2px;
-
-    font-size: 11px;
-
+.brand-tagline {
+    font-size: 12px;
     color: var(--muted);
-
+    margin-top: 2px;
 }
 
-
-/* =====================================================
-   NEW CHAT
-   ===================================================== */
-
-.new-chat {
-
-    width: 100%;
-
-    border:
-        1px solid var(--border);
-
-    background:
-        var(--surface);
-
-    color:
-        var(--text);
-
-    border-radius:
-        11px;
-
-    padding:
-        11px 13px;
-
-    cursor:
-        pointer;
-
-    text-align:
-        left;
-
-    transition:
-        .15s ease;
-
-}
-
-
-.new-chat:hover {
-
-    background:
-        var(--surface-2);
-
-    transform:
-        translateY(-1px);
-
-}
-
-
-/* =====================================================
-   CHAT LIST
-   ===================================================== */
-
-.chat-list-title {
-
-    margin:
-        22px 7px 8px;
-
-    font-size: 10px;
-
-    color:
-        var(--muted);
-
-    text-transform:
-        uppercase;
-
-    letter-spacing:
-        .08em;
-
-}
-
-
-.chat-list {
-
-    flex: 1;
-
-    min-height: 0;
-
-    overflow-y: auto;
-
-    display: flex;
-
-    flex-direction: column;
-
+.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 4px;
-
+    padding: 4px;
+    background: var(--surface-2);
+    border-radius: 11px;
+    margin-bottom: 20px;
 }
 
-
-.chat-item {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    width: 100%;
-
-    padding:
-        8px 7px;
-
-    border-radius:
-        9px;
-
-    cursor:
-        pointer;
-
-    transition:
-        .15s ease;
-
-}
-
-
-.chat-item:hover {
-
-    background:
-        var(--surface-2);
-
-}
-
-
-.chat-item.active {
-
-    background:
-        var(--surface-2);
-
-}
-
-
-.chat-item-title {
-
-    flex: 1;
-
-    min-width: 0;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-
-    font-size: 13px;
-
-}
-
-
-.chat-menu {
-
-    width: 27px;
-    height: 27px;
-
-    border: none;
-
+.tab {
+    border: 0;
     background: transparent;
-
     color: var(--muted);
-
-    border-radius: 7px;
-
+    padding: 9px 10px;
+    border-radius: 8px;
     cursor: pointer;
-
-    opacity: 0;
-
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
 }
 
-
-.chat-item:hover .chat-menu,
-.chat-menu:focus {
-
-    opacity: 1;
-
+.tab.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-
-.chat-menu:hover {
-
-    background:
-        var(--border);
-
-    color:
-        var(--text);
-
+h1 {
+    margin: 0 0 4px;
+    font-size: 22px;
+    letter-spacing: -0.02em;
 }
 
-
-/* =====================================================
-   SIDEBAR BOTTOM
-   ===================================================== */
-
-.sidebar-bottom {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-    margin-top: 10px;
-
-    padding-top: 10px;
-
-    border-top:
-        1px solid var(--border);
-
+.subtitle {
+    margin: 0 0 18px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
 }
 
+.notice {
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
 
-.sidebar-button {
+.notice.error {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
 
+.notice.success {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.notice[hidden] {
+    display: none;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+input {
+    display: block;
     width: 100%;
-
-    border:
-        1px solid transparent;
-
-    background:
-        transparent;
-
-    color:
-        var(--text);
-
-    padding:
-        9px 10px;
-
-    border-radius:
-        9px;
-
-    cursor:
-        pointer;
-
-    text-align:
-        left;
-
-}
-
-
-.sidebar-button:hover {
-
-    background:
-        var(--surface-2);
-
-}
-
-
-/* =====================================================
-   MAIN
-   ===================================================== */
-
-.main {
-
-    flex: 1;
-
-    min-width: 0;
-
-    height: 100vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-}
-
-
-/* =====================================================
-   HEADER
-   ===================================================== */
-
-.header {
-
-    height: 64px;
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content:
-        space-between;
-
-    padding:
-        0 24px;
-
-    background:
-        var(--surface);
-
-    border-bottom:
-        1px solid var(--border);
-
-}
-
-
-.header-title {
-
+    margin-top: 6px;
+    padding: 11px 12px;
+    font: inherit;
     font-size: 15px;
-
-    font-weight: 700;
-
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
 }
 
-
-.status {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    margin-top: 2px;
-
-    font-size: 11px;
-
-    color:
-        var(--muted);
-
+input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.18);
 }
 
-
-.status-dot {
-
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background:
-        #35b86b;
-
+.hint {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
 }
 
-
-.status-dot.offline {
-
-    background:
-        var(--danger);
-
-}
-
-
-.model-select {
-
-    border:
-        1px solid var(--border);
-
-    background:
-        var(--surface);
-
-    color:
-        var(--text);
-
-    border-radius:
-        9px;
-
-    padding:
-        8px 10px;
-
-    outline:
-        none;
-
-}
-
-
-/* =====================================================
-   CHAT
-   ===================================================== */
-
-.chat {
-
-    flex: 1;
-
-    min-height: 0;
-
-    overflow-y: auto;
-
-}
-
-
-.chat-inner {
-
+.submit {
     width: 100%;
-
-    max-width: 900px;
-
-    margin:
-        0 auto;
-
-    padding:
-        30px 24px 160px;
-
+    margin-top: 4px;
+    padding: 12px;
+    border: 0;
+    border-radius: 11px;
+    background: var(--accent);
+    color: #ffffff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 650;
+    cursor: pointer;
 }
 
+.submit:hover {
+    background: var(--accent-hover);
+}
 
-/* =====================================================
-   WELCOME
-   ===================================================== */
+.submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
 
-.welcome {
-
-    min-height: 55vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
+.switch {
+    margin: 18px 0 0;
     text-align: center;
-
+    font-size: 13px;
+    color: var(--muted);
 }
 
-
-.welcome-logo {
-
-    width: 62px;
-    height: 62px;
-
-    border-radius:
-        18px;
-
-    object-fit:
-        cover;
-
-    margin-bottom:
-        17px;
-
+.switch button {
+    border: 0;
+    background: none;
+    color: var(--accent);
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+    padding: 0;
 }
 
-
-.welcome h1 {
-
-    margin:
-        0;
-
-    font-size:
-        30px;
-
-    letter-spacing:
-        -.035em;
-
-}
-
-
-.welcome p {
-
-    margin:
-        9px 0 0;
-
-    color:
-        var(--muted);
-
-    font-size:
-        14px;
-
-}
-
-
-/* =====================================================
-   MESSAGE
-   ===================================================== */
-
-.message {
-
-    display: flex;
-
-    width: 100%;
-
-    margin:
-        18px 0;
-
-}
-
-
-.message.user {
-
-    justify-content:
-        flex-end;
-
-}
-
-
-.message.assistant {
-
-    justify-content:
-        flex-start;
-
-}
-
-
-.message-wrapper {
-
-    max-width:
-        78%;
-
-}
-
-
-.message-content {
-
-    font-size:
-        15px;
-
-    line-height:
-        1.65;
-
-    white-space:
-        pre-wrap;
-
-    word-break:
-        break-word;
-
-}
-
-
-.user .message-content {
-
-    background:
-        var(--user-bg);
-
-    padding:
-        11px 15px;
-
-    border-radius:
-        16px;
-
-}
-
-
-.assistant .message-content {
-
-    padding:
-        5px 0;
-
-}
-
-
-.message-meta {
-
-    margin-bottom:
-        5px;
-
-    color:
-        var(--muted);
-
-    font-size:
-        10px;
-
-}
-
-
-.message-actions {
-
-    display: flex;
-
-    gap: 4px;
-
-    margin-top:
-        5px;
-
-}
-
-
-.message-action {
-
-    width: 28px;
-    height: 28px;
-
-    border:
-        1px solid transparent;
-
-    background:
-        transparent;
-
-    color:
-        var(--muted);
-
-    border-radius:
-        7px;
-
-    cursor:
-        pointer;
-
-}
-
-
-.message-action:hover {
-
-    background:
-        var(--surface-2);
-
-    color:
-        var(--text);
-
-}
-
-
-.message-action.active {
-
-    color:
-        var(--accent);
-
-    background:
-        var(--surface-2);
-
-}
-
-
-/* =====================================================
-   THINKING
-   ===================================================== */
-
-.thinking {
-
-    display: flex;
-
-    gap:
-        5px;
-
-    padding:
-        8px 0;
-
-}
-
-
-.thinking span {
-
-    width: 6px;
-    height: 6px;
-
-    border-radius:
-        50%;
-
-    background:
-        var(--muted);
-
-    animation:
-        thinking 1.2s infinite ease-in-out;
-
-}
-
-
-.thinking span:nth-child(2) {
-    animation-delay: .15s;
-}
-
-
-.thinking span:nth-child(3) {
-    animation-delay: .3s;
-}
-
-
-@keyframes thinking {
-
-    0%, 80%, 100% {
-
-        opacity: .25;
-
-        transform:
-            translateY(0);
-
-    }
-
-    40% {
-
-        opacity: 1;
-
-        transform:
-            translateY(-3px);
-
-    }
-
-}
-
-
-/* =====================================================
-   COMPOSER
-   ===================================================== */
-
-.composer {
-
-    position: fixed;
-
-    left:
-        280px;
-
-    right:
-        0;
-
-    bottom:
-        0;
-
-    padding:
-        18px 24px 22px;
-
-    background:
-        linear-gradient(
-            to top,
-            var(--bg) 68%,
-            transparent
-        );
-
-    pointer-events:
-        none;
-
-}
-
-
-.composer-inner {
-
-    width:
-        100%;
-
-    max-width:
-        900px;
-
-    margin:
-        0 auto;
-
-    pointer-events:
-        auto;
-
-}
-
-
-.input-box {
-
-    display:
-        flex;
-
-    align-items:
-        flex-end;
-
-    gap:
-        10px;
-
-    padding:
-        10px 10px 10px 15px;
-
-    background:
-        var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        16px;
-
-    box-shadow:
-        var(--shadow);
-
-}
-
-
-textarea {
-
-    flex:
-        1;
-
-    min-height:
-        24px;
-
-    max-height:
-        180px;
-
-    resize:
-        none;
-
-    padding:
-        4px 0;
-
-    border:
-        none;
-
-    outline:
-        none;
-
-    background:
-        transparent;
-
-    color:
-        var(--text);
-
-    line-height:
-        1.5;
-
-    font-size:
-        15px;
-
-}
-
-
-textarea::placeholder {
-
-    color:
-        var(--muted);
-
-}
-
-
-.send-button {
-
-    width:
-        38px;
-
-    height:
-        38px;
-
-    flex-shrink:
-        0;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    border:
-        none;
-
-    border-radius:
-        11px;
-
-    background:
-        var(--accent);
-
-    color:
-        white;
-
-    cursor:
-        pointer;
-
-    font-size:
-        17px;
-
-}
-
-
-.send-button:hover {
-
-    background:
-        var(--accent-hover);
-
-}
-
-
-.send-button:disabled {
-
-    opacity:
-        .45;
-
-    cursor:
-        not-allowed;
-
-}
-
-
-.composer-note {
-
-    text-align:
-        center;
-
-    margin-top:
-        8px;
-
-    color:
-        var(--muted);
-
-    font-size:
-        10px;
-
-}
-
-
-/* =====================================================
-   MODAL
-   ===================================================== */
-
-.modal-backdrop {
-
-    position:
-        fixed;
-
-    inset:
-        0;
-
-    z-index:
-        100;
-
-    display:
-        none;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    padding:
-        20px;
-
-    background:
-        rgba(0,0,0,.45);
-
-    backdrop-filter:
-        blur(6px);
-
-}
-
-
-.modal-backdrop.show {
-
-    display:
-        flex;
-
-}
-
-
-.modal {
-
-    width:
-        min(430px, 100%);
-
-    padding:
-        22px;
-
-    background:
-        var(--surface);
-
-    color:
-        var(--text);
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        18px;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.25);
-
-}
-
-
-.modal h2 {
-
-    margin:
-        0 0 8px;
-
-    font-size:
-        19px;
-
-}
-
-
-.modal p {
-
-    color:
-        var(--muted);
-
-    font-size:
-        13px;
-
-    line-height:
-        1.6;
-
-}
-
-
-.modal-input {
-
-    width:
-        100%;
-
-    padding:
-        11px 12px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        10px;
-
-    outline:
-        none;
-
-    background:
-        var(--surface-2);
-
-    color:
-        var(--text);
-
-}
-
-
-.modal-actions {
-
-    display:
-        flex;
-
-    justify-content:
-        flex-end;
-
-    gap:
-        8px;
-
-    margin-top:
-        18px;
-
-}
-
-
-.modal-button {
-
-    border:
-        1px solid var(--border);
-
-    background:
-        var(--surface);
-
-    color:
-        var(--text);
-
-    padding:
-        9px 13px;
-
-    border-radius:
-        9px;
-
-    cursor:
-        pointer;
-
-}
-
-
-.modal-button.primary {
-
-    background:
-        var(--accent);
-
-    border-color:
-        var(--accent);
-
-    color:
-        white;
-
-}
-
-
-.modal-button.danger {
-
-    background:
-        var(--danger);
-
-    border-color:
-        var(--danger);
-
-    color:
-        white;
-
-}
-
-
-/* =====================================================
-   MOBILE
-   ===================================================== */
-
-@media (max-width: 800px) {
-
-    .sidebar {
-        display: none;
-    }
-
-    .composer {
-        left: 0;
-    }
-
-    .header {
-        padding:
-            0 15px;
-    }
-
-    .chat-inner {
-        padding:
-            24px 15px 160px;
-    }
-
-    .message-wrapper {
-        max-width:
-            90%;
-    }
-
-    .welcome h1 {
-        font-size:
-            25px;
-    }
-
+.footer {
+    margin: 22px 0 0;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
 }
 
 </style>
 
 </head>
 
-
 <body>
 
-<div class="app">
-
-
-<aside class="sidebar">
+<main class="card">
 
     <div class="brand">
-
-        <img
-            src="logo.jpg"
-            class="brand-logo"
-            alt="B&B AI"
-        >
-
+        <div class="brand-mark">B&amp;B</div>
         <div>
+            <div class="brand-name">B&amp;B AI</div>
+            <div class="brand-tagline">We Make Ideas Real</div>
+        </div>
+    </div>
 
-            <div
-                class="brand-name"
-                data-i18n="brand"
+    <div class="tabs" role="tablist">
+        <button class="tab active" id="tabLogin" type="button" role="tab">Log In</button>
+        <button class="tab" id="tabSignup" type="button" role="tab">Sign Up</button>
+    </div>
+
+    <h1 id="formTitle">Welcome back</h1>
+    <p class="subtitle" id="formSubtitle">Log in to continue to B&amp;B AI.</p>
+
+    <div class="notice error" id="notice" role="alert" hidden></div>
+
+    <form id="authForm" novalidate>
+
+        <label>
+            Email
+            <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
             >
-                B&B AI
-            </div>
+        </label>
 
-            <div
-                class="brand-subtitle"
-                data-i18n="studio"
+        <label>
+            Password
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
             >
-                B&B Studio
-            </div>
+            <span class="hint" id="passwordHint" hidden>At least 6 characters.</span>
+        </label>
 
-        </div>
-
-    </div>
-
-
-    <button
-        class="new-chat"
-        id="newChatButton"
-        data-i18n="newChat"
-    >
-        + New chat
-    </button>
-
-
-    <div
-        class="chat-list-title"
-        data-i18n="chats"
-    >
-        Chats
-    </div>
-
-
-    <div
-        class="chat-list"
-        id="chatList"
-    ></div>
-
-
-    <div class="sidebar-bottom">
-
-        <button
-            class="sidebar-button"
-            id="themeButton"
-        >
-            🌙 Dark mode
-        </button>
-
-
-        <button
-            class="sidebar-button"
-            id="languageButton"
-        >
-            🌐 Language
-        </button>
-
-
-        <button
-            class="sidebar-button"
-            id="aboutButton"
-        >
-            ℹ️ About us
-        </button>
-
-    </div>
-
-</aside>
-
-
-<main class="main">
-
-
-<header class="header">
-
-    <div>
-
-        <div
-            class="header-title"
-            data-i18n="headerTitle"
-        >
-            B&B AI
-        </div>
-
-        <div class="status">
-
-            <span
-                class="status-dot"
-                id="statusDot"
-            ></span>
-
-            <span id="statusText">
-                Checking API...
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <select
-        class="model-select"
-        id="modelSelect"
-    >
-
-        <option value="B&B AI">
-            B&B AI
-        </option>
-
-        <option value="B&B AI Lite">
-            B&B AI Lite
-        </option>
-
-        <option value="B&B AI Pro">
-            B&B AI Pro
-        </option>
-
-        <option value="B&B AI Deep">
-            B&B AI Deep
-        </option>
-
-    </select>
-
-</header>
-
-
-<section
-    class="chat"
-    id="chat"
->
-
-    <div
-        class="chat-inner"
-        id="chatInner"
-    >
-
-        <div
-            class="welcome"
-            id="welcome"
-        >
-
-            <img
-                src="logo.jpg"
-                class="welcome-logo"
-                alt="B&B AI"
+        <label id="confirmWrap" hidden>
+            Confirm Password
+            <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                autocomplete="new-password"
+                placeholder="Re-enter your password"
             >
+        </label>
 
-            <h1 data-i18n="welcomeTitle">
-                What can I help with?
-            </h1>
+        <button class="submit" id="submitButton" type="submit">Log In</button>
 
-            <p data-i18n="welcomeSubtitle">
-                B&B AI · Created by B&B Studio
-            </p>
+    </form>
 
-        </div>
+    <p class="switch" id="switchText">
+        Don't have an account?
+        <button type="button" id="switchButton">Sign Up</button>
+    </p>
 
-    </div>
-
-</section>
-
-
-<div class="composer">
-
-    <div class="composer-inner">
-
-        <div class="input-box">
-
-            <textarea
-                id="messageInput"
-                rows="1"
-                data-i18n-placeholder="placeholder"
-                placeholder="Message B&B AI..."
-            ></textarea>
-
-            <button
-                class="send-button"
-                id="sendButton"
-                title="Send"
-            >
-                ↑
-            </button>
-
-        </div>
-
-        <div
-            class="composer-note"
-            data-i18n="warning"
-        >
-            B&B AI can make mistakes. Check important information.
-        </div>
-
-    </div>
-
-</div>
-
+    <p class="footer">B&amp;B AI · Created by B&amp;B Studio</p>
 
 </main>
-
-</div>
-
-
-<!-- =====================================================
-     MODAL
-     ===================================================== -->
-
-<div
-    class="modal-backdrop"
-    id="modalBackdrop"
->
-
-    <div class="modal">
-
-        <h2 id="modalTitle"></h2>
-
-        <p id="modalDescription"></p>
-
-        <input
-            class="modal-input"
-            id="modalInput"
-            type="text"
-        >
-
-        <div class="modal-actions">
-
-            <button
-                class="modal-button"
-                id="modalCancel"
-            >
-                Cancel
-            </button>
-
-            <button
-                class="modal-button primary"
-                id="modalConfirm"
-            >
-                Save
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
 
 <script>
 
 /* =====================================================
-   B&B AI v0.1 CLIENT
+   B&B AI v0.1 - Authentication page
    ===================================================== */
 
-
-/* =====================================================
-   CONFIG
-   ===================================================== */
-
-const API_BASE =
-    BBAI_CONFIG.ai.baseUrl.replace(/\/+$/, "");
-
-const CHAT_ENDPOINT =
-    BBAI_CONFIG.ai.endpoints.chat;
-
-
-/* =====================================================
-   SUPABASE
-   ===================================================== */
-
-const supabaseClient =
-    window.supabase.createClient(
-        BBAI_CONFIG.supabase.url,
-        BBAI_CONFIG.supabase.publishableKey
-    );
-
-
-/* =====================================================
-   STATE
-   ===================================================== */
-
-let history = [];
-
-let isSending = false;
-
-let currentConversationId = null;
-
-let currentSession = null;
-
-let conversations = [];
-
-let currentLanguage =
-    localStorage.getItem("bbai_language") || "en";
-
-let modalAction = null;
-
-
-/* =====================================================
-   ELEMENTS
-   ===================================================== */
-
-const chat =
-    document.getElementById("chat");
-
-const chatInner =
-    document.getElementById("chatInner");
-
-const input =
-    document.getElementById("messageInput");
-
-const sendButton =
-    document.getElementById("sendButton");
-
-const modelSelect =
-    document.getElementById("modelSelect");
-
-const newChatButton =
-    document.getElementById("newChatButton");
-
-const themeButton =
-    document.getElementById("themeButton");
-
-const languageButton =
-    document.getElementById("languageButton");
-
-const aboutButton =
-    document.getElementById("aboutButton");
-
-const chatList =
-    document.getElementById("chatList");
-
-const statusDot =
-    document.getElementById("statusDot");
-
-const statusText =
-    document.getElementById("statusText");
-
-const modalBackdrop =
-    document.getElementById("modalBackdrop");
-
-const modalTitle =
-    document.getElementById("modalTitle");
-
-const modalDescription =
-    document.getElementById("modalDescription");
-
-const modalInput =
-    document.getElementById("modalInput");
-
-const modalCancel =
-    document.getElementById("modalCancel");
-
-const modalConfirm =
-    document.getElementById("modalConfirm");
-
-
-/* =====================================================
-   TRANSLATIONS
-   ===================================================== */
-
-const translations = {
-
-    en: {
-
-        brand:
-            "B&B AI",
-
-        studio:
-            "B&B Studio",
-
-        newChat:
-            "+ New chat",
-
-        chats:
-            "Chats",
-
-        headerTitle:
-            "B&B AI",
-
-        welcomeTitle:
-            "What can I help with?",
-
-        welcomeSubtitle:
-            "B&B AI · Created by B&B Studio",
-
-        placeholder:
-            "Message B&B AI...",
-
-        warning:
-            "B&B AI can make mistakes. Check important information.",
-
-        darkMode:
-            "🌙 Dark mode",
-
-        lightMode:
-            "☀️ Light mode",
-
-        language:
-            "🌐 Language",
-
-        about:
-            "ℹ️ About us",
-
-        online:
-            "Online",
-
-        apiOffline:
-            "API offline",
-
-        aiOffline:
-            "AI offline",
-
-        you:
-            "You",
-
-        rename:
-            "Rename",
-
-        delete:
-            "Delete",
-
-        cancel:
-            "Cancel",
-
-        save:
-            "Save",
-
-        renameTitle:
-            "Rename chat",
-
-        renameDescription:
-            "Choose a new name for this chat.",
-
-        deleteTitle:
-            "Delete chat",
-
-        deleteDescription:
-            "This will permanently delete this chat and its messages.",
-
-        deleteConfirm:
-            "Delete",
-
-        aboutTitle:
-            "About B&B AI",
-
-        aboutDescription:
-            "B&B AI is an AI project by B&B Studio. This version uses local AI services connected to the B&B AI API.",
-
-        languageTitle:
-            "Program language",
-
-        languageDescription:
-            "Choose the language of the B&B AI interface.",
-
-        english:
-            "English",
-
-        persian:
-            "فارسی",
-
-        copy:
-            "Copy",
-
-        liked:
-            "Liked",
-
-        disliked:
-            "Disliked",
-
-        error:
-            "Error"
-
-    },
-
-
-    fa: {
-
-        brand:
-            "B&B AI",
-
-        studio:
-            "B&B Studio",
-
-        newChat:
-            "+ چت جدید",
-
-        chats:
-            "چت‌ها",
-
-        headerTitle:
-            "B&B AI",
-
-        welcomeTitle:
-            "چه کمکی از من برمیاد؟",
-
-        welcomeSubtitle:
-            "B&B AI · ساخته‌شده توسط B&B Studio",
-
-        placeholder:
-            "پیامی برای B&B AI بنویسید...",
-
-        warning:
-            "B&B AI ممکن است اشتباه کند. اطلاعات مهم را بررسی کنید.",
-
-        darkMode:
-            "🌙 حالت تاریک",
-
-        lightMode:
-            "☀️ حالت روشن",
-
-        language:
-            "🌐 زبان برنامه",
-
-        about:
-            "ℹ️ درباره ما",
-
-        online:
-            "آنلاین",
-
-        apiOffline:
-            "API آفلاین",
-
-        aiOffline:
-            "هوش مصنوعی آفلاین",
-
-        you:
-            "شما",
-
-        rename:
-            "تغییر نام",
-
-        delete:
-            "حذف",
-
-        cancel:
-            "لغو",
-
-        save:
-            "ذخیره",
-
-        renameTitle:
-            "تغییر نام چت",
-
-        renameDescription:
-            "نام جدیدی برای این چت انتخاب کنید.",
-
-        deleteTitle:
-            "حذف چت",
-
-        deleteDescription:
-            "این چت و تمام پیام‌های آن برای همیشه حذف می‌شوند.",
-
-        deleteConfirm:
-            "حذف",
-
-        aboutTitle:
-            "درباره B&B AI",
-
-        aboutDescription:
-            "B&B AI یک پروژه هوش مصنوعی از B&B Studio است. این نسخه از سرویس‌های هوش مصنوعی محلی متصل به B&B AI API استفاده می‌کند.",
-
-        languageTitle:
-            "زبان برنامه",
-
-        languageDescription:
-            "زبان رابط کاربری B&B AI را انتخاب کنید.",
-
-        english:
-            "English",
-
-        persian:
-            "فارسی",
-
-        copy:
-            "کپی",
-
-        liked:
-            "پسندیده شد",
-
-        disliked:
-            "نپسندیده شد",
-
-        error:
-            "خطا"
-
-    }
-
+const supabaseClient = window.supabase.createClient(
+    BBAI_CONFIG.supabase.url,
+    BBAI_CONFIG.supabase.publishableKey
+);
+
+const APP_PAGE = "text.html";
+
+const MIN_PASSWORD_LENGTH = 6;
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+let mode = "login";
+
+let busy = false;
+
+
+const el = {
+    tabLogin: document.getElementById("tabLogin"),
+    tabSignup: document.getElementById("tabSignup"),
+    formTitle: document.getElementById("formTitle"),
+    formSubtitle: document.getElementById("formSubtitle"),
+    notice: document.getElementById("notice"),
+    form: document.getElementById("authForm"),
+    email: document.getElementById("email"),
+    password: document.getElementById("password"),
+    passwordHint: document.getElementById("passwordHint"),
+    confirmWrap: document.getElementById("confirmWrap"),
+    confirmPassword: document.getElementById("confirmPassword"),
+    submit: document.getElementById("submitButton"),
+    switchText: document.getElementById("switchText"),
+    switchButton: document.getElementById("switchButton")
 };
 
 
-/* =====================================================
-   LANGUAGE
-   ===================================================== */
+/* -----------------------------------------------------
+   Notices
+   ----------------------------------------------------- */
 
-function t(key) {
+function showNotice(message, type = "error") {
+    el.notice.textContent = message;
+    el.notice.className = `notice ${type}`;
+    el.notice.hidden = false;
+}
 
-    return (
-        translations[currentLanguage][key]
-        ||
-        translations.en[key]
-        ||
-        key
-    );
-
+function hideNotice() {
+    el.notice.hidden = true;
+    el.notice.textContent = "";
 }
 
 
-function applyLanguage() {
+/* -----------------------------------------------------
+   Mode switching (Log In / Sign Up)
+   ----------------------------------------------------- */
 
-    const lang =
-        translations[currentLanguage]
-            ? currentLanguage
-            : "en";
+function setMode(nextMode) {
 
-    currentLanguage = lang;
+    mode = nextMode;
 
-    document.documentElement.lang =
-        lang;
+    const signup = mode === "signup";
 
-    document.documentElement.dir =
-        lang === "fa"
-            ? "rtl"
-            : "ltr";
+    el.tabLogin.classList.toggle("active", !signup);
+    el.tabSignup.classList.toggle("active", signup);
 
+    el.tabLogin.setAttribute("aria-selected", String(!signup));
+    el.tabSignup.setAttribute("aria-selected", String(signup));
 
-    document
-        .querySelectorAll("[data-i18n]")
-        .forEach(element => {
+    el.formTitle.textContent = signup
+        ? "Create your account"
+        : "Welcome back";
 
-            const key =
-                element.dataset.i18n;
+    el.formSubtitle.textContent = signup
+        ? "Sign up to start chatting with B&B AI."
+        : "Log in to continue to B&B AI.";
 
-            element.textContent =
-                t(key);
+    el.confirmWrap.hidden = !signup;
+    el.passwordHint.hidden = !signup;
 
-        });
+    el.password.autocomplete = signup
+        ? "new-password"
+        : "current-password";
 
+    el.password.placeholder = signup
+        ? "Create a password"
+        : "Enter your password";
 
-    document
-        .querySelectorAll("[data-i18n-placeholder]")
-        .forEach(element => {
+    el.submit.textContent = signup
+        ? "Create Account"
+        : "Log In";
 
-            const key =
-                element.dataset.i18nPlaceholder;
+    el.switchText.firstChild.textContent = signup
+        ? "Already have an account? "
+        : "Don't have an account? ";
 
-            element.placeholder =
-                t(key);
+    el.switchButton.textContent = signup
+        ? "Log In"
+        : "Sign Up";
 
-        });
-
-
-    themeButton.textContent =
-        document.documentElement.classList.contains("dark")
-            ? t("lightMode")
-            : t("darkMode");
-
-
-    languageButton.textContent =
-        t("language");
-
-    aboutButton.textContent =
-        t("about");
-
-    renderChatList();
-
+    hideNotice();
 }
 
 
-function setLanguage(language) {
+/* -----------------------------------------------------
+   Friendly error messages
+   ----------------------------------------------------- */
 
-    if (
-        language !== "en" &&
-        language !== "fa"
-    ) {
-        return;
+function loginErrorMessage(error) {
+
+    const text = (error && error.message || "").toLowerCase();
+
+    if (text.includes("invalid login credentials")) {
+        return "Incorrect email or password.";
     }
 
-    currentLanguage =
-        language;
+    if (text.includes("email not confirmed")) {
+        return "Please confirm your email address first. Check your inbox for the confirmation link.";
+    }
 
-    localStorage.setItem(
-        "bbai_language",
-        language
-    );
+    if (text.includes("too many") || text.includes("rate limit")) {
+        return "Too many attempts. Please wait a moment and try again.";
+    }
 
-    applyLanguage();
+    if (text.includes("failed to fetch") || text.includes("network")) {
+        return "Network error. Please check your connection and try again.";
+    }
 
+    return "Could not log in. Please try again.";
+}
+
+function signupErrorMessage(error) {
+
+    const text = (error && error.message || "").toLowerCase();
+
+    if (text.includes("already registered") || text.includes("already exists")) {
+        return "An account with this email already exists. Try logging in instead.";
+    }
+
+    if (text.includes("password")) {
+        return "Password is not accepted. Use at least 6 characters.";
+    }
+
+    if (text.includes("rate limit") || text.includes("too many")) {
+        return "Too many attempts. Please wait a moment and try again.";
+    }
+
+    if (text.includes("failed to fetch") || text.includes("network")) {
+        return "Network error. Please check your connection and try again.";
+    }
+
+    return "Could not create your account. Please try again.";
 }
 
 
-/* =====================================================
-   THEME
-   ===================================================== */
+/* -----------------------------------------------------
+   Validation
+   ----------------------------------------------------- */
 
-function loadTheme() {
+function validate(email, password) {
 
-    const saved =
-        localStorage.getItem(
-            "bbai_theme"
-        );
+    if (!EMAIL_PATTERN.test(email)) {
+        return "Please enter a valid email address.";
+    }
 
-    if (saved === "dark") {
+    if (!password) {
+        return "Please enter your password.";
+    }
 
-        document.documentElement
-            .classList
-            .add("dark");
+    if (mode === "signup") {
 
+        if (password.length < MIN_PASSWORD_LENGTH) {
+            return `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
+        }
+
+        if (password !== el.confirmPassword.value) {
+            return "Passwords do not match.";
+        }
+    }
+
+    return null;
+}
+
+
+/* -----------------------------------------------------
+   Busy state
+   ----------------------------------------------------- */
+
+function setBusy(value) {
+
+    busy = value;
+
+    el.submit.disabled = value;
+
+    // Read the mode at call time, so a switch during the request
+    // (e.g. after sign-up) shows the correct button label.
+    if (value) {
+        el.submit.textContent = mode === "signup"
+            ? "Creating account..."
+            : "Logging in...";
     } else {
-
-        document.documentElement
-            .classList
-            .remove("dark");
-
+        el.submit.textContent = mode === "signup"
+            ? "Create Account"
+            : "Log In";
     }
-
-    applyLanguage();
-
 }
 
 
-function toggleTheme() {
-
-    const isDark =
-        document.documentElement
-            .classList
-            .contains("dark");
-
-
-    document.documentElement
-        .classList
-        .toggle("dark");
-
-
-    localStorage.setItem(
-        "bbai_theme",
-        isDark
-            ? "light"
-            : "dark"
-    );
-
-
-    applyLanguage();
-
+function goToApp() {
+    window.location.replace(APP_PAGE);
 }
 
 
-themeButton.addEventListener(
-    "click",
-    toggleTheme
-);
+/* -----------------------------------------------------
+   Submit
+   ----------------------------------------------------- */
 
+async function handleSubmit(event) {
 
-/* =====================================================
-   SESSION
-   ===================================================== */
+    event.preventDefault();
 
-async function loadSession() {
-
-    try {
-
-        const result =
-            await supabaseClient.auth.getSession();
-
-        if (result.error) {
-
-            console.error(
-                "Supabase session error:",
-                result.error
-            );
-
-            currentSession = null;
-
-            return null;
-        }
-
-        currentSession =
-            result.data.session;
-
-        return currentSession;
-
-    } catch (error) {
-
-        console.error(
-            "Session error:",
-            error
-        );
-
-        currentSession = null;
-
-        return null;
-    }
-
-}
-
-
-/* =====================================================
-   AUTH HEADERS
-   ===================================================== */
-
-function getAuthHeaders() {
-
-    const headers = {
-
-        "Content-Type":
-            "application/json"
-
-    };
-
-    if (
-        currentSession &&
-        currentSession.access_token
-    ) {
-
-        headers["Authorization"] =
-            `Bearer ${currentSession.access_token}`;
-
-    }
-
-    return headers;
-
-}
-
-
-/* =====================================================
-   API STATUS
-   ===================================================== */
-
-async function checkAPI() {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/status`,
-                {
-                    method: "GET",
-                    cache: "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        const healthy =
-            data.success === true &&
-            data.ollama === true;
-
-
-        if (healthy) {
-
-            statusDot.classList.remove(
-                "offline"
-            );
-
-            statusText.textContent =
-                t("online");
-
-        } else {
-
-            statusDot.classList.add(
-                "offline"
-            );
-
-            statusText.textContent =
-                t("aiOffline");
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "API status error:",
-            error
-        );
-
-        statusDot.classList.add(
-            "offline"
-        );
-
-        statusText.textContent =
-            t("apiOffline");
-
-    }
-
-}
-
-
-/* =====================================================
-   CREATE MESSAGE
-   ===================================================== */
-
-function addMessage(
-    role,
-    content,
-    modelName = null
-) {
-
-    const welcome =
-        document.getElementById(
-            "welcome"
-        );
-
-    if (welcome) {
-        welcome.remove();
-    }
-
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        `message ${role}`;
-
-
-    const wrapper =
-        document.createElement("div");
-
-    wrapper.className =
-        "message-wrapper";
-
-
-    const meta =
-        document.createElement("div");
-
-    meta.className =
-        "message-meta";
-
-
-    meta.textContent =
-        role === "user"
-            ? t("you")
-            : (
-                modelName ||
-                modelSelect.value
-            );
-
-
-    const text =
-        document.createElement("div");
-
-    text.className =
-        "message-content";
-
-    text.textContent =
-        content;
-
-
-    wrapper.appendChild(meta);
-
-    wrapper.appendChild(text);
-
-
-    if (role === "assistant") {
-
-        const actions =
-            document.createElement("div");
-
-        actions.className =
-            "message-actions";
-
-
-        const like =
-            document.createElement("button");
-
-        like.className =
-            "message-action";
-
-        like.textContent =
-            "👍";
-
-        like.title =
-            t("liked");
-
-
-        const dislike =
-            document.createElement("button");
-
-        dislike.className =
-            "message-action";
-
-        dislike.textContent =
-            "👎";
-
-        dislike.title =
-            t("disliked");
-
-
-        const copy =
-            document.createElement("button");
-
-        copy.className =
-            "message-action";
-
-        copy.textContent =
-            "⧉";
-
-        copy.title =
-            t("copy");
-
-
-        like.addEventListener(
-            "click",
-            () => {
-
-                like.classList.toggle(
-                    "active"
-                );
-
-                dislike.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-
-        dislike.addEventListener(
-            "click",
-            () => {
-
-                dislike.classList.toggle(
-                    "active"
-                );
-
-                like.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-
-        copy.addEventListener(
-            "click",
-            async () => {
-
-                try {
-
-                    await navigator.clipboard.writeText(
-                        content
-                    );
-
-                    copy.textContent =
-                        "✓";
-
-                    setTimeout(
-                        () => {
-                            copy.textContent =
-                                "⧉";
-                        },
-                        1000
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "Copy error:",
-                        error
-                    );
-
-                }
-
-            }
-        );
-
-
-        actions.appendChild(like);
-        actions.appendChild(dislike);
-        actions.appendChild(copy);
-
-        wrapper.appendChild(actions);
-
-    }
-
-
-    message.appendChild(wrapper);
-
-    chatInner.appendChild(message);
-
-    scrollToBottom();
-
-    return message;
-
-}
-
-
-/* =====================================================
-   THINKING
-   ===================================================== */
-
-function addThinking() {
-
-    const welcome =
-        document.getElementById(
-            "welcome"
-        );
-
-    if (welcome) {
-        welcome.remove();
-    }
-
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        "message assistant";
-
-
-    const thinking =
-        document.createElement("div");
-
-    thinking.className =
-        "thinking";
-
-
-    thinking.innerHTML = `
-        <span></span>
-        <span></span>
-        <span></span>
-    `;
-
-
-    message.appendChild(thinking);
-
-    chatInner.appendChild(message);
-
-    scrollToBottom();
-
-    return message;
-
-}
-
-
-/* =====================================================
-   SCROLL
-   ===================================================== */
-
-function scrollToBottom() {
-
-    requestAnimationFrame(() => {
-
-        chat.scrollTop =
-            chat.scrollHeight;
-
-    });
-
-}
-
-
-/* =====================================================
-   WELCOME
-   ===================================================== */
-
-function showWelcome() {
-
-    chatInner.innerHTML = `
-
-        <div
-            class="welcome"
-            id="welcome"
-        >
-
-            <img
-                src="logo.jpg"
-                class="welcome-logo"
-                alt="B&B AI"
-            >
-
-            <h1>
-                ${t("welcomeTitle")}
-            </h1>
-
-            <p>
-                ${t("welcomeSubtitle")}
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =====================================================
-   CREATE CONVERSATION
-   ===================================================== */
-
-async function createConversation() {
-
-    if (!currentSession) {
-
-        throw new Error(
-            "Please log in first."
-        );
-
-    }
-
-
-    const response =
-        await fetch(
-            `${API_BASE}/v1/conversations`,
-            {
-                method: "POST",
-                headers:
-                    getAuthHeaders(),
-                body:
-                    JSON.stringify({
-                        title:
-                            currentLanguage === "fa"
-                                ? "چت جدید"
-                                : "New Chat",
-                        model:
-                            modelSelect.value
-                    })
-            }
-        );
-
-
-    const data =
-        await response.json();
-
-
-    if (
-        !response.ok ||
-        !data.success ||
-        !data.conversation
-    ) {
-
-        throw new Error(
-            data.error ||
-            "Could not create conversation."
-        );
-
-    }
-
-
-    currentConversationId =
-        data.conversation.id;
-
-
-    conversations.unshift(
-        data.conversation
-    );
-
-
-    renderChatList();
-
-
-    return currentConversationId;
-
-}
-
-
-/* =====================================================
-   SAVE MESSAGE
-   ===================================================== */
-
-async function saveMessage(
-    role,
-    content,
-    model = null
-) {
-
-    if (!currentSession) {
-
-        throw new Error(
-            "Please log in first."
-        );
-
-    }
-
-
-    if (!currentConversationId) {
-
-        await createConversation();
-
-    }
-
-
-    const response =
-        await fetch(
-
-            `${API_BASE}` +
-            `/v1/conversations/` +
-            `${currentConversationId}` +
-            `/messages`,
-
-            {
-                method: "POST",
-
-                headers:
-                    getAuthHeaders(),
-
-                body:
-                    JSON.stringify({
-
-                        role:
-                            role,
-
-                        content:
-                            content,
-
-                        model:
-                            model ||
-                            modelSelect.value
-
-                    })
-
-            }
-
-        );
-
-
-    const data =
-        await response.json();
-
-
-    if (
-        !response.ok ||
-        !data.success
-    ) {
-
-        throw new Error(
-            data.error ||
-            "Could not save message."
-        );
-
-    }
-
-
-    return data.message;
-
-}
-
-
-/* =====================================================
-   LOAD CONVERSATIONS
-   ===================================================== */
-
-async function loadConversations() {
-
-    if (!currentSession) {
-        return [];
-    }
-
-
-    const response =
-        await fetch(
-            `${API_BASE}/v1/conversations`,
-            {
-                method: "GET",
-                headers:
-                    getAuthHeaders(),
-                cache:
-                    "no-store"
-            }
-        );
-
-
-    const data =
-        await response.json();
-
-
-    if (
-        !response.ok ||
-        !data.success
-    ) {
-
-        throw new Error(
-            data.error ||
-            "Could not load conversations."
-        );
-
-    }
-
-
-    conversations =
-        data.conversations || [];
-
-
-    renderChatList();
-
-
-    return conversations;
-
-}
-
-
-/* =====================================================
-   RENDER CHAT LIST
-   ===================================================== */
-
-function renderChatList() {
-
-    chatList.innerHTML = "";
-
-
-    if (!conversations.length) {
-
-        return;
-
-    }
-
-
-    for (const conversation of conversations) {
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "chat-item" +
-            (
-                conversation.id ===
-                currentConversationId
-                    ? " active"
-                    : ""
-            );
-
-
-        const title =
-            document.createElement("div");
-
-        title.className =
-            "chat-item-title";
-
-        title.textContent =
-            conversation.title ||
-            (
-                currentLanguage === "fa"
-                    ? "چت جدید"
-                    : "New Chat"
-            );
-
-
-        const menu =
-            document.createElement("button");
-
-        menu.className =
-            "chat-menu";
-
-        menu.textContent =
-            "⋯";
-
-        menu.title =
-            "Menu";
-
-
-        item.addEventListener(
-            "click",
-            () => {
-
-                loadConversation(
-                    conversation.id
-                );
-
-            }
-        );
-
-
-        menu.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                showChatMenu(
-                    conversation
-                );
-
-            }
-        );
-
-
-        item.appendChild(title);
-
-        item.appendChild(menu);
-
-        chatList.appendChild(item);
-
-    }
-
-}
-
-
-/* =====================================================
-   CHAT MENU
-   ===================================================== */
-
-function showChatMenu(conversation) {
-
-    const choice =
-        window.prompt(
-
-            currentLanguage === "fa"
-                ? "1 = تغییر نام\n2 = حذف\n\nشماره را وارد کنید:"
-                : "1 = Rename\n2 = Delete\n\nEnter a number:",
-
-            "1"
-
-        );
-
-
-    if (choice === "1") {
-
-        openRenameModal(
-            conversation
-        );
-
-    }
-
-
-    if (choice === "2") {
-
-        openDeleteModal(
-            conversation
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   LOAD MESSAGES
-   ===================================================== */
-
-async function loadMessages(
-    conversationId
-) {
-
-    const response =
-        await fetch(
-
-            `${API_BASE}` +
-            `/v1/conversations/` +
-            `${conversationId}` +
-            `/messages`,
-
-            {
-                method: "GET",
-                headers:
-                    getAuthHeaders(),
-                cache:
-                    "no-store"
-            }
-
-        );
-
-
-    const data =
-        await response.json();
-
-
-    if (
-        !response.ok ||
-        !data.success
-    ) {
-
-        throw new Error(
-            data.error ||
-            "Could not load messages."
-        );
-
-    }
-
-
-    return data.messages || [];
-
-}
-
-
-/* =====================================================
-   LOAD CONVERSATION
-   ===================================================== */
-
-async function loadConversation(
-    conversationId
-) {
-
-    if (isSending) {
+    if (busy) {
         return;
     }
 
+    hideNotice();
 
-    const conversation =
-        conversations.find(
-            item =>
-                item.id === conversationId
-        );
+    const email = el.email.value.trim();
+    const password = el.password.value;
 
+    const problem = validate(email, password);
 
-    if (!conversation) {
+    if (problem) {
+        showNotice(problem);
         return;
     }
 
-
-    currentConversationId =
-        conversationId;
-
-
-    if (
-        [
-            "B&B AI",
-            "B&B AI Lite",
-            "B&B AI Pro",
-            "B&B AI Deep"
-        ].includes(
-            conversation.model
-        )
-    ) {
-
-        modelSelect.value =
-            conversation.model;
-
-    }
-
-
-    renderChatList();
-
+    setBusy(true);
 
     try {
 
-        const messages =
-            await loadMessages(
-                conversationId
-            );
+        if (mode === "login") {
 
+            const { error } = await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
 
-        displayMessages(
-            messages
-        );
+            if (error) {
+                showNotice(loginErrorMessage(error));
+                return;
+            }
 
-    } catch (error) {
-
-        console.error(
-            "Load conversation error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   DISPLAY MESSAGES
-   ===================================================== */
-
-function displayMessages(messages) {
-
-    chatInner.innerHTML = "";
-
-
-    if (!messages.length) {
-
-        showWelcome();
-
-        history = [];
-
-        return;
-
-    }
-
-
-    history =
-        messages.map(
-            message => ({
-                role:
-                    message.role,
-                content:
-                    message.content
-            })
-        );
-
-
-    for (const message of messages) {
-
-        addMessage(
-            message.role,
-            message.content,
-            message.model
-        );
-
-    }
-
-
-    scrollToBottom();
-
-}
-
-
-/* =====================================================
-   LAST CONVERSATION
-   ===================================================== */
-
-async function loadLastConversation() {
-
-    try {
-
-        await loadConversations();
-
-
-        if (!conversations.length) {
-
-            showWelcome();
-
-            return;
-
-        }
-
-
-        await loadConversation(
-            conversations[0].id
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Load last conversation error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   RENAME
-   ===================================================== */
-
-function openRenameModal(
-    conversation
-) {
-
-    modalAction = async () => {
-
-        const title =
-            modalInput.value.trim();
-
-
-        if (!title) {
+            goToApp();
             return;
         }
 
-
-        try {
-
-            const response =
-                await fetch(
-
-                    `${API_BASE}` +
-                    `/v1/conversations/` +
-                    `${conversation.id}`,
-
-                    {
-                        method: "PATCH",
-
-                        headers:
-                            getAuthHeaders(),
-
-                        body:
-                            JSON.stringify({
-                                title
-                            })
-                    }
-
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (
-                !response.ok ||
-                !data.success
-            ) {
-
-                throw new Error(
-                    data.error ||
-                    "Rename failed."
-                );
-
+        // Sign up
+        const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: new URL(APP_PAGE, window.location.href).href
             }
-
-
-            const index =
-                conversations.findIndex(
-                    item =>
-                        item.id ===
-                        conversation.id
-                );
-
-
-            if (index !== -1) {
-
-                conversations[index] =
-                    data.conversation;
-
-            }
-
-
-            closeModal();
-
-            renderChatList();
-
-        } catch (error) {
-
-            console.error(
-                "Rename error:",
-                error
-            );
-
-            alert(
-                error.message
-            );
-
-        }
-
-    };
-
-
-    modalTitle.textContent =
-        t("renameTitle");
-
-    modalDescription.textContent =
-        t("renameDescription");
-
-    modalInput.value =
-        conversation.title || "";
-
-    modalInput.placeholder =
-        currentLanguage === "fa"
-            ? "نام چت"
-            : "Chat name";
-
-    modalConfirm.textContent =
-        t("save");
-
-    modalCancel.textContent =
-        t("cancel");
-
-    modalConfirm.className =
-        "modal-button primary";
-
-    modalBackdrop.classList.add(
-        "show"
-    );
-
-    modalInput.focus();
-
-}
-
-
-/* =====================================================
-   DELETE
-   ===================================================== */
-
-function openDeleteModal(
-    conversation
-) {
-
-    modalAction = async () => {
-
-        try {
-
-            const response =
-                await fetch(
-
-                    `${API_BASE}` +
-                    `/v1/conversations/` +
-                    `${conversation.id}`,
-
-                    {
-                        method:
-                            "DELETE",
-
-                        headers:
-                            getAuthHeaders()
-                    }
-
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (
-                !response.ok ||
-                !data.success
-            ) {
-
-                throw new Error(
-                    data.error ||
-                    "Delete failed."
-                );
-
-            }
-
-
-            conversations =
-                conversations.filter(
-                    item =>
-                        item.id !==
-                        conversation.id
-                );
-
-
-            if (
-                currentConversationId ===
-                conversation.id
-            ) {
-
-                currentConversationId =
-                    null;
-
-                history = [];
-
-                showWelcome();
-
-            }
-
-
-            closeModal();
-
-            renderChatList();
-
-        } catch (error) {
-
-            console.error(
-                "Delete error:",
-                error
-            );
-
-            alert(
-                error.message
-            );
-
-        }
-
-    };
-
-
-    modalTitle.textContent =
-        t("deleteTitle");
-
-    modalDescription.textContent =
-        t("deleteDescription");
-
-    modalInput.style.display =
-        "none";
-
-    modalConfirm.textContent =
-        t("deleteConfirm");
-
-    modalCancel.textContent =
-        t("cancel");
-
-    modalConfirm.className =
-        "modal-button danger";
-
-    modalBackdrop.classList.add(
-        "show"
-    );
-
-}
-
-
-/* =====================================================
-   MODAL
-   ===================================================== */
-
-function closeModal() {
-
-    modalBackdrop.classList.remove(
-        "show"
-    );
-
-    modalInput.style.display =
-        "block";
-
-    modalAction = null;
-
-}
-
-
-modalCancel.addEventListener(
-    "click",
-    closeModal
-);
-
-
-modalConfirm.addEventListener(
-    "click",
-    async () => {
-
-        if (modalAction) {
-
-            await modalAction();
-
-        }
-
-    }
-);
-
-
-modalBackdrop.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            modalBackdrop
-        ) {
-
-            closeModal();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   LANGUAGE MODAL
-   ===================================================== */
-
-languageButton.addEventListener(
-    "click",
-    () => {
-
-        const choice =
-            window.prompt(
-
-                "English = en\nفارسی = fa\n\n" +
-                (
-                    currentLanguage === "fa"
-                        ? "زبان را انتخاب کنید:"
-                        : "Choose language:"
-                ),
-
-                currentLanguage
-            );
-
-
-        if (
-            choice === "en" ||
-            choice === "fa"
-        ) {
-
-            setLanguage(
-                choice
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   ABOUT
-   ===================================================== */
-
-aboutButton.addEventListener(
-    "click",
-    () => {
-
-        modalAction = null;
-
-        modalTitle.textContent =
-            t("aboutTitle");
-
-        modalDescription.textContent =
-            t("aboutDescription");
-
-        modalInput.style.display =
-            "none";
-
-        modalCancel.textContent =
-            "OK";
-
-        modalConfirm.style.display =
-            "none";
-
-        modalBackdrop.classList.add(
-            "show"
-        );
-
-    }
-);
-
-
-/* =====================================================
-   FIX MODAL AFTER ABOUT
-   ===================================================== */
-
-modalCancel.addEventListener(
-    "click",
-    () => {
-
-        modalConfirm.style.display =
-            "block";
-
-        modalInput.style.display =
-            "block";
-
-    }
-);
-
-
-/* =====================================================
-   SEND
-   ===================================================== */
-
-async function sendMessage() {
-
-    if (isSending) {
-        return;
-    }
-
-
-    const message =
-        input.value.trim();
-
-
-    if (!message) {
-        return;
-    }
-
-
-    isSending = true;
-
-    sendButton.disabled =
-        true;
-
-
-    const selectedModel =
-        modelSelect.value;
-
-
-    let thinking = null;
-
-
-    try {
-
-        if (!currentSession) {
-
-            await loadSession();
-
-        }
-
-
-        if (!currentSession) {
-
-            throw new Error(
-                "Please log in first."
-            );
-
-        }
-
-
-        if (!currentConversationId) {
-
-            await createConversation();
-
-        }
-
-
-        addMessage(
-            "user",
-            message
-        );
-
-
-        input.value = "";
-
-        resizeTextarea();
-
-
-        /*
-         * Add current user message to
-         * AI history BEFORE sending.
-         */
-
-        const aiHistory =
-            [
-                ...history,
-                {
-                    role:
-                        "user",
-                    content:
-                        message
-                }
-            ];
-
-
-        /*
-         * Save user message.
-         */
-
-        try {
-
-            await saveMessage(
-                "user",
-                message,
-                selectedModel
-            );
-
-        } catch (saveError) {
-
-            console.error(
-                "User message save error:",
-                saveError
-            );
-
-        }
-
-
-        thinking =
-            addThinking();
-
-
-        const response =
-            await fetch(
-
-                `${API_BASE}` +
-                `${CHAT_ENDPOINT}`,
-
-                {
-                    method:
-                        "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            message:
-                                message,
-
-                            model:
-                                selectedModel,
-
-                            history:
-                                aiHistory
-
-                        })
-
-                }
-
-            );
-
-
-        let data = null;
-
-
-        try {
-
-            data =
-                await response.json();
-
-        } catch {
-
-            throw new Error(
-                `Invalid API response (${response.status})`
-            );
-
-        }
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.error ||
-                `AI request failed (${response.status})`
-            );
-
-        }
-
-
-        if (thinking) {
-
-            thinking.remove();
-
-            thinking = null;
-
-        }
-
-
-        const reply =
-            data.reply ||
-            "No response received.";
-
-
-        addMessage(
-            "assistant",
-            reply,
-            data.name ||
-            selectedModel
-        );
-
-
-        try {
-
-            await saveMessage(
-                "assistant",
-                reply,
-                selectedModel
-            );
-
-        } catch (saveError) {
-
-            console.error(
-                "Assistant save error:",
-                saveError
-            );
-
-        }
-
-
-        history.push({
-            role:
-                "user",
-            content:
-                message
         });
 
+        if (error) {
+            showNotice(signupErrorMessage(error));
+            return;
+        }
 
-        history.push({
-            role:
-                "assistant",
-            content:
-                reply
-        });
+        // Supabase returns an empty identities list for an email that
+        // already has an account (when email confirmation is enabled).
+        if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+            showNotice("An account with this email already exists. Try logging in instead.");
+            return;
+        }
 
+        if (data.session) {
+            goToApp();
+            return;
+        }
 
-        /*
-         * Refresh sidebar ordering.
-         */
+        el.password.value = "";
+        el.confirmPassword.value = "";
 
-        await loadConversations();
+        setMode("login");
 
+        showNotice(
+            "Account created. Check your email to confirm your address, then log in.",
+            "success"
+        );
 
     } catch (error) {
 
-        console.error(
-            "Send error:",
-            error
-        );
+        console.error("Auth error:", error);
 
-
-        if (thinking) {
-            thinking.remove();
-        }
-
-
-        addMessage(
-            "assistant",
-            `⚠️ ${t("error")}: ${error.message}`
+        showNotice(
+            mode === "signup"
+                ? signupErrorMessage(error)
+                : loginErrorMessage(error)
         );
 
     } finally {
 
-        isSending = false;
-
-        sendButton.disabled =
-            false;
-
-        input.focus();
-
+        setBusy(false);
     }
-
 }
 
 
-/* =====================================================
-   NEW CHAT
-   ===================================================== */
+/* -----------------------------------------------------
+   Events
+   ----------------------------------------------------- */
 
-newChatButton.addEventListener(
-    "click",
-    () => {
+el.tabLogin.addEventListener("click", () => setMode("login"));
+el.tabSignup.addEventListener("click", () => setMode("signup"));
 
-        if (isSending) {
-            return;
-        }
+el.switchButton.addEventListener("click", () => {
+    setMode(mode === "login" ? "signup" : "login");
+});
 
-
-        history = [];
-
-        currentConversationId =
-            null;
+el.form.addEventListener("submit", handleSubmit);
 
 
-        showWelcome();
-
-        renderChatList();
-
-
-        input.value =
-            "";
-
-        resizeTextarea();
-
-        input.focus();
-
-    }
-);
-
-
-/* =====================================================
-   MODEL CHANGE
-   ===================================================== */
-
-modelSelect.addEventListener(
-    "change",
-    () => {
-
-        console.log(
-            "B&B AI model:",
-            modelSelect.value
-        );
-
-    }
-);
-
-
-/* =====================================================
-   SEND BUTTON
-   ===================================================== */
-
-sendButton.addEventListener(
-    "click",
-    sendMessage
-);
-
-
-/* =====================================================
-   ENTER
-   ===================================================== */
-
-input.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
-
-            event.preventDefault();
-
-            sendMessage();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   TEXTAREA
-   ===================================================== */
-
-function resizeTextarea() {
-
-    input.style.height =
-        "auto";
-
-    input.style.height =
-        Math.min(
-            input.scrollHeight,
-            180
-        ) + "px";
-
-}
-
-
-input.addEventListener(
-    "input",
-    resizeTextarea
-);
-
-
-/* =====================================================
-   AUTH STATE
-   ===================================================== */
-
-supabaseClient.auth.onAuthStateChange(
-    async (
-        event,
-        session
-    ) => {
-
-        currentSession =
-            session;
-
-
-        if (
-            event === "SIGNED_IN"
-        ) {
-
-            await loadLastConversation();
-
-        }
-
-
-        if (
-            event === "SIGNED_OUT"
-        ) {
-
-            currentSession =
-                null;
-
-            currentConversationId =
-                null;
-
-            history = [];
-
-            conversations = [];
-
-            renderChatList();
-
-            showWelcome();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   START
-   ===================================================== */
+/* -----------------------------------------------------
+   Start: redirect if already signed in
+   ----------------------------------------------------- */
 
 async function start() {
 
-    loadTheme();
+    const params = new URLSearchParams(window.location.search);
 
-    applyLanguage();
-
-    resizeTextarea();
-
-    await loadSession();
-
-    await checkAPI();
-
-
-    if (currentSession) {
-
-        await loadLastConversation();
-
-    } else {
-
-        showWelcome();
-
+    if (params.get("reason") === "expired") {
+        showNotice("Your session has expired. Please log in again.");
     }
 
+    setMode("login");
 
-    input.focus();
+    try {
 
+        const { data } = await supabaseClient.auth.getSession();
+
+        if (data && data.session) {
+            goToApp();
+            return;
+        }
+
+    } catch (error) {
+        console.error("Session check failed:", error);
+    }
+
+    el.email.focus();
 }
-
 
 start();
 
 </script>
 
 </body>
-
 </html>
