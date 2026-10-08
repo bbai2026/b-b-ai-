@@ -829,6 +829,444 @@ textarea::placeholder {
     }
 }
 
+
+/* =====================================================
+   v0.3 ADDITIONS
+   ===================================================== */
+
+.chat-list .chat-list-title {
+    margin: 14px 7px 6px;
+}
+
+.chat-list .chat-list-title:first-child {
+    margin-top: 6px;
+}
+
+.chat-item.pinned .chat-item-title::before {
+    content: "📌";
+    font-size: 10px;
+    margin-right: 5px;
+}
+
+.user-name {
+    padding: 4px 9px 0;
+    font-size: 13px;
+    font-weight: 650;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-name.muted {
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.tool-button {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tool-button:hover {
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.tool-button.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+}
+
+.tool-button.listening {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: #ffffff;
+    animation: mic-pulse 1.2s infinite;
+}
+
+.tool-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+@keyframes mic-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 98, 104, 0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 98, 104, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 98, 104, 0); }
+}
+
+.voice-status {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.voice-status[data-state="listening"] {
+    color: var(--accent);
+}
+
+.voice-status[data-state="error"] {
+    color: var(--danger);
+}
+
+.voice-status[hidden] {
+    display: none;
+}
+
+.message-action.active {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.thinking em {
+    align-self: center;
+    margin-left: 8px;
+    font-size: 13px;
+    font-style: normal;
+    color: var(--muted);
+}
+
+.generated-image-wrap {
+    margin: 0;
+    max-width: 100%;
+}
+
+.generated-image {
+    display: block;
+    width: 100%;
+    max-width: 512px;
+    height: auto;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    cursor: zoom-in;
+}
+
+.generated-image[hidden] {
+    display: none;
+}
+
+.image-placeholder {
+    width: 100%;
+    max-width: 512px;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    background: var(--surface-2);
+    border: 1px dashed var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 16px;
+}
+
+.image-placeholder[hidden] {
+    display: none;
+}
+
+.image-caption {
+    margin-top: 7px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ---------- Settings panel ---------- */
+
+.settings-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+}
+
+.settings-backdrop.show {
+    display: flex;
+}
+
+.settings-panel {
+    width: min(640px, 100%);
+    max-height: min(88vh, 860px);
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.settings-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.settings-body {
+    overflow-y: auto;
+    padding: 4px 20px 22px;
+}
+
+.settings-section {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.settings-section:last-child {
+    border-bottom: 0;
+}
+
+.settings-section h3 {
+    margin: 0 0 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 650;
+    color: var(--muted);
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.settings-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--muted);
+    min-width: 0;
+}
+
+.settings-inline {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.settings-inline input {
+    flex: 1;
+    margin-top: 0;
+    min-width: 0;
+}
+
+.settings-muted {
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.field-hint.error {
+    color: var(--danger);
+}
+
+.field-hint.success {
+    color: var(--success);
+}
+
+.segmented {
+    display: inline-grid;
+    grid-auto-flow: column;
+    gap: 4px;
+    padding: 4px;
+    background: var(--surface-2);
+    border-radius: 11px;
+}
+
+.segmented button {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.segmented button.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.settings-select {
+    min-width: 200px;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    outline: none;
+}
+
+.switch-input {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    width: 42px;
+    height: 24px;
+    margin: 0;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+}
+
+.switch-input::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition: transform 0.15s ease;
+}
+
+.switch-input:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.switch-input:checked::after {
+    transform: translateX(18px);
+    background: #ffffff;
+}
+
+.memory-list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.memory-item {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--surface-2);
+}
+
+.memory-text {
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.memory-meta {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: capitalize;
+}
+
+.memory-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.memory-actions button {
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.memory-actions button.danger {
+    color: var(--danger);
+}
+
+.memory-edit {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 56px;
+    color: var(--text);
+}
+
+.memory-empty {
+    margin: 12px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.settings-footer-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+@media (max-width: 800px) {
+
+    .settings-backdrop {
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .settings-panel {
+        width: 100%;
+        max-height: none;
+        height: 100%;
+        border-radius: 0;
+        border: 0;
+    }
+
+    .settings-select {
+        min-width: 0;
+        max-width: 55%;
+    }
+
+    .settings-row {
+        flex-wrap: wrap;
+    }
+}
+
 </style>
 
 </head>
@@ -857,13 +1295,17 @@ textarea::placeholder {
         + New chat
     </button>
 
-    <div class="chat-list-title">Chats</div>
-
     <div class="chat-list" id="chatList"></div>
 
     <div class="sidebar-bottom">
 
+        <div class="user-name muted" id="userName"></div>
+
         <div class="user-email" id="userEmail"></div>
+
+        <button class="sidebar-button" id="settingsButton" type="button">
+            Settings
+        </button>
 
         <button class="sidebar-button" id="themeButton" type="button">
             Dark mode
@@ -944,6 +1386,24 @@ textarea::placeholder {
             ></textarea>
 
             <button
+                class="tool-button"
+                id="imageModeButton"
+                type="button"
+                title="Generate an image from your next message"
+                aria-label="Image mode"
+                aria-pressed="false"
+            >🖼</button>
+
+            <button
+                class="tool-button"
+                id="micButton"
+                type="button"
+                title="Speak your message"
+                aria-label="Start voice input"
+                aria-pressed="false"
+            >🎤</button>
+
+            <button
                 class="send-button"
                 id="sendButton"
                 type="button"
@@ -954,6 +1414,8 @@ textarea::placeholder {
             </button>
 
         </div>
+
+        <div class="voice-status" id="voiceStatus" role="status" hidden></div>
 
         <div class="composer-note">
             B&amp;B AI can make mistakes. Check important information.
@@ -973,6 +1435,7 @@ textarea::placeholder {
 =========================================================== -->
 
 <div class="popover" id="popover" hidden>
+    <button type="button" data-action="pin">Pin</button>
     <button type="button" data-action="rename">Rename</button>
     <button type="button" data-action="delete" class="danger">Delete</button>
 </div>
@@ -1009,13 +1472,129 @@ textarea::placeholder {
 </div>
 
 
+<!-- ==========================================================
+     SETTINGS
+=========================================================== -->
+
+<div class="settings-backdrop" id="settingsBackdrop">
+
+    <div class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+
+        <div class="settings-header">
+            <h2 id="settingsTitle">Settings</h2>
+            <button class="modal-button" id="settingsClose" type="button">Close</button>
+        </div>
+
+        <div class="settings-body">
+
+            <section class="settings-section">
+                <h3>Account</h3>
+
+                <div class="settings-row">
+                    <span>Email</span>
+                    <span class="settings-value" id="settingsEmail"></span>
+                </div>
+
+                <form id="usernameForm" novalidate>
+                    <div class="settings-row" style="display:block;padding-top:10px">
+                        <label for="usernameInput">Username</label>
+                        <div class="settings-inline">
+                            <input
+                                id="usernameInput"
+                                type="text"
+                                maxlength="24"
+                                autocomplete="username"
+                                placeholder="Choose a username"
+                            >
+                            <button class="modal-button primary" id="usernameSave" type="submit">Save</button>
+                        </div>
+                        <span class="field-hint" id="usernameHint">3 to 24 characters: letters, numbers, _ or -.</span>
+                    </div>
+                </form>
+            </section>
+
+            <section class="settings-section">
+                <h3>Appearance</h3>
+
+                <div class="settings-row">
+                    <span>Theme</span>
+                    <div class="segmented" role="group" aria-label="Theme">
+                        <button class="theme-option" type="button" data-theme="light">Light</button>
+                        <button class="theme-option" type="button" data-theme="dark">Dark</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="settings-section">
+                <h3>AI</h3>
+
+                <div class="settings-row">
+                    <label for="defaultModelSelect">Default model for new chats</label>
+                    <select class="settings-select" id="defaultModelSelect"></select>
+                </div>
+            </section>
+
+            <section class="settings-section">
+                <h3>Memory</h3>
+
+                <div class="settings-row">
+                    <span>Save and use memories</span>
+                    <input class="switch-input" type="checkbox" id="memoryToggle" aria-label="Save and use memories">
+                </div>
+
+                <p class="settings-muted" id="memoryNote">
+                    The assistant saves long-term facts you share, such as preferences and project details.
+                    Passwords and secrets are never saved. When this is off, nothing new is saved and saved
+                    memories are not used. Your saved memories stay until you delete them.
+                </p>
+
+                <ul class="memory-list" id="memoryList"></ul>
+
+                <p class="memory-empty" id="memoryEmpty" hidden>No memories saved yet.</p>
+
+                <div class="settings-footer-row">
+                    <button class="modal-button danger" id="clearMemoryButton" type="button" disabled>
+                        Clear all memories
+                    </button>
+                </div>
+            </section>
+
+            <section class="settings-section">
+                <h3>Voice</h3>
+
+                <div class="settings-row">
+                    <label for="ttsRateSelect">Speech speed</label>
+                    <select class="settings-select" id="ttsRateSelect">
+                        <option value="0.75">0.75x</option>
+                        <option value="1">1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                    </select>
+                </div>
+
+                <div class="settings-row">
+                    <label for="sttLanguageSelect">Voice input language</label>
+                    <select class="settings-select" id="sttLanguageSelect">
+                        <option value="en-US">English</option>
+                        <option value="fa-IR">Persian (فارسی)</option>
+                    </select>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <div class="toast" id="toast" role="status" hidden></div>
 
 
 <script>
 
 /* =====================================================
-   B&B AI v0.1 - Chat application
+   B&B AI v0.3 - Chat application
    ===================================================== */
 
 
@@ -1049,6 +1628,22 @@ const CHAT_TIMEOUT_MS = 240000;
 
 const LAST_CHAT_KEY_PREFIX = "bbai_last_conversation_";
 
+const IMAGE_TIMEOUT_MS = 600000;
+
+const MEMORY_EXTRACT_TIMEOUT_MS = 60000;
+
+const IMAGE_BUCKET = "generated-images";
+
+const SIGNED_URL_SECONDS = 3600;
+
+const USERNAME_PATTERN = /^[\p{L}\p{N}_-]{3,24}$/u;
+
+const CHUNK_CHARS = 180;
+
+const CONVERSATION_FIELDS = "id,title,model,is_pinned,created_at,updated_at";
+
+const MESSAGE_FIELDS = "id,conversation_id,role,content,model,created_at,type,metadata";
+
 
 /* -----------------------------------------------------
    Clients
@@ -1079,6 +1674,27 @@ let apiOnline = false;
 let openedMenuConversationId = null;
 
 let dialogAction = null;
+
+// v0.3 state
+let profile = null;
+
+let imageMode = false;
+
+let recognition = null;
+
+let voiceBaseText = "";
+
+let voiceFailed = false;
+
+const imageUrlCache = new Map();
+
+const speechState = {
+    session: 0,
+    button: null,
+    pauseButton: null
+};
+
+let speechSessionCounter = 0;
 
 
 /* -----------------------------------------------------
@@ -1111,7 +1727,28 @@ const el = {
     modalInput: document.getElementById("modalInput"),
     modalCancel: document.getElementById("modalCancel"),
     modalConfirm: document.getElementById("modalConfirm"),
-    toast: document.getElementById("toast")
+    toast: document.getElementById("toast"),
+    userName: document.getElementById("userName"),
+    settingsButton: document.getElementById("settingsButton"),
+    imageModeButton: document.getElementById("imageModeButton"),
+    micButton: document.getElementById("micButton"),
+    voiceStatus: document.getElementById("voiceStatus"),
+    settingsBackdrop: document.getElementById("settingsBackdrop"),
+    settingsClose: document.getElementById("settingsClose"),
+    settingsEmail: document.getElementById("settingsEmail"),
+    usernameForm: document.getElementById("usernameForm"),
+    usernameInput: document.getElementById("usernameInput"),
+    usernameSave: document.getElementById("usernameSave"),
+    usernameHint: document.getElementById("usernameHint"),
+    themeOptions: document.querySelectorAll(".theme-option"),
+    defaultModelSelect: document.getElementById("defaultModelSelect"),
+    memoryToggle: document.getElementById("memoryToggle"),
+    memoryNote: document.getElementById("memoryNote"),
+    memoryList: document.getElementById("memoryList"),
+    memoryEmpty: document.getElementById("memoryEmpty"),
+    clearMemoryButton: document.getElementById("clearMemoryButton"),
+    ttsRateSelect: document.getElementById("ttsRateSelect"),
+    sttLanguageSelect: document.getElementById("sttLanguageSelect")
 };
 
 
@@ -1163,22 +1800,40 @@ function showToast(message) {
    Theme
    ----------------------------------------------------- */
 
+
 function applyTheme() {
 
-    const dark = localStorage.getItem("bbai_theme") === "dark";
+    setDarkMode(localStorage.getItem("bbai_theme") === "dark");
+}
+
+function setDarkMode(dark) {
 
     document.documentElement.classList.toggle("dark", dark);
 
     el.themeButton.textContent = dark ? "Light mode" : "Dark mode";
+
+    localStorage.setItem("bbai_theme", dark ? "dark" : "light");
+
+    el.themeOptions.forEach(option => {
+        option.classList.toggle("active", option.dataset.theme === (dark ? "dark" : "light"));
+    });
 }
 
-function toggleTheme() {
 
-    const dark = document.documentElement.classList.contains("dark");
+async function toggleTheme() {
 
-    localStorage.setItem("bbai_theme", dark ? "light" : "dark");
+    const dark = !document.documentElement.classList.contains("dark");
 
-    applyTheme();
+    setDarkMode(dark);
+
+    try {
+        await savePreferences({ theme: dark ? "dark" : "light" });
+
+    } catch (error) {
+
+        // The local switch already happened; the saved setting failed.
+        showToast(error.message);
+    }
 }
 
 
@@ -1428,9 +2083,12 @@ function scrollToBottom() {
     });
 }
 
-function addMessage(role, content, modelName = null) {
+
+function addMessage(role, content, modelName = null, options = {}) {
 
     removeWelcome();
+
+    const isImage = options.type === "image";
 
     const message = document.createElement("div");
     message.className = `message ${role}`;
@@ -1442,44 +2100,60 @@ function addMessage(role, content, modelName = null) {
     meta.className = "message-meta";
     meta.textContent = role === "user" ? "You" : (modelName || el.modelSelect.value);
 
-    const text = document.createElement("div");
-    text.className = "message-content";
-    text.textContent = content;
-
     wrapper.appendChild(meta);
-    wrapper.appendChild(text);
+
+    if (isImage) {
+
+        wrapper.appendChild(buildImageBlock(content, options.path));
+
+    } else {
+
+        const text = document.createElement("div");
+        text.className = "message-content";
+        text.textContent = content;
+
+        wrapper.appendChild(text);
+    }
 
     if (role === "assistant") {
 
         const actions = document.createElement("div");
         actions.className = "message-actions";
 
-        const copy = document.createElement("button");
-        copy.className = "message-action";
-        copy.type = "button";
-        copy.textContent = "⧉";
-        copy.title = "Copy";
-        copy.setAttribute("aria-label", "Copy message");
+        if (!isImage) {
 
-        copy.addEventListener("click", async () => {
+            const copy = document.createElement("button");
+            copy.className = "message-action";
+            copy.type = "button";
+            copy.textContent = "⧉";
+            copy.title = "Copy";
+            copy.setAttribute("aria-label", "Copy message");
 
-            try {
+            copy.addEventListener("click", async () => {
 
-                await navigator.clipboard.writeText(content);
+                try {
 
-                copy.textContent = "✓";
+                    await navigator.clipboard.writeText(content);
 
-                setTimeout(() => {
-                    copy.textContent = "⧉";
-                }, 1200);
+                    copy.textContent = "✓";
 
-            } catch {
+                    setTimeout(() => {
+                        copy.textContent = "⧉";
+                    }, 1200);
 
-                showToast("Could not copy the message.");
-            }
-        });
+                } catch {
 
-        actions.appendChild(copy);
+                    showToast("Could not copy the message.");
+                }
+            });
+
+            const speech = buildSpeechButtons(content);
+
+            actions.appendChild(copy);
+            actions.appendChild(speech.speak);
+            actions.appendChild(speech.pause);
+        }
+
         wrapper.appendChild(actions);
     }
 
@@ -1504,7 +2178,8 @@ function addNotice(text) {
     scrollToBottom();
 }
 
-function addThinking() {
+
+function addThinking(label = "") {
 
     removeWelcome();
 
@@ -1513,8 +2188,16 @@ function addThinking() {
 
     const dots = document.createElement("div");
     dots.className = "thinking";
-    dots.setAttribute("aria-label", "B&B AI is typing");
+    dots.setAttribute("aria-label", label || "B&B AI is typing");
     dots.innerHTML = "<span></span><span></span><span></span>";
+
+    if (label) {
+
+        const text = document.createElement("em");
+        text.textContent = label;
+
+        dots.appendChild(text);
+    }
 
     message.appendChild(dots);
     el.chatInner.appendChild(message);
@@ -1523,6 +2206,7 @@ function addThinking() {
 
     return message;
 }
+
 
 function renderMessages(messages) {
 
@@ -1534,11 +2218,16 @@ function renderMessages(messages) {
     }
 
     for (const message of messages) {
-        addMessage(message.role, message.content, message.model);
+
+        addMessage(message.role, message.content, message.model, {
+            type: message.type || "text",
+            path: message.metadata ? message.metadata.path : null
+        });
     }
 
     scrollToBottom();
 }
+
 
 function renderChatList() {
 
@@ -1554,52 +2243,84 @@ function renderChatList() {
         return;
     }
 
-    for (const conversation of conversations) {
+    const pinned = conversations.filter(item => item.is_pinned);
+    const others = conversations.filter(item => !item.is_pinned);
 
-        const item = document.createElement("div");
-        item.className = "chat-item";
-
-        if (conversation.id === currentConversationId) {
-            item.classList.add("active");
-        }
-
-        const title = document.createElement("div");
-        title.className = "chat-item-title";
-        title.textContent = conversation.title || DEFAULT_TITLE;
-        title.title = conversation.title || DEFAULT_TITLE;
-
-        const menu = document.createElement("button");
-        menu.className = "chat-menu";
-        menu.type = "button";
-        menu.textContent = "⋯";
-        menu.title = "More";
-        menu.setAttribute("aria-label", "Chat options");
-
-        item.addEventListener("click", () => {
-
-            closeSidebarOnMobile();
-
-            openConversation(conversation.id);
-        });
-
-        menu.addEventListener("click", (event) => {
-
-            event.stopPropagation();
-
-            openPopover(conversation.id, menu);
-        });
-
-        item.appendChild(title);
-        item.appendChild(menu);
-
-        el.chatList.appendChild(item);
+    if (pinned.length) {
+        appendChatSection("Pinned", pinned);
+        appendChatSection("Recent", others);
+    } else {
+        appendChatSection("Chats", others);
     }
+}
+
+function appendChatSection(title, items) {
+
+    if (!items.length) {
+        return;
+    }
+
+    const heading = document.createElement("div");
+    heading.className = "chat-list-title";
+    heading.textContent = title;
+
+    el.chatList.appendChild(heading);
+
+    for (const conversation of items) {
+        el.chatList.appendChild(buildChatItem(conversation));
+    }
+}
+
+function buildChatItem(conversation) {
+
+    const item = document.createElement("div");
+    item.className = "chat-item";
+
+    if (conversation.is_pinned) {
+        item.classList.add("pinned");
+    }
+
+    if (conversation.id === currentConversationId) {
+        item.classList.add("active");
+    }
+
+    const title = document.createElement("div");
+    title.className = "chat-item-title";
+    title.textContent = conversation.title || DEFAULT_TITLE;
+    title.title = conversation.title || DEFAULT_TITLE;
+
+    const menu = document.createElement("button");
+    menu.className = "chat-menu";
+    menu.type = "button";
+    menu.textContent = "⋯";
+    menu.title = "More";
+    menu.setAttribute("aria-label", "Chat options");
+
+    item.addEventListener("click", () => {
+
+        closeSidebarOnMobile();
+
+        openConversation(conversation.id);
+    });
+
+    menu.addEventListener("click", (event) => {
+
+        event.stopPropagation();
+
+        openPopover(conversation.id, menu);
+    });
+
+    item.appendChild(title);
+    item.appendChild(menu);
+
+    return item;
 }
 
 
 /* -----------------------------------------------------
    Popover (chat options)
    ----------------------------------------------------- */
+
 
 function openPopover(conversationId, anchor) {
 
@@ -1609,6 +2330,14 @@ function openPopover(conversationId, anchor) {
     }
 
     openedMenuConversationId = conversationId;
+
+    const conversation = conversations.find(item => item.id === conversationId);
+
+    const pinButton = el.popover.querySelector('button[data-action="pin"]');
+
+    if (pinButton) {
+        pinButton.textContent = conversation && conversation.is_pinned ? "Unpin" : "Pin";
+    }
 
     const rect = anchor.getBoundingClientRect();
 
@@ -1646,6 +2375,10 @@ el.popover.addEventListener("click", (event) => {
 
     if (!conversation) {
         return;
+    }
+
+    if (action === "pin") {
+        togglePin(conversation.id);
     }
 
     if (action === "rename") {
@@ -1736,7 +2469,7 @@ function openAboutDialog() {
         title: "About B&B AI",
         description:
             "B&B AI is part of B&B Studio. We Make Ideas Real.\n\n" +
-            "Version v0.1 · Text AI\n" +
+            "Version v0.3 · Text, Image and Voice\n" +
             "Created by Barad Bolhasani.",
         confirmText: "OK",
         showCancel: false,
@@ -1821,14 +2554,16 @@ function databaseError(error, fallback = "Could not access your conversations. P
     return new ApiError(fallback, 0);
 }
 
+
 async function loadConversations() {
 
     const userId = await getCurrentUserId();
 
     const { data, error } = await supabaseClient
         .from("conversations")
-        .select("id,title,model,created_at,updated_at")
+        .select(CONVERSATION_FIELDS)
         .eq("user_id", userId)
+        .order("is_pinned", { ascending: false })
         .order("updated_at", { ascending: false });
 
     if (error) {
@@ -1851,7 +2586,7 @@ async function createConversation(model) {
             title: DEFAULT_TITLE,
             model
         })
-        .select("id,title,model,created_at,updated_at")
+        .select(CONVERSATION_FIELDS)
         .single();
 
     if (error) {
@@ -1871,7 +2606,8 @@ async function createConversation(model) {
     return conversation.id;
 }
 
-async function saveMessage(conversationId, role, content, model) {
+
+async function saveMessage(conversationId, role, content, model, options = {}) {
 
     const userId = await getCurrentUserId();
 
@@ -1890,15 +2626,23 @@ async function saveMessage(conversationId, role, content, model) {
         throw databaseError(conversationError, "Conversation not found.");
     }
 
+    // Text messages send only the original fields; image messages add type + metadata.
+    const row = {
+        conversation_id: conversationId,
+        role,
+        content,
+        model
+    };
+
+    if (options.type === "image") {
+        row.type = "image";
+        row.metadata = options.metadata || {};
+    }
+
     const { data: message, error: messageError } = await supabaseClient
         .from("messages")
-        .insert({
-            conversation_id: conversationId,
-            role,
-            content,
-            model
-        })
-        .select("id,conversation_id,role,content,model,created_at")
+        .insert(row)
+        .select(MESSAGE_FIELDS)
         .single();
 
     if (messageError) {
@@ -1927,7 +2671,7 @@ async function saveMessage(conversationId, role, content, model) {
         .update(changes)
         .eq("id", conversationId)
         .eq("user_id", userId)
-        .select("id,title,model,created_at,updated_at")
+        .select(CONVERSATION_FIELDS)
         .single();
 
     if (updateError) {
@@ -1942,6 +2686,7 @@ async function saveMessage(conversationId, role, content, model) {
 
     return { message };
 }
+
 
 async function loadMessages(conversationId) {
 
@@ -1960,7 +2705,7 @@ async function loadMessages(conversationId) {
 
     const { data, error } = await supabaseClient
         .from("messages")
-        .select("id,conversation_id,role,content,model,created_at")
+        .select(MESSAGE_FIELDS)
         .eq("conversation_id", conversationId)
         .order("created_at", { ascending: true });
 
@@ -1992,7 +2737,7 @@ async function renameConversation(conversationId) {
             })
             .eq("id", conversationId)
             .eq("user_id", userId)
-            .select("id,title,model,created_at,updated_at")
+            .select(CONVERSATION_FIELDS)
             .single();
 
         if (error) {
@@ -2015,11 +2760,35 @@ async function renameConversation(conversationId) {
     }
 }
 
+
 async function deleteConversation(conversationId) {
 
     try {
 
         const userId = await getCurrentUserId();
+
+        // Remove private image files first, while the rows still point to them.
+        const { data: imageRows } = await supabaseClient
+            .from("messages")
+            .select("metadata")
+            .eq("conversation_id", conversationId)
+            .eq("type", "image");
+
+        const imagePaths = (imageRows || [])
+            .map(row => row.metadata && row.metadata.path)
+            .filter(Boolean);
+
+        if (imagePaths.length) {
+
+            const { error: storageError } = await supabaseClient
+                .storage
+                .from(IMAGE_BUCKET)
+                .remove(imagePaths);
+
+            if (storageError) {
+                console.warn("Could not remove chat images:", storageError);
+            }
+        }
 
         const { error: messagesError } = await supabaseClient
             .from("messages")
@@ -2094,10 +2863,12 @@ async function openConversation(conversationId) {
             return;
         }
 
-        history = messages.map(message => ({
-            role: message.role,
-            content: message.content
-        }));
+        history = messages
+            .filter(message => (message.type || "text") === "text")
+            .map(message => ({
+                role: message.role,
+                content: message.content
+            }));
 
         renderMessages(messages);
 
@@ -2107,6 +2878,7 @@ async function openConversation(conversationId) {
         showToast(error.message);
     }
 }
+
 
 function startNewChat() {
 
@@ -2121,6 +2893,8 @@ function startNewChat() {
     rememberLastConversation();
 
     showWelcome();
+
+    applyDefaultModel();
 
     renderChatList();
 
@@ -2159,6 +2933,7 @@ function handleAuthFailure(error) {
     }
 }
 
+
 async function sendMessage() {
 
     if (isSending) {
@@ -2176,6 +2951,10 @@ async function sendMessage() {
         return;
     }
 
+    if (recognition) {
+        stopVoiceInput();
+    }
+
     isSending = true;
     el.sendButton.disabled = true;
 
@@ -2184,12 +2963,19 @@ async function sendMessage() {
     // Prior messages only. The current message is sent separately.
     const priorHistory = history.slice(-MAX_HISTORY_MESSAGES);
 
+    const useImage = imageMode;
+
+    // Image mode applies to one message, then goes back to chat.
+    if (useImage) {
+        setImageMode(false);
+    }
+
     el.input.value = "";
     resizeTextarea();
 
     addMessage("user", text);
 
-    const thinking = addThinking();
+    const thinking = addThinking(useImage ? "Generating image..." : "");
 
     try {
 
@@ -2199,49 +2985,11 @@ async function sendMessage() {
 
         const conversationId = currentConversationId;
 
-        try {
-
-            await saveMessage(conversationId, "user", text, model);
-
-        } catch (error) {
-
-            console.error("Could not save message:", error);
+        if (useImage) {
+            await generateImageReply(conversationId, text, model, thinking);
+        } else {
+            await generateTextReply(conversationId, text, model, priorHistory, thinking);
         }
-
-        const reply = await apiRequest("/v1/chat", {
-            method: "POST",
-            auth: true,
-            timeout: CHAT_TIMEOUT_MS,
-            body: {
-                message: text,
-                model,
-                history: priorHistory
-            }
-        });
-
-        thinking.remove();
-
-        const replyText = reply.reply || "No response received.";
-        const replyModel = reply.name || model;
-
-        addMessage("assistant", replyText, replyModel);
-
-        history = [
-            ...priorHistory,
-            { role: "user", content: text },
-            { role: "assistant", content: replyText }
-        ];
-
-        try {
-
-            await saveMessage(conversationId, "assistant", replyText, model);
-
-        } catch (error) {
-
-            console.error("Could not save reply:", error);
-        }
-
-        await loadConversations();
 
     } catch (error) {
 
@@ -2259,6 +3007,129 @@ async function sendMessage() {
         el.sendButton.disabled = false;
         el.input.focus();
     }
+}
+
+async function generateTextReply(conversationId, text, model, priorHistory, thinking) {
+
+    try {
+
+        await saveMessage(conversationId, "user", text, model);
+
+    } catch (error) {
+
+        console.error("Could not save message:", error);
+    }
+
+    const reply = await apiRequest("/v1/chat", {
+        method: "POST",
+        auth: true,
+        timeout: CHAT_TIMEOUT_MS,
+        body: {
+            message: text,
+            model,
+            history: priorHistory
+        }
+    });
+
+    thinking.remove();
+
+    const replyText = reply.reply || "No response received.";
+    const replyModel = reply.name || model;
+
+    addMessage("assistant", replyText, replyModel);
+
+    history = [
+        ...priorHistory,
+        { role: "user", content: text },
+        { role: "assistant", content: replyText }
+    ];
+
+    try {
+
+        await saveMessage(conversationId, "assistant", replyText, model);
+
+    } catch (error) {
+
+        console.error("Could not save reply:", error);
+    }
+
+    learnFromMessageInBackground(conversationId, text);
+
+    await loadConversations();
+}
+
+async function generateImageReply(conversationId, prompt, model, thinking) {
+
+    try {
+
+        await saveMessage(conversationId, "user", prompt, model);
+
+    } catch (error) {
+
+        console.error("Could not save prompt:", error);
+    }
+
+    const result = await apiRequest("/v1/image", {
+        method: "POST",
+        auth: true,
+        timeout: IMAGE_TIMEOUT_MS,
+        body: {
+            prompt,
+            conversation_id: conversationId
+        }
+    });
+
+    thinking.remove();
+
+    const image = result.result;
+
+    addMessage("assistant", image.prompt, image.model, {
+        type: "image",
+        path: image.path
+    });
+
+    await saveMessage(conversationId, "assistant", image.prompt, model, {
+        type: "image",
+        metadata: {
+            path: image.path,
+            prompt: image.prompt,
+            width: image.width,
+            height: image.height,
+            model: image.model
+        }
+    });
+
+    await loadConversations();
+}
+
+// Memory is learned in the background so chat never waits for it.
+function learnFromMessageInBackground(conversationId, text) {
+
+    if (!profile || profile.memory_enabled === false) {
+        return;
+    }
+
+    apiRequest("/v1/memories/extract", {
+        method: "POST",
+        auth: true,
+        timeout: MEMORY_EXTRACT_TIMEOUT_MS,
+        body: {
+            message: text,
+            conversation_id: conversationId
+        }
+    })
+        .then(result => {
+
+            if (result.action === "create") {
+                showToast("Saved to memory.");
+            } else if (result.action === "update") {
+                showToast("Memory updated.");
+            }
+        })
+        .catch(error => {
+
+            console.warn("Memory learning skipped:", error.message);
+        });
 }
 
 
@@ -2308,7 +3179,7 @@ el.modelSelect.addEventListener("change", async () => {
             })
             .eq("id", currentConversationId)
             .eq("user_id", userId)
-            .select("id,title,model,created_at,updated_at")
+            .select(CONVERSATION_FIELDS)
             .single();
 
         if (error) {
@@ -2403,11 +3274,978 @@ async function openInitialConversation() {
     }
 }
 
+
+/* -----------------------------------------------------
+   Profile + preferences (username, email, theme, memory switch)
+   ----------------------------------------------------- */
+
+function getPreferences() {
+
+    return (profile && profile.preferences) || {};
+}
+
+async function updateProfile(changes) {
+
+    const data = await apiRequest("/v1/profile", {
+        method: "PATCH",
+        auth: true,
+        body: changes
+    });
+
+    profile = data.profile;
+
+    return profile;
+}
+
+async function savePreferences(changes) {
+
+    return updateProfile({ preferences: changes });
+}
+
+async function loadProfile() {
+
+    const data = await apiRequest("/v1/profile", { auth: true });
+
+    profile = data.profile;
+
+    const prefs = getPreferences();
+
+    setDarkMode(prefs.theme === "dark");
+
+    renderUserName();
+
+    if (profile.email) {
+        el.userEmail.textContent = profile.email;
+    }
+
+    return profile;
+}
+
+function renderUserName() {
+
+    if (profile && profile.username) {
+        el.userName.textContent = profile.username;
+        el.userName.classList.remove("muted");
+    } else {
+        el.userName.textContent = "No username yet";
+        el.userName.classList.add("muted");
+    }
+}
+
+function applyDefaultModel() {
+
+    const preferred = getPreferences().default_model;
+
+    if (preferred && el.modelSelect.querySelector(`option[value="${CSS.escape(preferred)}"]`)) {
+        el.modelSelect.value = preferred;
+    }
+}
+
+/* -----------------------------------------------------
+   Pinned chats
+   ----------------------------------------------------- */
+
+async function togglePin(conversationId) {
+
+    const conversation = conversations.find(item => item.id === conversationId);
+
+    if (!conversation) {
+        return;
+    }
+
+    const nextValue = !conversation.is_pinned;
+
+    try {
+
+        const userId = await getCurrentUserId();
+
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .update({ is_pinned: nextValue })
+            .eq("id", conversationId)
+            .eq("user_id", userId)
+            .select(CONVERSATION_FIELDS)
+            .single();
+
+        if (error) {
+            throw databaseError(error, "Could not update the pin. Please try again.");
+        }
+
+        Object.assign(conversation, data);
+
+        conversations.sort((a, b) => {
+
+            if (!!a.is_pinned !== !!b.is_pinned) {
+                return a.is_pinned ? -1 : 1;
+            }
+
+            return (b.updated_at || "").localeCompare(a.updated_at || "");
+        });
+
+        renderChatList();
+
+        showToast(nextValue ? "Chat pinned." : "Chat unpinned.");
+
+    } catch (error) {
+
+        handleAuthFailure(error);
+        showToast(error.message);
+    }
+}
+
+/* -----------------------------------------------------
+   Generated images (private bucket, signed URLs)
+   ----------------------------------------------------- */
+
+async function getImageUrl(path) {
+
+    const cached = imageUrlCache.get(path);
+
+    if (cached && cached.expires > Date.now()) {
+        return cached.url;
+    }
+
+    const { data, error } = await supabaseClient
+        .storage
+        .from(IMAGE_BUCKET)
+        .createSignedUrl(path, SIGNED_URL_SECONDS);
+
+    if (error || !data || !data.signedUrl) {
+        throw new Error("Could not open this image.");
+    }
+
+    // Refresh a little before the link expires.
+    imageUrlCache.set(path, {
+        url: data.signedUrl,
+        expires: Date.now() + (SIGNED_URL_SECONDS - 600) * 1000
+    });
+
+    return data.signedUrl;
+}
+
+function buildImageBlock(prompt, path) {
+
+    const figure = document.createElement("figure");
+    figure.className = "generated-image-wrap";
+
+    const placeholder = document.createElement("div");
+    placeholder.className = "image-placeholder";
+    placeholder.textContent = "Loading image...";
+
+    const img = document.createElement("img");
+    img.className = "generated-image";
+    img.alt = prompt || "Generated image";
+    img.title = "Open full size";
+    img.hidden = true;
+
+    img.addEventListener("click", () => {
+
+        if (img.src) {
+            window.open(img.src, "_blank", "noopener");
+        }
+    });
+
+    const caption = document.createElement("figcaption");
+    caption.className = "image-caption";
+    caption.textContent = prompt || "";
+
+    figure.appendChild(placeholder);
+    figure.appendChild(img);
+    figure.appendChild(caption);
+
+    if (path) {
+        loadGeneratedImage(path, img, placeholder);
+    } else {
+        placeholder.textContent = "This image is no longer available.";
+    }
+
+    return figure;
+}
+
+async function loadGeneratedImage(path, img, placeholder) {
+
+    try {
+
+        const url = await getImageUrl(path);
+
+        img.onload = () => {
+            placeholder.hidden = true;
+            img.hidden = false;
+            scrollToBottom();
+        };
+
+        img.onerror = () => {
+            placeholder.textContent = "This image could not be displayed.";
+        };
+
+        img.src = url;
+
+    } catch (error) {
+
+        console.error("Image load error:", error);
+        placeholder.textContent = "This image could not be loaded.";
+    }
+}
+
+function setImageMode(on) {
+
+    imageMode = on;
+
+    el.imageModeButton.classList.toggle("active", on);
+    el.imageModeButton.setAttribute("aria-pressed", String(on));
+    el.input.placeholder = on ? "Describe the image you want..." : "Message B&B AI...";
+
+    if (on) {
+        el.input.focus();
+    }
+}
+
+/* -----------------------------------------------------
+   Text-to-speech (browser speech synthesis, user-initiated only)
+   ----------------------------------------------------- */
+
+function ttsAvailable() {
+
+    return "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+}
+
+function splitForSpeech(text) {
+
+    const cleaned = text.replace(/\s+/g, " ").trim();
+
+    const sentences = cleaned.match(/[^.!?؟\u06D4]+[.!?؟\u06D4]?/g) || [cleaned];
+
+    const chunks = [];
+
+    let current = "";
+
+    for (const sentence of sentences) {
+
+        const piece = sentence.trim();
+
+        if (!piece) {
+            continue;
+        }
+
+        if (current && (current + " " + piece).length > CHUNK_CHARS) {
+            chunks.push(current);
+            current = piece;
+        } else {
+            current = current ? current + " " + piece : piece;
+        }
+    }
+
+    if (current) {
+        chunks.push(current);
+    }
+
+    return chunks;
+}
+
+function speechLanguageFor(text) {
+
+    return /[\u0600-\u06FF]/.test(text) ? "fa-IR" : "en-US";
+}
+
+function buildSpeechButtons(text) {
+
+    const speak = document.createElement("button");
+    speak.className = "message-action";
+    speak.type = "button";
+    speak.textContent = "🔊";
+    speak.title = "Listen";
+    speak.setAttribute("aria-label", "Listen to this reply");
+
+    const pause = document.createElement("button");
+    pause.className = "message-action";
+    pause.type = "button";
+    pause.textContent = "⏸";
+    pause.title = "Pause";
+    pause.setAttribute("aria-label", "Pause playback");
+    pause.hidden = true;
+
+    speak.addEventListener("click", () => speakMessage(text, speak, pause));
+    pause.addEventListener("click", togglePauseSpeech);
+
+    return { speak, pause };
+}
+
+function speakMessage(text, speakButton, pauseButton) {
+
+    if (!ttsAvailable()) {
+        showToast("Text-to-speech is not supported in this browser.");
+        return;
+    }
+
+    // Pressing the same reply's button again stops it.
+    if (speechState.button === speakButton) {
+        stopSpeaking();
+        return;
+    }
+
+    stopSpeaking();
+
+    const chunks = splitForSpeech(text);
+
+    if (!chunks.length) {
+        return;
+    }
+
+    const sessionId = ++speechSessionCounter;
+
+    speechState.session = sessionId;
+    speechState.button = speakButton;
+    speechState.pauseButton = pauseButton;
+
+    speakButton.textContent = "■";
+    speakButton.title = "Stop";
+    speakButton.classList.add("active");
+
+    pauseButton.hidden = false;
+    pauseButton.textContent = "⏸";
+    pauseButton.title = "Pause";
+
+    const lang = speechLanguageFor(text);
+    const rate = Number(getPreferences().tts_rate) || 1;
+
+    chunks.forEach((chunk, index) => {
+
+        const utterance = new SpeechSynthesisUtterance(chunk);
+
+        utterance.lang = lang;
+        utterance.rate = rate;
+
+        utterance.onend = () => {
+
+            if (sessionId === speechState.session && index === chunks.length - 1) {
+                resetSpeech();
+            }
+        };
+
+        utterance.onerror = (event) => {
+
+            if (sessionId !== speechState.session) {
+                return;
+            }
+
+            if (event.error !== "interrupted" && event.error !== "canceled") {
+                showToast("Could not play the voice. Please try again.");
+            }
+
+            stopSpeaking();
+        };
+
+        speechSynthesis.speak(utterance);
+    });
+}
+
+function togglePauseSpeech() {
+
+    if (!speechState.session) {
+        return;
+    }
+
+    const pauseButton = speechState.pauseButton;
+
+    if (speechSynthesis.paused) {
+
+        speechSynthesis.resume();
+        pauseButton.textContent = "⏸";
+        pauseButton.title = "Pause";
+
+    } else {
+
+        speechSynthesis.pause();
+        pauseButton.textContent = "▶";
+        pauseButton.title = "Resume";
+    }
+}
+
+function stopSpeaking() {
+
+    if (ttsAvailable()) {
+        speechSynthesis.cancel();
+    }
+
+    resetSpeech();
+}
+
+function resetSpeech() {
+
+    if (speechState.button) {
+
+        speechState.button.textContent = "🔊";
+        speechState.button.title = "Listen";
+        speechState.button.classList.remove("active");
+    }
+
+    if (speechState.pauseButton) {
+        speechState.pauseButton.hidden = true;
+    }
+
+    speechState.session = 0;
+    speechState.button = null;
+    speechState.pauseButton = null;
+}
+
+/* -----------------------------------------------------
+   Speech-to-text (fills the input; never sends by itself)
+   ----------------------------------------------------- */
+
+const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+
+function setupVoiceSupport() {
+
+    if (!SpeechRecognitionClass) {
+        el.micButton.disabled = true;
+        el.micButton.title = "Voice input is not supported in this browser. Try Chrome or Edge.";
+    }
+
+    if (!ttsAvailable()) {
+        console.warn("Text-to-speech is not supported in this browser.");
+    }
+}
+
+function setVoiceStatus(state, text) {
+
+    el.voiceStatus.dataset.state = state;
+    el.voiceStatus.textContent = text || "";
+    el.voiceStatus.hidden = !text;
+}
+
+function setMicListening(on) {
+
+    el.micButton.classList.toggle("listening", on);
+    el.micButton.setAttribute("aria-pressed", String(on));
+    el.micButton.setAttribute("aria-label", on ? "Stop voice input" : "Start voice input");
+}
+
+function speechErrorMessage(code) {
+
+    switch (code) {
+        case "not-allowed":
+        case "service-not-allowed":
+            return "Microphone permission was denied. Allow microphone access in your browser settings.";
+        case "no-speech":
+            return "No speech was detected. Try again.";
+        case "audio-capture":
+            return "No microphone was found.";
+        case "network":
+            return "Speech recognition needs an internet connection in this browser.";
+        default:
+            return "Speech recognition failed. Please try again.";
+    }
+}
+
+function startVoiceInput() {
+
+    if (!SpeechRecognitionClass) {
+        setVoiceStatus("error", "Voice input is not supported in this browser. Try Chrome or Edge.");
+        return;
+    }
+
+    stopSpeaking();
+
+    const instance = new SpeechRecognitionClass();
+
+    instance.lang = getPreferences().stt_language || "en-US";
+    instance.interimResults = true;
+    instance.continuous = false;
+    instance.maxAlternatives = 1;
+
+    recognition = instance;
+
+    voiceBaseText = el.input.value.trim() ? el.input.value.trimEnd() + " " : "";
+    voiceFailed = false;
+
+    instance.onstart = () => {
+        setMicListening(true);
+        setVoiceStatus("listening", "Listening...");
+    };
+
+    instance.onresult = (event) => {
+
+        let interim = "";
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+
+            const result = event.results[i];
+
+            if (result.isFinal) {
+                voiceBaseText += result[0].transcript.trim() + " ";
+            } else {
+                interim += result[0].transcript;
+            }
+        }
+
+        el.input.value = (voiceBaseText + interim).replace(/^\s+/, "");
+        resizeTextarea();
+    };
+
+    instance.onerror = (event) => {
+
+        if (event.error === "aborted") {
+            return;
+        }
+
+        voiceFailed = true;
+        setVoiceStatus("error", speechErrorMessage(event.error));
+    };
+
+    instance.onend = () => {
+
+        setMicListening(false);
+
+        if (recognition === instance) {
+            recognition = null;
+        }
+
+        if (!voiceFailed) {
+            setVoiceStatus("stopped", "Stopped. Review the text, then press Send.");
+        }
+
+        el.input.focus();
+    };
+
+    try {
+
+        instance.start();
+
+    } catch (error) {
+
+        recognition = null;
+        setMicListening(false);
+        setVoiceStatus("error", "Could not start the microphone. Please try again.");
+    }
+}
+
+function stopVoiceInput() {
+
+    if (recognition) {
+        recognition.stop();
+    }
+}
+
+function toggleVoiceInput() {
+
+    if (recognition) {
+        stopVoiceInput();
+    } else {
+        startVoiceInput();
+    }
+}
+
+/* -----------------------------------------------------
+   Settings panel
+   ----------------------------------------------------- */
+
+function openSettings() {
+
+    closeSidebarOnMobile();
+
+    renderSettings();
+
+    el.settingsBackdrop.classList.add("show");
+
+    loadMemoryList();
+}
+
+function closeSettings() {
+
+    el.settingsBackdrop.classList.remove("show");
+}
+
+function renderSettings() {
+
+    el.settingsEmail.textContent =
+        (profile && profile.email) ||
+        (session && session.user && session.user.email) ||
+        "";
+
+    el.usernameInput.value = (profile && profile.username) || "";
+    setUsernameHint("3 to 24 characters: letters, numbers, _ or -.", "");
+
+    const prefs = getPreferences();
+
+    // Reflect the current theme on the buttons without changing it.
+    const darkNow = document.documentElement.classList.contains("dark");
+
+    el.themeOptions.forEach(option => {
+        option.classList.toggle("active", option.dataset.theme === (darkNow ? "dark" : "light"));
+    });
+
+    el.defaultModelSelect.innerHTML = "";
+
+    const none = document.createElement("option");
+    none.value = "";
+    none.textContent = "Same as the current chat";
+    el.defaultModelSelect.appendChild(none);
+
+    for (const option of el.modelSelect.options) {
+
+        const copy = document.createElement("option");
+        copy.value = option.value;
+        copy.textContent = option.textContent;
+        el.defaultModelSelect.appendChild(copy);
+    }
+
+    el.defaultModelSelect.value = prefs.default_model || "";
+
+    el.memoryToggle.checked = !!(profile && profile.memory_enabled);
+    setMemoryNote(el.memoryToggle.checked);
+
+    el.ttsRateSelect.value = String(prefs.tts_rate || 1);
+    el.sttLanguageSelect.value = prefs.stt_language || "en-US";
+}
+
+function setUsernameHint(text, state) {
+
+    el.usernameHint.textContent = text;
+    el.usernameHint.className = `field-hint ${state}`.trim();
+}
+
+function setMemoryNote(enabled) {
+
+    el.memoryNote.textContent = enabled
+        ? "The assistant saves long-term facts you share, such as preferences and project details. Passwords and secrets are never saved. Turn this off to stop saving and using memories. Saved memories stay until you delete them."
+        : "Memory is off. Nothing new is saved, and saved memories are not used in chats. Your saved memories are kept until you delete them.";
+}
+
+async function loadMemoryList() {
+
+    el.memoryList.innerHTML = "";
+    el.memoryEmpty.hidden = true;
+
+    try {
+
+        const data = await apiRequest("/v1/memories", { auth: true });
+
+        renderMemoryList(data.memories || []);
+
+    } catch (error) {
+
+        handleAuthFailure(error);
+        el.memoryEmpty.textContent = error.message;
+        el.memoryEmpty.hidden = false;
+    }
+}
+
+function renderMemoryList(memories) {
+
+    el.memoryList.innerHTML = "";
+
+    el.memoryEmpty.textContent = "No memories saved yet.";
+    el.memoryEmpty.hidden = memories.length > 0;
+
+    el.clearMemoryButton.disabled = memories.length === 0;
+
+    for (const item of memories) {
+        el.memoryList.appendChild(buildMemoryItem(item));
+    }
+}
+
+function buildMemoryItem(item) {
+
+    const row = document.createElement("li");
+    row.className = "memory-item";
+
+    renderMemoryView(row, item);
+
+    return row;
+}
+
+function renderMemoryView(row, item) {
+
+    row.innerHTML = "";
+
+    const text = document.createElement("div");
+    text.className = "memory-text";
+    text.textContent = item.content;
+
+    const meta = document.createElement("div");
+    meta.className = "memory-meta";
+    meta.textContent = item.category || "general";
+
+    const actions = document.createElement("div");
+    actions.className = "memory-actions";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.textContent = "Edit";
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "danger";
+    remove.textContent = "Delete";
+
+    edit.addEventListener("click", () => renderMemoryEditor(row, item));
+
+    remove.addEventListener("click", () => {
+
+        openDialog({
+            title: "Delete memory",
+            description: `"${item.content}" will be removed. The assistant will no longer use it.`,
+            confirmText: "Delete",
+            danger: true,
+            onConfirm: () => deleteMemory(item.id)
+        });
+    });
+
+    actions.appendChild(edit);
+    actions.appendChild(remove);
+
+    row.appendChild(text);
+    row.appendChild(meta);
+    row.appendChild(actions);
+}
+
+function renderMemoryEditor(row, item) {
+
+    row.innerHTML = "";
+
+    const area = document.createElement("textarea");
+    area.className = "memory-edit";
+    area.maxLength = 300;
+    area.rows = 2;
+    area.value = item.content;
+
+    const hint = document.createElement("span");
+    hint.className = "field-hint error";
+
+    const actions = document.createElement("div");
+    actions.className = "memory-actions";
+
+    const save = document.createElement("button");
+    save.type = "button";
+    save.textContent = "Save";
+
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.textContent = "Cancel";
+
+    save.addEventListener("click", async () => {
+
+        const content = area.value.trim();
+
+        if (content.length < 8) {
+            hint.textContent = "A memory needs at least 8 characters.";
+            return;
+        }
+
+        save.disabled = true;
+
+        try {
+
+            await apiRequest(`/v1/memories/${encodeURIComponent(item.id)}`, {
+                method: "PATCH",
+                auth: true,
+                body: { content }
+            });
+
+            await loadMemoryList();
+
+        } catch (error) {
+
+            handleAuthFailure(error);
+            hint.textContent = error.message;
+            save.disabled = false;
+        }
+    });
+
+    cancel.addEventListener("click", () => renderMemoryView(row, item));
+
+    actions.appendChild(save);
+    actions.appendChild(cancel);
+
+    row.appendChild(area);
+    row.appendChild(hint);
+    row.appendChild(actions);
+
+    area.focus();
+}
+
+async function deleteMemory(memoryId) {
+
+    try {
+
+        await apiRequest(`/v1/memories/${encodeURIComponent(memoryId)}`, {
+            method: "DELETE",
+            auth: true
+        });
+
+        closeDialog();
+
+        await loadMemoryList();
+
+    } catch (error) {
+
+        handleAuthFailure(error);
+        closeDialog();
+        showToast(error.message);
+    }
+}
+
+async function clearAllMemories() {
+
+    try {
+
+        await apiRequest("/v1/memories", {
+            method: "DELETE",
+            auth: true
+        });
+
+        closeDialog();
+
+        renderMemoryList([]);
+
+        showToast("All memories were deleted.");
+
+    } catch (error) {
+
+        handleAuthFailure(error);
+        closeDialog();
+        showToast(error.message);
+    }
+}
+
+/* -----------------------------------------------------
+   Settings events
+   ----------------------------------------------------- */
+
+el.settingsButton.addEventListener("click", openSettings);
+
+el.settingsClose.addEventListener("click", closeSettings);
+
+el.settingsBackdrop.addEventListener("click", (event) => {
+
+    if (event.target === el.settingsBackdrop) {
+        closeSettings();
+    }
+});
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape" && el.settingsBackdrop.classList.contains("show") && !el.modalBackdrop.classList.contains("show")) {
+        closeSettings();
+    }
+});
+
+el.usernameForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const username = el.usernameInput.value.trim();
+
+    if (!USERNAME_PATTERN.test(username)) {
+        setUsernameHint("Use 3 to 24 characters: letters, numbers, _ or -.", "error");
+        return;
+    }
+
+    el.usernameSave.disabled = true;
+
+    try {
+
+        await updateProfile({ username });
+
+        renderUserName();
+
+        setUsernameHint("Username saved.", "success");
+
+    } catch (error) {
+
+        handleAuthFailure(error);
+        setUsernameHint(error.message, "error");
+
+    } finally {
+
+        el.usernameSave.disabled = false;
+    }
+});
+
+el.themeOptions.forEach(option => {
+
+    option.addEventListener("click", async () => {
+
+        const dark = option.dataset.theme === "dark";
+
+        setDarkMode(dark);
+
+        try {
+            await savePreferences({ theme: dark ? "dark" : "light" });
+        } catch (error) {
+            showToast(error.message);
+        }
+    });
+});
+
+el.defaultModelSelect.addEventListener("change", async () => {
+
+    try {
+        await savePreferences({ default_model: el.defaultModelSelect.value || null });
+    } catch (error) {
+        showToast(error.message);
+    }
+});
+
+el.memoryToggle.addEventListener("change", async () => {
+
+    const enabled = el.memoryToggle.checked;
+
+    try {
+
+        await updateProfile({ memory_enabled: enabled });
+
+        setMemoryNote(enabled);
+
+    } catch (error) {
+
+        el.memoryToggle.checked = !enabled;
+        handleAuthFailure(error);
+        showToast(error.message);
+    }
+});
+
+el.clearMemoryButton.addEventListener("click", () => {
+
+    openDialog({
+        title: "Clear all memories",
+        description: "All saved memories will be permanently deleted. Your chats are not affected.",
+        confirmText: "Clear all",
+        danger: true,
+        onConfirm: clearAllMemories
+    });
+});
+
+el.ttsRateSelect.addEventListener("change", async () => {
+
+    try {
+        await savePreferences({ tts_rate: Number(el.ttsRateSelect.value) });
+    } catch (error) {
+        showToast(error.message);
+    }
+});
+
+el.sttLanguageSelect.addEventListener("change", async () => {
+
+    try {
+        await savePreferences({ stt_language: el.sttLanguageSelect.value });
+    } catch (error) {
+        showToast(error.message);
+    }
+});
+
+el.imageModeButton.addEventListener("click", () => setImageMode(!imageMode));
+
+el.micButton.addEventListener("click", toggleVoiceInput);
+
+
 async function start() {
 
     applyTheme();
 
     resizeTextarea();
+
+    setupVoiceSupport();
 
     const { data, error } = await supabaseClient.auth.getSession();
 
@@ -2422,10 +4260,26 @@ async function start() {
 
     showWelcome();
 
+    try {
+
+        await loadProfile();
+
+    } catch (error) {
+
+        console.error("Profile load error:", error);
+
+        if (error.status === 401) {
+            handleAuthFailure(error);
+            return;
+        }
+    }
+
     await Promise.all([
         loadModels(),
         checkApiStatus()
     ]);
+
+    applyDefaultModel();
 
     try {
 
