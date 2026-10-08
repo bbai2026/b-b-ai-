@@ -1796,27 +1796,69 @@ document.addEventListener("keydown", (event) => {
    Conversations API
    ----------------------------------------------------- */
 
+async function getCurrentUserId() {
+
+    const { data, error } = await supabaseClient.auth.getUser();
+
+    if (error || !data.user) {
+        throw new ApiError("Your session has expired. Please log in again.", 401);
+    }
+
+    session = session || { user: data.user };
+    return data.user.id;
+}
+
+function databaseError(error, fallback = "Could not access your conversations. Please try again.") {
+
+    console.error("Supabase database error:", error);
+
+    const message = String(error?.message || "").toLowerCase();
+
+    if (message.includes("row-level security") || message.includes("permission denied")) {
+        return new ApiError("You do not have permission to access this conversation.", 403);
+    }
+
+    return new ApiError(fallback, 0);
+}
+
 async function loadConversations() {
 
-    const data = await apiRequest("/v1/conversations", { auth: true });
+    const userId = await getCurrentUserId();
 
-    conversations = data.conversations || [];
+    const { data, error } = await supabaseClient
+        .from("conversations")
+        .select("id,title,model,created_at,updated_at")
+        .eq("user_id", userId)
+        .order("updated_at", { ascending: false });
+
+    if (error) {
+        throw databaseError(error);
+    }
+
+    conversations = data || [];
 
     renderChatList();
 }
 
 async function createConversation(model) {
 
-    const data = await apiRequest("/v1/conversations", {
-        method: "POST",
-        auth: true,
-        body: {
+    const userId = await getCurrentUserId();
+
+    const { data, error } = await supabaseClient
+        .from("conversations")
+        .insert({
+            user_id: userId,
             title: DEFAULT_TITLE,
             model
-        }
-    });
+        })
+        .select("id,title,model,created_at,updated_at")
+        .single();
 
-    const conversation = data.conversation;
+    if (error) {
+        throw databaseError(error, "Could not create the conversation. Please try again.");
+    }
+
+    const conversation = data;
 
     conversations.unshift(conversation);
 
@@ -1831,20 +1873,102 @@ async function createConversation(model) {
 
 async function saveMessage(conversationId, role, content, model) {
 
-    return apiRequest(`/v1/conversations/${conversationId}/messages`, {
-        method: "POST",
-        auth: true,
-        body: { role, content, model }
-    });
+    const userId = await getCurrentUserId();
+
+    if (!conversationId || !["user", "assistant"].includes(role) || !content) {
+        throw new ApiError("Invalid message data.", 400);
+    }
+
+    const { data: conversation, error: conversationError } = await supabaseClient
+        .from("conversations")
+        .select("id,title")
+        .eq("id", conversationId)
+        .eq("user_id", userId)
+        .single();
+
+    if (conversationError || !conversation) {
+        throw databaseError(conversationError, "Conversation not found.");
+    }
+
+    const { data: message, error: messageError } = await supabaseClient
+        .from("messages")
+        .insert({
+            conversation_id: conversationId,
+            role,
+            content,
+            model
+        })
+        .select("id,conversation_id,role,content,model,created_at")
+        .single();
+
+    if (messageError) {
+        throw databaseError(messageError, "Could not save the message. Please try again.");
+    }
+
+    const changes = {
+        updated_at: new Date().toISOString()
+    };
+
+    if (role === "user" && conversation.title === DEFAULT_TITLE) {
+
+        let newTitle = content.replace(/\n/g, " ").trim();
+
+        if (newTitle.length > 48) {
+            newTitle = newTitle.slice(0, 48).trimEnd() + "...";
+        }
+
+        if (newTitle) {
+            changes.title = newTitle;
+        }
+    }
+
+    const { data: updatedConversation, error: updateError } = await supabaseClient
+        .from("conversations")
+        .update(changes)
+        .eq("id", conversationId)
+        .eq("user_id", userId)
+        .select("id,title,model,created_at,updated_at")
+        .single();
+
+    if (updateError) {
+        throw databaseError(updateError, "Message was saved, but the conversation could not be updated.");
+    }
+
+    const index = conversations.findIndex(item => item.id === conversationId);
+
+    if (index !== -1 && updatedConversation) {
+        conversations[index] = updatedConversation;
+    }
+
+    return { message };
 }
 
 async function loadMessages(conversationId) {
 
-    const data = await apiRequest(`/v1/conversations/${conversationId}/messages`, {
-        auth: true
-    });
+    const userId = await getCurrentUserId();
 
-    return data.messages || [];
+    const { data: conversation, error: conversationError } = await supabaseClient
+        .from("conversations")
+        .select("id")
+        .eq("id", conversationId)
+        .eq("user_id", userId)
+        .single();
+
+    if (conversationError || !conversation) {
+        throw databaseError(conversationError, "Conversation not found.");
+    }
+
+    const { data, error } = await supabaseClient
+        .from("messages")
+        .select("id,conversation_id,role,content,model,created_at")
+        .eq("conversation_id", conversationId)
+        .order("created_at", { ascending: true });
+
+    if (error) {
+        throw databaseError(error, "Could not load messages. Please try again.");
+    }
+
+    return data || [];
 }
 
 async function renameConversation(conversationId) {
@@ -1858,26 +1982,35 @@ async function renameConversation(conversationId) {
 
     try {
 
-        const data = await apiRequest(`/v1/conversations/${conversationId}`, {
-            method: "PATCH",
-            auth: true,
-            body: { title }
-        });
+        const userId = await getCurrentUserId();
+
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .update({
+                title,
+                updated_at: new Date().toISOString()
+            })
+            .eq("id", conversationId)
+            .eq("user_id", userId)
+            .select("id,title,model,created_at,updated_at")
+            .single();
+
+        if (error) {
+            throw databaseError(error, "Could not rename the conversation. Please try again.");
+        }
 
         const index = conversations.findIndex(item => item.id === conversationId);
 
         if (index !== -1) {
-            conversations[index] = data.conversation;
+            conversations[index] = data;
         }
 
         closeDialog();
-
         renderChatList();
 
     } catch (error) {
 
         handleAuthFailure(error);
-
         showToast(error.message);
     }
 }
@@ -1886,10 +2019,26 @@ async function deleteConversation(conversationId) {
 
     try {
 
-        await apiRequest(`/v1/conversations/${conversationId}`, {
-            method: "DELETE",
-            auth: true
-        });
+        const userId = await getCurrentUserId();
+
+        const { error: messagesError } = await supabaseClient
+            .from("messages")
+            .delete()
+            .eq("conversation_id", conversationId);
+
+        if (messagesError) {
+            throw databaseError(messagesError, "Could not delete the conversation messages. Please try again.");
+        }
+
+        const { error: conversationError } = await supabaseClient
+            .from("conversations")
+            .delete()
+            .eq("id", conversationId)
+            .eq("user_id", userId);
+
+        if (conversationError) {
+            throw databaseError(conversationError, "Could not delete the conversation. Please try again.");
+        }
 
         conversations = conversations.filter(item => item.id !== conversationId);
 
@@ -1904,13 +2053,11 @@ async function deleteConversation(conversationId) {
         }
 
         closeDialog();
-
         renderChatList();
 
     } catch (error) {
 
         handleAuthFailure(error);
-
         showToast(error.message);
     }
 }
@@ -1957,7 +2104,6 @@ async function openConversation(conversationId) {
     } catch (error) {
 
         handleAuthFailure(error);
-
         showToast(error.message);
     }
 }
@@ -2152,16 +2298,27 @@ el.modelSelect.addEventListener("change", async () => {
 
     try {
 
-        await apiRequest(`/v1/conversations/${currentConversationId}`, {
-            method: "PATCH",
-            auth: true,
-            body: { model: el.modelSelect.value }
-        });
+        const userId = await getCurrentUserId();
+
+        const { data, error } = await supabaseClient
+            .from("conversations")
+            .update({
+                model: el.modelSelect.value,
+                updated_at: new Date().toISOString()
+            })
+            .eq("id", currentConversationId)
+            .eq("user_id", userId)
+            .select("id,title,model,created_at,updated_at")
+            .single();
+
+        if (error) {
+            throw databaseError(error, "Could not update the selected model. Please try again.");
+        }
 
         const conversation = conversations.find(item => item.id === currentConversationId);
 
-        if (conversation) {
-            conversation.model = el.modelSelect.value;
+        if (conversation && data) {
+            Object.assign(conversation, data);
         }
 
     } catch (error) {

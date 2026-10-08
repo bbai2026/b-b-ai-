@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#ffffff">
-<meta name="description" content="B&B AI - Log in, create your account, or reset your password.">
+<meta name="description" content="B&B AI - Log in or create your account.">
 
 <title>Log In · B&B AI</title>
 
@@ -49,10 +49,6 @@
 
 * {
     box-sizing: border-box;
-}
-
-[hidden] {
-    display: none !important;
 }
 
 html,
@@ -144,19 +140,6 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.badge {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--success-bg);
-    color: var(--success);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    margin-bottom: 14px;
-}
-
 h1 {
     margin: 0 0 4px;
     font-size: 22px;
@@ -226,64 +209,27 @@ input:focus {
     color: var(--muted);
 }
 
-.forgot-row {
-    display: flex;
-    justify-content: flex-end;
-    margin: -6px 0 14px;
-}
-
-.submit,
-.secondary {
+.submit {
     width: 100%;
+    margin-top: 4px;
     padding: 12px;
+    border: 0;
     border-radius: 11px;
+    background: var(--accent);
+    color: #ffffff;
     font: inherit;
     font-size: 15px;
     font-weight: 650;
     cursor: pointer;
 }
 
-.submit {
-    margin-top: 4px;
-    border: 0;
-    background: var(--accent);
-    color: #ffffff;
-}
-
 .submit:hover {
     background: var(--accent-hover);
 }
 
-.secondary {
-    margin-top: 10px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-weight: 600;
-}
-
-.secondary:hover {
-    background: var(--surface-2);
-}
-
-button:disabled {
+.submit:disabled {
     opacity: 0.6;
     cursor: wait;
-}
-
-.text-button {
-    border: 0;
-    background: none;
-    color: var(--accent);
-    font: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 0;
-}
-
-.text-button:hover {
-    text-decoration: underline;
 }
 
 .switch {
@@ -293,20 +239,21 @@ button:disabled {
     color: var(--muted);
 }
 
+.switch button {
+    border: 0;
+    background: none;
+    color: var(--accent);
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+    padding: 0;
+}
+
 .footer {
     margin: 22px 0 0;
     text-align: center;
     font-size: 11px;
     color: var(--muted);
-}
-
-.center {
-    text-align: center;
-}
-
-.center .badge {
-    margin-left: auto;
-    margin-right: auto;
 }
 
 </style>
@@ -325,190 +272,62 @@ button:disabled {
         </div>
     </div>
 
+    <div class="tabs" role="tablist">
+        <button class="tab active" id="tabLogin" type="button" role="tab">Log In</button>
+        <button class="tab" id="tabSignup" type="button" role="tab">Sign Up</button>
+    </div>
+
     <h1 id="formTitle">Welcome back</h1>
     <p class="subtitle" id="formSubtitle">Log in to continue to B&amp;B AI.</p>
 
-    <div class="notice error" id="notice" role="status" aria-live="polite" hidden></div>
+    <div class="notice error" id="notice" role="alert" hidden></div>
 
+    <form id="authForm" novalidate>
 
-    <!-- ======================================================
-         LOGIN / SIGN UP
-    ======================================================= -->
+        <label>
+            Email
+            <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+            >
+        </label>
 
-    <section id="panelAuth">
+        <label>
+            Password
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+            >
+            <span class="hint" id="passwordHint" hidden>At least 6 characters.</span>
+        </label>
 
-        <div class="tabs" role="tablist">
-            <button class="tab tab-login active" id="tabLogin" type="button" role="tab">Log In</button>
-            <button class="tab tab-signup" id="tabSignup" type="button" role="tab">Sign Up</button>
-        </div>
+        <label id="confirmWrap" hidden>
+            Confirm Password
+            <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                autocomplete="new-password"
+                placeholder="Re-enter your password"
+            >
+        </label>
 
-        <form id="authForm" novalidate>
+        <button class="submit" id="submitButton" type="submit">Log In</button>
 
-            <label>
-                Email
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    autocomplete="email"
-                    placeholder="you@example.com"
-                    required
-                >
-            </label>
+    </form>
 
-            <label>
-                Password
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    autocomplete="current-password"
-                    placeholder="Enter your password"
-                    required
-                >
-                <span class="hint" id="passwordHint" hidden>At least 6 characters.</span>
-            </label>
-
-            <div class="forgot-row" id="forgotRow">
-                <button class="text-button" id="forgotLink" type="button">Forgot password?</button>
-            </div>
-
-            <label id="confirmWrap" hidden>
-                Confirm Password
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    autocomplete="new-password"
-                    placeholder="Re-enter your password"
-                >
-            </label>
-
-            <button class="submit" id="submitButton" type="submit">Log In</button>
-
-        </form>
-
-        <p class="switch">
-            <span id="switchLabel">Don't have an account?</span>
-            <button class="text-button" id="switchButton" type="button">Sign Up</button>
-        </p>
-
-    </section>
-
-
-    <!-- ======================================================
-         FORGOT PASSWORD (request reset email)
-    ======================================================= -->
-
-    <section id="panelForgot" hidden>
-
-        <form id="forgotForm" novalidate>
-
-            <label>
-                Email
-                <input
-                    type="email"
-                    id="forgotEmail"
-                    name="forgotEmail"
-                    autocomplete="email"
-                    placeholder="you@example.com"
-                    required
-                >
-            </label>
-
-            <button class="submit" id="forgotButton" type="submit">Send reset link</button>
-
-        </form>
-
-        <p class="switch">
-            <button class="text-button" id="forgotBack" type="button">Back to Log In</button>
-        </p>
-
-    </section>
-
-
-    <!-- ======================================================
-         CHECK YOUR EMAIL (after sign-up or reset request)
-    ======================================================= -->
-
-    <section id="panelCheck" class="center" hidden>
-
-        <div class="badge" aria-hidden="true">✉</div>
-
-        <button class="submit" id="checkBack" type="button">Back to Log In</button>
-
-    </section>
-
-
-    <!-- ======================================================
-         REGISTRATION CONFIRMED (returned from email link)
-    ======================================================= -->
-
-    <section id="panelConfirmed" class="center" hidden>
-
-        <div class="badge" aria-hidden="true">✓</div>
-
-        <button class="submit" id="continueButton" type="button">Continue to B&amp;B AI</button>
-
-        <p class="switch">
-            <button class="text-button" id="confirmedBack" type="button">Back to Log In</button>
-        </p>
-
-    </section>
-
-
-    <!-- ======================================================
-         SET NEW PASSWORD (returned from reset link)
-    ======================================================= -->
-
-    <section id="panelRecovery" hidden>
-
-        <form id="recoveryForm" novalidate>
-
-            <label>
-                New Password
-                <input
-                    type="password"
-                    id="newPassword"
-                    name="newPassword"
-                    autocomplete="new-password"
-                    placeholder="Create a new password"
-                    required
-                >
-                <span class="hint">At least 6 characters.</span>
-            </label>
-
-            <label>
-                Confirm New Password
-                <input
-                    type="password"
-                    id="newPasswordConfirm"
-                    name="newPasswordConfirm"
-                    autocomplete="new-password"
-                    placeholder="Re-enter your new password"
-                    required
-                >
-            </label>
-
-            <button class="submit" id="updateButton" type="submit">Update Password</button>
-
-        </form>
-
-    </section>
-
-
-    <!-- ======================================================
-         PASSWORD UPDATED
-    ======================================================= -->
-
-    <section id="panelRecoveryDone" class="center" hidden>
-
-        <div class="badge" aria-hidden="true">✓</div>
-
-        <button class="submit" id="doneLogin" type="button">Back to Log In</button>
-
-    </section>
-
+    <p class="switch" id="switchText">
+        Don't have an account?
+        <button type="button" id="switchButton">Sign Up</button>
+    </p>
 
     <p class="footer">B&amp;B AI · Created by B&amp;B Studio</p>
 
@@ -517,34 +336,8 @@ button:disabled {
 <script>
 
 /* =====================================================
-   B&B AI v0.2 - Authentication page
+   B&B AI v0.1 - Authentication page
    ===================================================== */
-
-
-/*
- * Read the auth result from the URL BEFORE the Supabase client
- * is created. Supabase removes these hash parameters once it
- * has processed them.
- *
- * Confirmation links set type=signup.
- * Password reset links set type=recovery.
- * Expired or invalid links set error_code / error_description.
- */
-
-const AUTH_LINK = (function readAuthLink() {
-
-    const params = new URLSearchParams(
-        window.location.hash.replace(/^#/, "")
-    );
-
-    return {
-        type: params.get("type"),
-        errorCode: params.get("error_code"),
-        errorDescription: params.get("error_description")
-    };
-
-})();
-
 
 const supabaseClient = window.supabase.createClient(
     BBAI_CONFIG.supabase.url,
@@ -553,162 +346,52 @@ const supabaseClient = window.supabase.createClient(
 
 const APP_PAGE = "text.html";
 
-/* Redirect target used by confirmation and reset emails.
-   This URL must be listed under Redirect URLs in Supabase Auth. */
-const AUTH_PAGE_URL = new URL("index.html", window.location.href).href;
-
 const MIN_PASSWORD_LENGTH = 6;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/* Which part of the auth UI is visible:
-   auth | forgot | check | confirmed | recovery | recoveryDone */
-let view = "auth";
-
-/* Within the auth view: login | signup */
 let mode = "login";
-
-/* Which email action the "check" view refers to: signup | forgot */
-let checkKind = "signup";
 
 let busy = false;
 
-const HEADINGS = {
-    forgot: {
-        title: "Reset your password",
-        subtitle: "Enter your email address and we'll send you a password reset link."
-    },
-    confirmed: {
-        title: "Registration successful!",
-        subtitle: "Your email is confirmed. You can now continue to B&B AI."
-    },
-    recovery: {
-        title: "Set a new password",
-        subtitle: "Choose a new password for your account."
-    },
-    recoveryDone: {
-        title: "Password updated successfully!",
-        subtitle: "You can now log in with your new password."
-    }
-};
-
 
 const el = {
+    tabLogin: document.getElementById("tabLogin"),
+    tabSignup: document.getElementById("tabSignup"),
     formTitle: document.getElementById("formTitle"),
     formSubtitle: document.getElementById("formSubtitle"),
     notice: document.getElementById("notice"),
-
-    panelAuth: document.getElementById("panelAuth"),
-    tabLogin: document.getElementById("tabLogin"),
-    tabSignup: document.getElementById("tabSignup"),
-    authForm: document.getElementById("authForm"),
+    form: document.getElementById("authForm"),
     email: document.getElementById("email"),
     password: document.getElementById("password"),
     passwordHint: document.getElementById("passwordHint"),
-    forgotRow: document.getElementById("forgotRow"),
-    forgotLink: document.getElementById("forgotLink"),
     confirmWrap: document.getElementById("confirmWrap"),
     confirmPassword: document.getElementById("confirmPassword"),
     submit: document.getElementById("submitButton"),
-    switchLabel: document.getElementById("switchLabel"),
-    switchButton: document.getElementById("switchButton"),
-
-    panelForgot: document.getElementById("panelForgot"),
-    forgotForm: document.getElementById("forgotForm"),
-    forgotEmail: document.getElementById("forgotEmail"),
-    forgotButton: document.getElementById("forgotButton"),
-    forgotBack: document.getElementById("forgotBack"),
-
-    panelCheck: document.getElementById("panelCheck"),
-    checkBack: document.getElementById("checkBack"),
-
-    panelConfirmed: document.getElementById("panelConfirmed"),
-    continueButton: document.getElementById("continueButton"),
-    confirmedBack: document.getElementById("confirmedBack"),
-
-    panelRecovery: document.getElementById("panelRecovery"),
-    recoveryForm: document.getElementById("recoveryForm"),
-    newPassword: document.getElementById("newPassword"),
-    newPasswordConfirm: document.getElementById("newPasswordConfirm"),
-    updateButton: document.getElementById("updateButton"),
-
-    panelRecoveryDone: document.getElementById("panelRecoveryDone"),
-    doneLogin: document.getElementById("doneLogin")
+    switchText: document.getElementById("switchText"),
+    switchButton: document.getElementById("switchButton")
 };
 
 
 /* -----------------------------------------------------
-   Inline status messages
+   Notices
    ----------------------------------------------------- */
 
 function showNotice(message, type = "error") {
-
     el.notice.textContent = message;
     el.notice.className = `notice ${type}`;
     el.notice.hidden = false;
 }
 
 function hideNotice() {
-
     el.notice.hidden = true;
     el.notice.textContent = "";
 }
 
 
 /* -----------------------------------------------------
-   Views
+   Mode switching (Log In / Sign Up)
    ----------------------------------------------------- */
-
-function modeLabel() {
-    return mode === "signup" ? "Create Account" : "Log In";
-}
-
-function renderHeading() {
-
-    let title;
-    let subtitle;
-
-    if (view === "auth") {
-
-        if (mode === "signup") {
-            title = "Create your account";
-            subtitle = "Sign up to start chatting with B&B AI.";
-        } else {
-            title = "Welcome back";
-            subtitle = "Log in to continue to B&B AI.";
-        }
-
-    } else if (view === "check") {
-
-        title = "Check your email";
-        subtitle = checkKind === "signup"
-            ? "Please check your email and click the confirmation link to verify your account."
-            : "Please check your email for a password reset link.";
-
-    } else {
-
-        title = HEADINGS[view].title;
-        subtitle = HEADINGS[view].subtitle;
-    }
-
-    el.formTitle.textContent = title;
-    el.formSubtitle.textContent = subtitle;
-}
-
-function showView(name) {
-
-    view = name;
-
-    el.panelAuth.hidden = name !== "auth";
-    el.panelForgot.hidden = name !== "forgot";
-    el.panelCheck.hidden = name !== "check";
-    el.panelConfirmed.hidden = name !== "confirmed";
-    el.panelRecovery.hidden = name !== "recovery";
-    el.panelRecoveryDone.hidden = name !== "recoveryDone";
-
-    hideNotice();
-    renderHeading();
-}
 
 function setMode(nextMode) {
 
@@ -722,115 +405,38 @@ function setMode(nextMode) {
     el.tabLogin.setAttribute("aria-selected", String(!signup));
     el.tabSignup.setAttribute("aria-selected", String(signup));
 
+    el.formTitle.textContent = signup
+        ? "Create your account"
+        : "Welcome back";
+
+    el.formSubtitle.textContent = signup
+        ? "Sign up to start chatting with B&B AI."
+        : "Log in to continue to B&B AI.";
+
     el.confirmWrap.hidden = !signup;
     el.passwordHint.hidden = !signup;
-    el.forgotRow.hidden = signup;
 
-    el.password.autocomplete = signup ? "new-password" : "current-password";
-    el.password.placeholder = signup ? "Create a password" : "Enter your password";
+    el.password.autocomplete = signup
+        ? "new-password"
+        : "current-password";
 
-    el.submit.textContent = modeLabel();
+    el.password.placeholder = signup
+        ? "Create a password"
+        : "Enter your password";
 
-    el.switchLabel.textContent = signup
-        ? "Already have an account?"
-        : "Don't have an account?";
+    el.submit.textContent = signup
+        ? "Create Account"
+        : "Log In";
 
-    el.switchButton.textContent = signup ? "Log In" : "Sign Up";
+    el.switchText.firstChild.textContent = signup
+        ? "Already have an account? "
+        : "Don't have an account? ";
 
-    showView("auth");
-}
+    el.switchButton.textContent = signup
+        ? "Log In"
+        : "Sign Up";
 
-function returnToLogin(message, type = "success") {
-
-    setMode("login");
-
-    if (message) {
-        showNotice(message, type);
-    }
-
-    el.email.focus();
-}
-
-function showConfirmed() {
-    showView("confirmed");
-}
-
-function showCheck(kind) {
-
-    checkKind = kind;
-
-    showView("check");
-}
-
-
-/* -----------------------------------------------------
-   Busy state (prevents duplicate submissions)
-   ----------------------------------------------------- */
-
-const BUSY_CONTROLS = "button.submit, button.text-button, button.tab";
-
-function setControlsDisabled(value) {
-
-    document
-        .querySelectorAll(BUSY_CONTROLS)
-        .forEach(button => {
-            button.disabled = value;
-        });
-}
-
-async function runBusy(button, busyLabel, idleLabel, task) {
-
-    if (busy) {
-        return;
-    }
-
-    busy = true;
-
-    setControlsDisabled(true);
-
-    button.textContent = busyLabel;
-
-    try {
-
-        await task();
-
-    } catch (error) {
-
-        console.error("Auth error:", error);
-
-        showNotice("Something went wrong. Please try again.", "error");
-
-    } finally {
-
-        busy = false;
-
-        setControlsDisabled(false);
-
-        button.textContent =
-            typeof idleLabel === "function"
-                ? idleLabel()
-                : idleLabel;
-    }
-}
-
-
-/* -----------------------------------------------------
-   Session helpers
-   ----------------------------------------------------- */
-
-async function getCurrentSession() {
-
-    const { data, error } = await supabaseClient.auth.getSession();
-
-    if (error) {
-        return null;
-    }
-
-    return data.session;
-}
-
-function goToApp() {
-    window.location.replace(APP_PAGE);
+    hideNotice();
 }
 
 
@@ -838,21 +444,9 @@ function goToApp() {
    Friendly error messages
    ----------------------------------------------------- */
 
-function errorText(error) {
-    return ((error && error.message) || "").toLowerCase();
-}
-
-function isNetworkError(text) {
-    return text.includes("failed to fetch") || text.includes("network");
-}
-
-function isRateLimited(text) {
-    return text.includes("too many") || text.includes("rate limit");
-}
-
 function loginErrorMessage(error) {
 
-    const text = errorText(error);
+    const text = (error && error.message || "").toLowerCase();
 
     if (text.includes("invalid login credentials")) {
         return "Incorrect email or password.";
@@ -862,11 +456,11 @@ function loginErrorMessage(error) {
         return "Please confirm your email address first. Check your inbox for the confirmation link.";
     }
 
-    if (isRateLimited(text)) {
+    if (text.includes("too many") || text.includes("rate limit")) {
         return "Too many attempts. Please wait a moment and try again.";
     }
 
-    if (isNetworkError(text)) {
+    if (text.includes("failed to fetch") || text.includes("network")) {
         return "Network error. Please check your connection and try again.";
     }
 
@@ -875,72 +469,25 @@ function loginErrorMessage(error) {
 
 function signupErrorMessage(error) {
 
-    const text = errorText(error);
+    const text = (error && error.message || "").toLowerCase();
 
     if (text.includes("already registered") || text.includes("already exists")) {
         return "An account with this email already exists. Try logging in instead.";
     }
 
     if (text.includes("password")) {
-        return `Password is not accepted. Use at least ${MIN_PASSWORD_LENGTH} characters.`;
+        return "Password is not accepted. Use at least 6 characters.";
     }
 
-    if (isRateLimited(text)) {
+    if (text.includes("rate limit") || text.includes("too many")) {
         return "Too many attempts. Please wait a moment and try again.";
     }
 
-    if (isNetworkError(text)) {
+    if (text.includes("failed to fetch") || text.includes("network")) {
         return "Network error. Please check your connection and try again.";
     }
 
     return "Could not create your account. Please try again.";
-}
-
-function forgotErrorMessage(error) {
-
-    const text = errorText(error);
-
-    if (isRateLimited(text)) {
-        return "Too many reset requests. Please wait a few minutes and try again.";
-    }
-
-    if (isNetworkError(text)) {
-        return "Network error. Please check your connection and try again.";
-    }
-
-    return "Could not send the reset link. Please try again.";
-}
-
-function recoveryErrorMessage(error) {
-
-    const text = errorText(error);
-
-    if (text.includes("different from the old password") || text.includes("same as")) {
-        return "Choose a password that is different from your previous one.";
-    }
-
-    if (text.includes("password")) {
-        return `Password is not accepted. Use at least ${MIN_PASSWORD_LENGTH} characters.`;
-    }
-
-    if (isRateLimited(text)) {
-        return "Too many attempts. Please wait a moment and try again.";
-    }
-
-    if (isNetworkError(text)) {
-        return "Network error. Please check your connection and try again.";
-    }
-
-    return "Could not update your password. Please request a new reset link and try again.";
-}
-
-function linkErrorMessage() {
-
-    if (AUTH_LINK.errorCode === "otp_expired") {
-        return "This link has expired. Please request a new one.";
-    }
-
-    return "This link is invalid or has already been used. Please request a new one.";
 }
 
 
@@ -948,42 +495,25 @@ function linkErrorMessage() {
    Validation
    ----------------------------------------------------- */
 
-function validatePassword(password) {
-
-    if (!password) {
-        return "Please enter a password.";
-    }
-
-    if (password.length < MIN_PASSWORD_LENGTH) {
-        return `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
-    }
-
-    return null;
-}
-
-function validateAuthForm(email, password) {
+function validate(email, password) {
 
     if (!EMAIL_PATTERN.test(email)) {
         return "Please enter a valid email address.";
     }
 
+    if (!password) {
+        return "Please enter your password.";
+    }
+
     if (mode === "signup") {
 
-        const passwordProblem = validatePassword(password);
-
-        if (passwordProblem) {
-            return passwordProblem;
+        if (password.length < MIN_PASSWORD_LENGTH) {
+            return `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
         }
 
         if (password !== el.confirmPassword.value) {
             return "Passwords do not match.";
         }
-
-        return null;
-    }
-
-    if (!password) {
-        return "Please enter your password.";
     }
 
     return null;
@@ -991,28 +521,63 @@ function validateAuthForm(email, password) {
 
 
 /* -----------------------------------------------------
-   Login / Sign up
+   Busy state
    ----------------------------------------------------- */
 
-async function handleAuthSubmit(event) {
+function setBusy(value) {
+
+    busy = value;
+
+    el.submit.disabled = value;
+
+    // Read the mode at call time, so a switch during the request
+    // (e.g. after sign-up) shows the correct button label.
+    if (value) {
+        el.submit.textContent = mode === "signup"
+            ? "Creating account..."
+            : "Logging in...";
+    } else {
+        el.submit.textContent = mode === "signup"
+            ? "Create Account"
+            : "Log In";
+    }
+}
+
+
+function goToApp() {
+    window.location.replace(APP_PAGE);
+}
+
+
+/* -----------------------------------------------------
+   Submit
+   ----------------------------------------------------- */
+
+async function handleSubmit(event) {
 
     event.preventDefault();
+
+    if (busy) {
+        return;
+    }
 
     hideNotice();
 
     const email = el.email.value.trim();
     const password = el.password.value;
 
-    const problem = validateAuthForm(email, password);
+    const problem = validate(email, password);
 
     if (problem) {
-        showNotice(problem, "error");
+        showNotice(problem);
         return;
     }
 
-    if (mode === "login") {
+    setBusy(true);
 
-        await runBusy(el.submit, "Logging in...", modeLabel, async () => {
+    try {
+
+        if (mode === "login") {
 
             const { error } = await supabaseClient.auth.signInWithPassword({
                 email,
@@ -1020,160 +585,64 @@ async function handleAuthSubmit(event) {
             });
 
             if (error) {
-                showNotice(loginErrorMessage(error), "error");
+                showNotice(loginErrorMessage(error));
                 return;
             }
 
             goToApp();
-        });
+            return;
+        }
 
-        return;
-    }
-
-    await runBusy(el.submit, "Creating account...", modeLabel, async () => {
-
+        // Sign up
         const { data, error } = await supabaseClient.auth.signUp({
             email,
             password,
             options: {
-                emailRedirectTo: AUTH_PAGE_URL
+                emailRedirectTo: new URL(APP_PAGE, window.location.href).href
             }
         });
 
         if (error) {
-            showNotice(signupErrorMessage(error), "error");
+            showNotice(signupErrorMessage(error));
             return;
         }
 
-        // Supabase returns an empty identities list when the email
-        // already belongs to an account.
-        if (
-            data.user &&
-            Array.isArray(data.user.identities) &&
-            data.user.identities.length === 0
-        ) {
-            showNotice("An account with this email already exists. Try logging in instead.", "error");
+        // Supabase returns an empty identities list for an email that
+        // already has an account (when email confirmation is enabled).
+        if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+            showNotice("An account with this email already exists. Try logging in instead.");
+            return;
+        }
+
+        if (data.session) {
+            goToApp();
             return;
         }
 
         el.password.value = "";
         el.confirmPassword.value = "";
 
-        if (data.session) {
-            // Email confirmation is disabled in Supabase, so the
-            // account is already verified.
-            showConfirmed();
-            return;
-        }
+        setMode("login");
 
-        // Email confirmation is required. The account is NOT
-        // registered until the link in the email is clicked.
-        showCheck("signup");
-    });
-}
-
-
-/* -----------------------------------------------------
-   Forgot password
-   ----------------------------------------------------- */
-
-function openForgotPassword() {
-
-    el.forgotEmail.value = el.email.value.trim();
-
-    showView("forgot");
-
-    el.forgotEmail.focus();
-}
-
-async function handleForgotSubmit(event) {
-
-    event.preventDefault();
-
-    hideNotice();
-
-    const email = el.forgotEmail.value.trim();
-
-    if (!EMAIL_PATTERN.test(email)) {
-        showNotice("Please enter a valid email address.", "error");
-        return;
-    }
-
-    await runBusy(el.forgotButton, "Sending...", "Send reset link", async () => {
-
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(
-            email,
-            { redirectTo: AUTH_PAGE_URL }
+        showNotice(
+            "Account created. Check your email to confirm your address, then log in.",
+            "success"
         );
 
-        if (error) {
-            showNotice(forgotErrorMessage(error), "error");
-            return;
-        }
+    } catch (error) {
 
-        // Shown the same way whether or not the account exists,
-        // so the page does not reveal which emails are registered.
-        el.email.value = email;
+        console.error("Auth error:", error);
 
-        showCheck("forgot");
-    });
-}
+        showNotice(
+            mode === "signup"
+                ? signupErrorMessage(error)
+                : loginErrorMessage(error)
+        );
 
+    } finally {
 
-/* -----------------------------------------------------
-   Set new password (after reset link)
-   ----------------------------------------------------- */
-
-async function handleRecoverySubmit(event) {
-
-    event.preventDefault();
-
-    hideNotice();
-
-    const password = el.newPassword.value;
-    const confirmation = el.newPasswordConfirm.value;
-
-    if (!password || !confirmation) {
-        showNotice("Please fill in both password fields.", "error");
-        return;
+        setBusy(false);
     }
-
-    const problem = validatePassword(password);
-
-    if (problem) {
-        showNotice(problem, "error");
-        return;
-    }
-
-    if (password !== confirmation) {
-        showNotice("Passwords do not match.", "error");
-        return;
-    }
-
-    await runBusy(el.updateButton, "Updating...", "Update Password", async () => {
-
-        const session = await getCurrentSession();
-
-        if (!session) {
-            showNotice("This reset link has expired. Please request a new one.", "error");
-            return;
-        }
-
-        const { error } = await supabaseClient.auth.updateUser({ password });
-
-        if (error) {
-            showNotice(recoveryErrorMessage(error), "error");
-            return;
-        }
-
-        el.newPassword.value = "";
-        el.newPasswordConfirm.value = "";
-
-        // Sign out so the user logs in again with the new password.
-        await supabaseClient.auth.signOut();
-
-        showView("recoveryDone");
-    });
 }
 
 
@@ -1188,81 +657,28 @@ el.switchButton.addEventListener("click", () => {
     setMode(mode === "login" ? "signup" : "login");
 });
 
-el.authForm.addEventListener("submit", handleAuthSubmit);
-
-el.forgotLink.addEventListener("click", openForgotPassword);
-el.forgotForm.addEventListener("submit", handleForgotSubmit);
-el.forgotBack.addEventListener("click", () => returnToLogin());
-
-el.checkBack.addEventListener("click", () => returnToLogin());
-el.confirmedBack.addEventListener("click", () => returnToLogin());
-el.doneLogin.addEventListener("click", () => {
-    returnToLogin("Log in with your new password.", "success");
-});
-
-el.continueButton.addEventListener("click", () => {
-
-    runBusy(el.continueButton, "Opening...", "Continue to B&B AI", async () => {
-
-        const session = await getCurrentSession();
-
-        if (session) {
-            goToApp();
-            return;
-        }
-
-        returnToLogin("Your email is confirmed. Log in to continue.", "success");
-    });
-});
-
-el.recoveryForm.addEventListener("submit", handleRecoverySubmit);
-
-/*
- * Supabase fires PASSWORD_RECOVERY when a reset link is opened.
- * Other auth events (SIGNED_IN, SIGNED_OUT) do not change this page,
- * so a recovery session is never sent straight into the chat app.
- */
-supabaseClient.auth.onAuthStateChange((event) => {
-
-    if (event === "PASSWORD_RECOVERY") {
-        showView("recovery");
-    }
-});
+el.form.addEventListener("submit", handleSubmit);
 
 
 /* -----------------------------------------------------
-   Start
+   Start: redirect if already signed in
    ----------------------------------------------------- */
 
 async function start() {
 
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("reason") === "expired") {
+        showNotice("Your session has expired. Please log in again.");
+    }
+
     setMode("login");
 
-    // Expired or invalid email link.
-    if (AUTH_LINK.errorCode || AUTH_LINK.errorDescription) {
-        showNotice(linkErrorMessage(), "error");
-        el.email.focus();
-        return;
-    }
-
-    // Opened a password reset link.
-    if (AUTH_LINK.type === "recovery") {
-        showView("recovery");
-        return;
-    }
-
-    // Returned from the email confirmation link.
-    if (AUTH_LINK.type === "signup") {
-        showConfirmed();
-        return;
-    }
-
-    // Already signed in: go straight to the app (unchanged from v0.1).
     try {
 
-        const session = await getCurrentSession();
+        const { data } = await supabaseClient.auth.getSession();
 
-        if (session) {
+        if (data && data.session) {
             goToApp();
             return;
         }
