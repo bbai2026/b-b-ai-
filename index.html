@@ -296,7 +296,7 @@ input:focus {
             >
         </label>
 
-        <label>
+        <label id="passwordWrap">
             Password
             <input
                 type="password"
@@ -308,6 +308,10 @@ input:focus {
             >
             <span class="hint" id="passwordHint" hidden>At least 6 characters.</span>
         </label>
+
+        <p class="forgot" id="forgotWrap">
+            <button type="button" id="forgotButton">Forgot password?</button>
+        </p>
 
         <label id="confirmWrap" hidden>
             Confirm Password
@@ -351,6 +355,7 @@ const MIN_PASSWORD_LENGTH = 6;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 let mode = "login";
+let resetMode = false;
 
 let busy = false;
 
@@ -364,7 +369,10 @@ const el = {
     form: document.getElementById("authForm"),
     email: document.getElementById("email"),
     password: document.getElementById("password"),
+    passwordWrap: document.getElementById("passwordWrap"),
     passwordHint: document.getElementById("passwordHint"),
+    forgotWrap: document.getElementById("forgotWrap"),
+    forgotButton: document.getElementById("forgotButton"),
     confirmWrap: document.getElementById("confirmWrap"),
     confirmPassword: document.getElementById("confirmPassword"),
     submit: document.getElementById("submitButton"),
@@ -395,6 +403,7 @@ function hideNotice() {
 
 function setMode(nextMode) {
 
+    resetMode = false;
     mode = nextMode;
 
     const signup = mode === "signup";
@@ -413,6 +422,8 @@ function setMode(nextMode) {
         ? "Sign up to start chatting with B&B AI."
         : "Log in to continue to B&B AI.";
 
+    el.passwordWrap.hidden = false;
+    el.forgotWrap.hidden = !(!signup);
     el.confirmWrap.hidden = !signup;
     el.passwordHint.hidden = !signup;
 
@@ -428,6 +439,7 @@ function setMode(nextMode) {
         ? "Create Account"
         : "Log In";
 
+    el.switchText.hidden = false;
     el.switchText.firstChild.textContent = signup
         ? "Already have an account? "
         : "Don't have an account? ";
@@ -438,6 +450,60 @@ function setMode(nextMode) {
 
     hideNotice();
 }
+
+function setResetMode() {
+
+    resetMode = true;
+    mode = "reset";
+
+    el.tabLogin.classList.remove("active");
+    el.tabSignup.classList.remove("active");
+
+    el.formTitle.textContent = "Reset your password";
+    el.formSubtitle.textContent = "Choose a new password for your B&B AI account.";
+
+    el.passwordWrap.hidden = false;
+    el.passwordHint.hidden = false;
+    el.password.placeholder = "New password";
+    el.password.autocomplete = "new-password";
+
+    el.confirmWrap.hidden = false;
+    el.confirmPassword.placeholder = "Re-enter your new password";
+    el.confirmPassword.autocomplete = "new-password";
+
+    el.forgotWrap.hidden = true;
+    el.submit.textContent = "Update Password";
+
+    el.switchText.hidden = true;
+
+    hideNotice();
+}
+
+function setForgotMode() {
+
+    resetMode = false;
+    mode = "forgot";
+
+    el.tabLogin.classList.remove("active");
+    el.tabSignup.classList.remove("active");
+
+    el.formTitle.textContent = "Forgot your password?";
+    el.formSubtitle.textContent = "Enter your email and we'll send you a password reset link.";
+
+    el.passwordWrap.hidden = true;
+    el.forgotWrap.hidden = true;
+    el.confirmWrap.hidden = true;
+
+    el.email.value = el.email.value.trim();
+    el.submit.textContent = "Send Reset Link";
+
+    el.switchText.hidden = false;
+    el.switchText.firstChild.textContent = "Remember your password? ";
+    el.switchButton.textContent = "Log In";
+
+    hideNotice();
+}
+
 
 
 /* -----------------------------------------------------
@@ -501,11 +567,15 @@ function validate(email, password) {
         return "Please enter a valid email address.";
     }
 
+    if (mode === "forgot") {
+        return null;
+    }
+
     if (!password) {
         return "Please enter your password.";
     }
 
-    if (mode === "signup") {
+    if (mode === "signup" || mode === "reset") {
 
         if (password.length < MIN_PASSWORD_LENGTH) {
             return `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
@@ -533,13 +603,25 @@ function setBusy(value) {
     // Read the mode at call time, so a switch during the request
     // (e.g. after sign-up) shows the correct button label.
     if (value) {
-        el.submit.textContent = mode === "signup"
-            ? "Creating account..."
-            : "Logging in...";
+        if (mode === "signup") {
+            el.submit.textContent = "Creating account...";
+        } else if (mode === "forgot") {
+            el.submit.textContent = "Sending reset link...";
+        } else if (mode === "reset") {
+            el.submit.textContent = "Updating password...";
+        } else {
+            el.submit.textContent = "Logging in...";
+        }
     } else {
-        el.submit.textContent = mode === "signup"
-            ? "Create Account"
-            : "Log In";
+        if (mode === "signup") {
+            el.submit.textContent = "Create Account";
+        } else if (mode === "forgot") {
+            el.submit.textContent = "Send Reset Link";
+        } else if (mode === "reset") {
+            el.submit.textContent = "Update Password";
+        } else {
+            el.submit.textContent = "Log In";
+        }
     }
 }
 
@@ -590,6 +672,54 @@ async function handleSubmit(event) {
             }
 
             goToApp();
+            return;
+        }
+
+        if (mode === "forgot") {
+
+            const redirectTo = new URL("index.html", window.location.href).href;
+
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(
+                email,
+                { redirectTo }
+            );
+
+            if (error) {
+                showNotice(loginErrorMessage(error));
+                return;
+            }
+
+            showNotice(
+                "If an account exists for this email, a password reset link has been sent. Check your inbox.",
+                "success"
+            );
+
+            return;
+        }
+
+        if (mode === "reset") {
+
+            const { error } = await supabaseClient.auth.updateUser({
+                password
+            });
+
+            if (error) {
+                showNotice(signupErrorMessage(error));
+                return;
+            }
+
+            await supabaseClient.auth.signOut();
+
+            el.password.value = "";
+            el.confirmPassword.value = "";
+
+            setMode("login");
+
+            showNotice(
+                "Your password has been updated. You can now log in with your new password.",
+                "success"
+            );
+
             return;
         }
 
@@ -646,6 +776,7 @@ async function handleSubmit(event) {
 }
 
 
+
 /* -----------------------------------------------------
    Events
    ----------------------------------------------------- */
@@ -653,8 +784,12 @@ async function handleSubmit(event) {
 el.tabLogin.addEventListener("click", () => setMode("login"));
 el.tabSignup.addEventListener("click", () => setMode("signup"));
 
+el.forgotButton.addEventListener("click", () => {
+    setForgotMode();
+});
+
 el.switchButton.addEventListener("click", () => {
-    setMode(mode === "login" ? "signup" : "login");
+    setMode("login");
 });
 
 el.form.addEventListener("submit", handleSubmit);
@@ -670,6 +805,17 @@ async function start() {
 
     if (params.get("reason") === "expired") {
         showNotice("Your session has expired. Please log in again.");
+    }
+
+    // Supabase recovery links return to this page with type=recovery
+    // in the URL hash. Do not redirect that session to the app.
+    const hashParams = new URLSearchParams(
+        window.location.hash.replace(/^#/, "")
+    );
+
+    if (hashParams.get("type") === "recovery") {
+        setResetMode();
+        return;
     }
 
     setMode("login");
@@ -689,6 +835,7 @@ async function start() {
 
     el.email.focus();
 }
+
 
 start();
 
