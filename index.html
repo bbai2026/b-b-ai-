@@ -256,6 +256,22 @@ input:focus {
     color: var(--muted);
 }
 
+
+.auth-links {
+    margin: 14px 0 0;
+    text-align: center;
+    font-size: 13px;
+}
+
+.auth-links button {
+    border: 0;
+    background: none;
+    padding: 0;
+    color: var(--accent);
+    cursor: pointer;
+    font: inherit;
+}
+
 </style>
 
 </head>
@@ -324,6 +340,10 @@ input:focus {
 
     </form>
 
+    <p class="auth-links" id="forgotWrap">
+        <button type="button" id="forgotButton">Forgot password?</button>
+    </p>
+
     <p class="switch" id="switchText">
         Don't have an account?
         <button type="button" id="switchButton">Sign Up</button>
@@ -336,7 +356,7 @@ input:focus {
 <script>
 
 /* =====================================================
-   B&B AI v0.3 - Authentication page
+   B&B AI v0.1 - Authentication page
    ===================================================== */
 
 const supabaseClient = window.supabase.createClient(
@@ -347,10 +367,12 @@ const supabaseClient = window.supabase.createClient(
 const APP_PAGE = "text.html";
 
 const MIN_PASSWORD_LENGTH = 6;
+const RECOVERY_QUERY = "recovery";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 let mode = "login";
+let recoveryMode = false;
 
 let busy = false;
 
@@ -369,7 +391,9 @@ const el = {
     confirmPassword: document.getElementById("confirmPassword"),
     submit: document.getElementById("submitButton"),
     switchText: document.getElementById("switchText"),
-    switchButton: document.getElementById("switchButton")
+    switchButton: document.getElementById("switchButton"),
+    forgotWrap: document.getElementById("forgotWrap"),
+    forgotButton: document.getElementById("forgotButton")
 };
 
 
@@ -396,12 +420,14 @@ function hideNotice() {
 function setMode(nextMode) {
 
     mode = nextMode;
+    recoveryMode = false;
 
     const signup = mode === "signup";
 
+    el.tabLogin.hidden = false;
+    el.tabSignup.hidden = false;
     el.tabLogin.classList.toggle("active", !signup);
     el.tabSignup.classList.toggle("active", signup);
-
     el.tabLogin.setAttribute("aria-selected", String(!signup));
     el.tabSignup.setAttribute("aria-selected", String(signup));
 
@@ -413,8 +439,11 @@ function setMode(nextMode) {
         ? "Sign up to start chatting with B&B AI."
         : "Log in to continue to B&B AI.";
 
+    el.form.hidden = false;
+    el.email.readOnly = false;
     el.confirmWrap.hidden = !signup;
     el.passwordHint.hidden = !signup;
+    el.forgotWrap.hidden = signup;
 
     el.password.autocomplete = signup
         ? "new-password"
@@ -428,6 +457,7 @@ function setMode(nextMode) {
         ? "Create Account"
         : "Log In";
 
+    el.switchText.hidden = false;
     el.switchText.firstChild.textContent = signup
         ? "Already have an account? "
         : "Don't have an account? ";
@@ -436,6 +466,29 @@ function setMode(nextMode) {
         ? "Log In"
         : "Sign Up";
 
+    hideNotice();
+}
+
+function setRecoveryMode() {
+
+    mode = "recovery";
+    recoveryMode = true;
+
+    el.tabLogin.hidden = true;
+    el.tabSignup.hidden = true;
+    el.forgotWrap.hidden = true;
+    el.switchText.hidden = false;
+    el.switchText.firstChild.textContent = "";
+    el.switchButton.textContent = "Back to Log In";
+
+    el.formTitle.textContent = "Set a new password";
+    el.formSubtitle.textContent = "Choose a new password for your B&B AI account.";
+    el.confirmWrap.hidden = false;
+    el.passwordHint.hidden = false;
+    el.password.autocomplete = "new-password";
+    el.password.placeholder = "New password";
+    el.confirmPassword.placeholder = "Confirm new password";
+    el.submit.textContent = "Update Password";
     hideNotice();
 }
 
@@ -491,6 +544,93 @@ function signupErrorMessage(error) {
 }
 
 
+function passwordResetErrorMessage(error) {
+
+    const text = (error && error.message || "").toLowerCase();
+
+    if (text.includes("same password") || text.includes("different")) {
+        return "Please choose a different password.";
+    }
+
+    if (text.includes("password")) {
+        return "Password is not accepted. Use at least 6 characters.";
+    }
+
+    if (text.includes("expired") || text.includes("invalid") || text.includes("session")) {
+        return "This password-reset link is invalid or expired. Please request a new one.";
+    }
+
+    if (text.includes("network") || text.includes("fetch")) {
+        return "Network error. Please check your connection and try again.";
+    }
+
+    return "Could not update your password. Please request a new reset link and try again.";
+}
+
+async function requestPasswordReset() {
+
+    if (busy) return;
+
+    const email = el.email.value.trim();
+
+    if (!EMAIL_PATTERN.test(email)) {
+        showNotice("Enter your account email first.");
+        el.email.focus();
+        return;
+    }
+
+    setBusy(true);
+    el.submit.textContent = "Sending reset link...";
+
+    try {
+        const redirectTo = new URL("index.html?mode=recovery", window.location.href).href;
+
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo
+        });
+
+        if (error) {
+            showNotice(passwordResetErrorMessage(error));
+            return;
+        }
+
+        showNotice("If an account exists for this email, a password-reset link has been sent. Check your inbox.", "success");
+
+    } catch (error) {
+        console.error("Password reset request error:", error);
+        showNotice(passwordResetErrorMessage(error));
+    } finally {
+        setBusy(false);
+    }
+}
+
+function returnToLogin() {
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.search = "";
+    cleanUrl.hash = "";
+    window.history.replaceState({}, "", cleanUrl.href);
+    setMode("login");
+}
+
+async function initializeRecovery() {
+
+    setRecoveryMode();
+
+    const { data, error } = await supabaseClient.auth.getSession();
+
+    if (error || !data.session) {
+        showNotice("This password-reset link is invalid or expired. Please request a new one.");
+        el.form.hidden = true;
+        return;
+    }
+
+    el.form.hidden = false;
+    el.email.value = data.session.user.email || "";
+    el.email.readOnly = true;
+    el.email.autocomplete = "email";
+}
+
+
 /* -----------------------------------------------------
    Validation
    ----------------------------------------------------- */
@@ -505,7 +645,7 @@ function validate(email, password) {
         return "Please enter your password.";
     }
 
-    if (mode === "signup") {
+    if (mode === "signup" || mode === "recovery") {
 
         if (password.length < MIN_PASSWORD_LENGTH) {
             return `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
@@ -535,11 +675,15 @@ function setBusy(value) {
     if (value) {
         el.submit.textContent = mode === "signup"
             ? "Creating account..."
-            : "Logging in...";
+            : mode === "recovery"
+                ? "Updating password..."
+                : "Logging in...";
     } else {
         el.submit.textContent = mode === "signup"
             ? "Create Account"
-            : "Log In";
+            : mode === "recovery"
+                ? "Update Password"
+                : "Log In";
     }
 }
 
@@ -577,6 +721,34 @@ async function handleSubmit(event) {
 
     try {
 
+        if (mode === "recovery") {
+
+            if (password.length < MIN_PASSWORD_LENGTH) {
+                showNotice(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
+                return;
+            }
+
+            if (password !== el.confirmPassword.value) {
+                showNotice("Passwords do not match.");
+                return;
+            }
+
+            const { error } = await supabaseClient.auth.updateUser({
+                password
+            });
+
+            if (error) {
+                showNotice(passwordResetErrorMessage(error));
+                return;
+            }
+
+            el.password.value = "";
+            el.confirmPassword.value = "";
+            setMode("login");
+            showNotice("Your password has been updated. You can now log in.", "success");
+            return;
+        }
+
         if (mode === "login") {
 
             const { error } = await supabaseClient.auth.signInWithPassword({
@@ -598,7 +770,7 @@ async function handleSubmit(event) {
             email,
             password,
             options: {
-                emailRedirectTo: new URL(APP_PAGE, window.location.href).href
+                emailRedirectTo: new URL("index.html?mode=confirmed", window.location.href).href
             }
         });
 
@@ -636,7 +808,9 @@ async function handleSubmit(event) {
         showNotice(
             mode === "signup"
                 ? signupErrorMessage(error)
-                : loginErrorMessage(error)
+                : mode === "recovery"
+                    ? passwordResetErrorMessage(error)
+                    : loginErrorMessage(error)
         );
 
     } finally {
@@ -654,10 +828,15 @@ el.tabLogin.addEventListener("click", () => setMode("login"));
 el.tabSignup.addEventListener("click", () => setMode("signup"));
 
 el.switchButton.addEventListener("click", () => {
+    if (recoveryMode) {
+        returnToLogin();
+        return;
+    }
     setMode(mode === "login" ? "signup" : "login");
 });
 
 el.form.addEventListener("submit", handleSubmit);
+el.forgotButton.addEventListener("click", requestPasswordReset);
 
 
 /* -----------------------------------------------------
@@ -667,9 +846,44 @@ el.form.addEventListener("submit", handleSubmit);
 async function start() {
 
     const params = new URLSearchParams(window.location.search);
+    const flow = params.get("mode");
+    const isRecovery = flow === RECOVERY_QUERY;
+    const isConfirmed = flow === "confirmed";
 
     if (params.get("reason") === "expired") {
         showNotice("Your session has expired. Please log in again.");
+    }
+
+    if (params.get("error_code") || params.get("error")) {
+        const code = (params.get("error_code") || "").toLowerCase();
+        setMode("login");
+        showNotice(
+            code.includes("expired") || code.includes("invalid")
+                ? "This email-confirmation link is invalid or expired. Please request a new confirmation email."
+                : "We could not complete email confirmation. Please request a new confirmation link or contact support."
+        );
+        return;
+    }
+
+    if (isRecovery) {
+        await initializeRecovery();
+        return;
+    }
+
+    if (isConfirmed) {
+        try {
+            const { data } = await supabaseClient.auth.getSession();
+
+            if (data && data.session) {
+                await supabaseClient.auth.signOut();
+            }
+        } catch (error) {
+            console.error("Confirmation session cleanup failed:", error);
+        }
+
+        setMode("login");
+        showNotice("Your email has been confirmed. You can now log in.", "success");
+        return;
     }
 
     setMode("login");
@@ -689,6 +903,7 @@ async function start() {
 
     el.email.focus();
 }
+
 
 start();
 
